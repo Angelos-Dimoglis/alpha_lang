@@ -9,6 +9,20 @@
 * Panagiwths Antonakakhs csdxxxx
 * Arhs csdxxxx
 
+## Implementation
+
+* **Lexical analyzer**
+
+* **Sytax analyzer**
+
+* **Semantic analyzer**
+
+* **Intermediate code generator**
+
+* **Code optimizer**
+
+* **Target code generator**
+
 ## Testing
 
  - [ ] Phase 1
