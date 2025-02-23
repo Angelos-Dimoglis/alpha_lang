@@ -57,6 +57,20 @@ void print_token(alpha_token_t* token) {
 KEYWORD if|else|while|for|function|return|break|continue|and|not|or|local|true|false|nil
 OPERATOR "="|"+"|"-"|"*"|"/"|"%"|"=="|"!="|"++"|"--"|">"|"<"|">="|"<="
 INTCONST [0-9]+
+REALCONST           [0-9]*\.[0-9](e|E)?[0-9]*
+STRING            \"[^\n"]*\"
+LEFT_BRACE          {
+RIGHT_BRACE         }
+LEFT_BRACKET        [
+RIGHT_BRACKET       ]
+LEFT_PARENTHESIS    (
+RIGHT_PARENTHESIS   )
+SEMICOLON           ;
+COMMA               ,
+COLON               :
+DOUBLE_COLON        ::
+FULL_STOP           .
+DOUBLE_FULL_STOP    ..
 
 %option noyywrap
 %option yylineno
