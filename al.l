@@ -16,7 +16,7 @@ typedef struct alpha_token {
   struct alpha_token *alpha_token_next;
 } alpha_token_t;
 
-alpha_token_t *list_head = NULL;
+alpha_toke_t *list_head = NULL;
 
 alpha_token_t* create_token(char* content, char* category_1, char* category_2, char* type) {
     assert(content);
@@ -27,7 +27,7 @@ alpha_token_t* create_token(char* content, char* category_1, char* category_2, c
 
     static int yynumToken = 0;
     static alpha_token_t* current_token = NULL;
-    alpha_token_t* new_token = malloc(sizeof(alpha_token_t*));
+    alpha_toke_t* new_token = malloc(sizeof(alpha_token_t*));
     assert(new_token);
 
     new_token->numline = yylineno;
@@ -54,23 +54,12 @@ void print_token(alpha_token_t* token) {
 }
 %}
 
-KEYWORD if|else|while|for|function|return|break|continue|and|not|or|local|true|false|nil
-OPERATOR "="|"+"|"-"|"*"|"/"|"%"|"=="|"!="|"++"|"--"|">"|"<"|">="|"<="
-INTCONST [0-9]+
+KEYWORD             if|else|while|for|function|return|break|continue|and|not|or|local|true|false|nil
+OPERATOR            "="|"+"|"-"|"*"|"/"|"%"|"=="|"!="|"++"|"--"|">"|"<"|">="|"<="
+INTCONST            [0-9]+
 REALCONST           [0-9]*\.[0-9](e|E)?[0-9]*
-STRING            \"[^\n"]*\"
-LEFT_BRACE          {
-RIGHT_BRACE         }
-LEFT_BRACKET        [
-RIGHT_BRACKET       ]
-LEFT_PARENTHESIS    (
-RIGHT_PARENTHESIS   )
-SEMICOLON           ;
-COMMA               ,
-COLON               :
-DOUBLE_COLON        ::
-FULL_STOP           .
-DOUBLE_FULL_STOP    ..
+STRING              \"[^\n"]*\"
+PUNCTUATION         {|}|[|]|(|)|;|,|:|::|.|..
 
 %option noyywrap
 %option yylineno
@@ -78,7 +67,7 @@ DOUBLE_FULL_STOP    ..
 %%
 
 {KEYWORD}  {}
-{OPERATOR}  { printf("OPERATOR");}
+{OPERATOR}  {printf("OPERATOR", );}
 {INTCONST}  {printf("INTCONST");}
 
 %%
