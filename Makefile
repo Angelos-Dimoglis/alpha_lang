@@ -11,7 +11,7 @@ lex.yy.c: al.l
 	flex al.l
 
 lex.out: lex.yy.c
-	$(CC) $< -o $@
+	$(CC) $< -g -o $@
 
 #run_tests:
 

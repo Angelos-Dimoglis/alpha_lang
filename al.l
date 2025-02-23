@@ -3,6 +3,7 @@
 #include <string.h>
 #include <stdlib.h>
 #include <assert.h>
+#include <ctype.h>
 
 FILE* yyout;
 
@@ -27,11 +28,16 @@ alpha_token_t* create_token(char* content, char* category_1, char* category_2, c
 
     static int yynumToken = 0;
     static alpha_token_t* current_token = NULL;
-    alpha_toke_t* new_token = malloc(sizeof(alpha_token_t*));
+    alpha_token_t* new_token = malloc(sizeof(alpha_token_t));
     assert(new_token);
 
     new_token->numline = yylineno;
     new_token->numToken = ++yynumToken;
+    new_token->content = malloc(sizeof(char) * (strlen(content) + 1));
+    new_token->category_1 = malloc(sizeof(char) * (strlen(category_1) + 1));
+    new_token->category_2 = malloc(sizeof(char) * (strlen(category_2) + 1));
+    new_token->type = malloc(sizeof(char) * (strlen(type) + 1));
+    assert(new_token->content && new_token->category_1 && new_token->category_2 && new_token->type);
     strcpy(new_token->content, content);
     strcpy(new_token->category_1, category_1);
     strcpy(new_token->category_2, category_2);
@@ -49,8 +55,17 @@ alpha_token_t* create_token(char* content, char* category_1, char* category_2, c
 }
 
 void print_token(alpha_token_t* token) {
-    printf("%d: #%d\t \"%s\"\t %s\t %s <-%s", 
+    printf("%d: #%d\t \"%s\"\t %s\t %s\t <-%s\n", 
         token->numline, token->numToken, token->content, token->category_1, token->category_2, token->type);    
+}
+
+char* toUpperCase(const char *str) {
+    char* capital_str = malloc(sizeof(char) * strlen(str));
+    assert(capital_str);
+    for (int i = 0; str[i] != '\0'; i++) {
+        capital_str[i] = toupper((unsigned char)str[i]);
+    }
+    return capital_str;
 }
 %}
 
@@ -66,9 +81,22 @@ PUNCTUATION         {|}|[|]|(|)|;|,|:|::|.|..
 
 %%
 
-{KEYWORD}  {}
-{OPERATOR}  {printf("OPERATOR", );}
-{INTCONST}  {printf("INTCONST");}
+\n { }
+
+{KEYWORD}  {
+    alpha_token_t* token = create_token(yytext, "KEYWORD", toUpperCase(yytext), "enumerated");\
+    print_token(token);\
+}
+
+{OPERATOR}  {
+    alpha_token_t* token = create_token(yytext, "KEYWORD", yytext, "enumerated");\
+    print_token(token);\
+}
+
+{INTCONST}  {
+    alpha_token_t* token = create_token(yytext, "KEYWORD", yytext, "int");\
+    print_token(token);\
+}
 
 %%
 
