@@ -17,7 +17,7 @@ typedef struct alpha_token {
   struct alpha_token *alpha_token_next;
 } alpha_token_t;
 
-alpha_toke_t *list_head = NULL;
+alpha_token_t *list_head = NULL;
 
 alpha_token_t* create_token(char* content, char* category_1, char* category_2, char* type) {
     assert(content);
@@ -81,7 +81,9 @@ PUNCTUATION         {|}|[|]|(|)|;|,|:|::|.|..
 
 %%
 
-\n { }
+\n {}
+
+" " {}
 
 {KEYWORD}  {
     alpha_token_t* token = create_token(yytext, "KEYWORD", toUpperCase(yytext), "enumerated");\
