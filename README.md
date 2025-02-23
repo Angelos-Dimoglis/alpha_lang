@@ -7,7 +7,7 @@
 
 * Angelos T. Dimoglis csd5078
 * Panagiwths Antonakakhs csd5137
-* Arhs Patramanhs csd5249
+* Aris Patramanis csd5249
 
 ## Implementation
 
