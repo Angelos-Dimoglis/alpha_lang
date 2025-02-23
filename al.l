@@ -16,7 +16,7 @@ typedef struct alpha_token {
   struct alpha_token *alpha_token_next;
 } alpha_token_t;
 
-alpha_toke_t *list_head = NULL;
+alpha_token_t *list_head = NULL;
 
 alpha_token_t* create_token(char* content, char* category_1, char* category_2, char* type) {
     assert(content);
@@ -27,7 +27,7 @@ alpha_token_t* create_token(char* content, char* category_1, char* category_2, c
 
     static int yynumToken = 0;
     static alpha_token_t* current_token = NULL;
-    alpha_toke_t* new_token = malloc(sizeof(alpha_token_t*));
+    alpha_token_t* new_token = malloc(sizeof(alpha_token_t*));
     assert(new_token);
 
     new_token->numline = yylineno;
@@ -78,7 +78,7 @@ DOUBLE_FULL_STOP    ..
 %%
 
 {KEYWORD}  {}
-{OPERATOR}  {printf("OPERATOR", );}
+{OPERATOR}  { printf("OPERATOR");}
 {INTCONST}  {printf("INTCONST");}
 
 %%
