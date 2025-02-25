@@ -89,8 +89,8 @@ char* toUpperCase(const char *str) {
 LETTER [a-zA-Z]
 DIGIT [0-9]
 
-KEYWORD             if|else|while|for|function|return|break|continue|and|not|or|local|true|false|nil
-OPERATOR            "="|"+"|"-"|"*"|"/"|"%"|"=="|"!="|"++"|"--"|">"|"<"|">="|"<="
+KEYWORD             "if"|else|while|for|function|return|break|continue|and|not|or|local|true|false|nil
+OPERATOR            "="|"+"|"-"|"\*"|"\/"|"%"|"=="|"!="|"++"|"--"|">"|"<"|">="|"<="
 INTCONST            [0-9]+
 
 REALCONST           [0-9]*\.[0-9](e|E)?[0-9]*
@@ -98,7 +98,8 @@ STRING              \"[^\n"]*\"
 PUNCTUATION         {|}|[|]|(|)|;|,|:|::|.|..
 
 IDENTIFIER          {LETTER}({LETTER}|{DIGIT}|_)*
-COMMENT             test2
+LINE_COMMENT        ^(\/\/).*$
+BLOCK_COMMENT       test
 
 %option noyywrap
 %option yylineno
@@ -115,12 +116,13 @@ COMMENT             test2
 }
 
 {OPERATOR}  {
+    printf("this is an operator\n");
     alpha_token_t* token = create_token(yytext, "KEYWORD", yytext, "enumerated");
     print_token(token);
 }
 
 {INTCONST}  {
-    alpha_token_t* token = create_token(yytext, "KEYWORD", yytext, "int");
+    alpha_token_t* token = create_token(yytext, "CONST_INT", yytext, "integer");
     print_token(token);
 }
 
@@ -130,6 +132,16 @@ COMMENT             test2
     sprintf(str, "\"%s\"", yytext);
     alpha_token_t *token = create_token(yytext, "ID", str, "char*");
     print_token(token);
+}
+
+{LINE_COMMENT} {
+    alpha_token_t* token = create_token(yytext, "COMMENT", yytext, "enumerated");
+    print_token(token);
+}
+
+{BLOCK_COMMENT} {
+   //alpha_token_t* token = create_token(yytext, "KEYWORD", yytext, "int");
+   //print_token(token);
 }
 
 %%
