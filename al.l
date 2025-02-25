@@ -110,26 +110,26 @@ COMMENT             test2
 " " {}
 
 {KEYWORD}  {
-    alpha_token_t* token = create_token(yytext, "KEYWORD", toUpperCase(yytext), "enumerated");\
-    print_token(token);\
+    alpha_token_t* token = create_token(yytext, "KEYWORD", toUpperCase(yytext), "enumerated");
+    print_token(token);
 }
 
 {OPERATOR}  {
-    alpha_token_t* token = create_token(yytext, "KEYWORD", yytext, "enumerated");\
-    print_token(token);\
+    alpha_token_t* token = create_token(yytext, "KEYWORD", yytext, "enumerated");
+    print_token(token);
 }
 
 {INTCONST}  {
-    alpha_token_t* token = create_token(yytext, "KEYWORD", yytext, "int");\
-    print_token(token);\
+    alpha_token_t* token = create_token(yytext, "KEYWORD", yytext, "int");
+    print_token(token);
 }
 
 {IDENTIFIER} {
-    char *str = malloc(strlen(yytext) + 2);\
+    char *str = malloc(strlen(yytext) + 2);
     assert(str);
     sprintf(str, "\"%s\"", yytext);
-    alpha_token_t *token = create_token(yytext, "ID", str, "char*");\
-    print_token(token);\
+    alpha_token_t *token = create_token(yytext, "ID", str, "char*");
+    print_token(token);
 }
 
 %%
