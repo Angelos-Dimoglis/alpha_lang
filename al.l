@@ -86,12 +86,19 @@ char* toUpperCase(const char *str) {
 
 %}
 
+LETTER [a-zA-Z]
+DIGIT [0-9]
+
 KEYWORD             if|else|while|for|function|return|break|continue|and|not|or|local|true|false|nil
 OPERATOR            "="|"+"|"-"|"*"|"/"|"%"|"=="|"!="|"++"|"--"|">"|"<"|">="|"<="
 INTCONST            [0-9]+
+
 REALCONST           [0-9]*\.[0-9](e|E)?[0-9]*
 STRING              \"[^\n"]*\"
 PUNCTUATION         {|}|[|]|(|)|;|,|:|::|.|..
+
+IDENTIFIER          {LETTER}({LETTER}|{DIGIT}|_)*
+COMMENT             test2
 
 %option noyywrap
 %option yylineno
@@ -114,6 +121,14 @@ PUNCTUATION         {|}|[|]|(|)|;|,|:|::|.|..
 
 {INTCONST}  {
     alpha_token_t* token = create_token(yytext, "KEYWORD", yytext, "int");\
+    print_token(token);\
+}
+
+{IDENTIFIER} {
+    char *str = malloc(strlen(yytext) + 2);\
+    assert(str);
+    sprintf(str, "\"%s\"", yytext);
+    alpha_token_t *token = create_token(yytext, "ID", str, "char*");\
     print_token(token);\
 }
 
