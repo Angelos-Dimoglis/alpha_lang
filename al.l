@@ -88,18 +88,22 @@ char* toUpperCase(const char *str) {
 
 LETTER [a-zA-Z]
 DIGIT [0-9]
+ANY_CHARACTER (.|\n)
 
 KEYWORD             "if"|else|while|for|function|return|break|continue|and|not|or|local|true|false|nil
 OPERATOR            "="|"+"|"-"|"\*"|"\/"|"%"|"=="|"!="|"++"|"--"|">"|"<"|">="|"<="
-INTCONST            [0-9]+
+INTCONST            {DIGIT}+
 
 REALCONST           [0-9]*\.[0-9](e|E)?[0-9]*
 STRING              \"[^\n"]*\"
 PUNCTUATION         {|}|[|]|(|)|;|,|:|::|.|..
 
 IDENTIFIER          {LETTER}({LETTER}|{DIGIT}|_)*
-LINE_COMMENT        ^(\/\/).*$
-BLOCK_COMMENT       test
+LINE_COMMENT        (\/\/).*$
+
+BLOCK_COMMENT_START ("/*")
+BLOCK_COMMENT_END   ("*/")
+BLOCK_COMMENT       {BLOCK_COMMENT_START}{ANY_CHARACTER}*{BLOCK_COMMENT_END}$
 
 %option noyywrap
 %option yylineno
@@ -135,13 +139,14 @@ BLOCK_COMMENT       test
 }
 
 {LINE_COMMENT} {
-    alpha_token_t* token = create_token(yytext, "COMMENT", yytext, "enumerated");
+    alpha_token_t* token = create_token(yytext, "COMMENT", "LINE_COMMENT", "enumerated");
     print_token(token);
 }
 
 {BLOCK_COMMENT} {
-   //alpha_token_t* token = create_token(yytext, "KEYWORD", yytext, "int");
-   //print_token(token);
+    char *start_to_end;
+    alpha_token_t* token = create_token("test_range", "KEYWORD", "BLOCK_COMMENT", "int");
+    print_token(token);
 }
 
 %%
