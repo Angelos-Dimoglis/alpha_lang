@@ -25,23 +25,32 @@ alpha_token_t* create_token(char* content, char* category_1, char* category_2, c
     assert(category_2);
     assert(type);
 
-
     static int yynumToken = 0;
     static alpha_token_t* current_token = NULL;
     alpha_token_t* new_token = malloc(sizeof(alpha_token_t));
     assert(new_token);
 
+    // initialize fields of new_token
+
     new_token->numline = yylineno;
     new_token->numToken = ++yynumToken;
+
     new_token->content = malloc(sizeof(char) * (strlen(content) + 1));
-    new_token->category_1 = malloc(sizeof(char) * (strlen(category_1) + 1));
-    new_token->category_2 = malloc(sizeof(char) * (strlen(category_2) + 1));
-    new_token->type = malloc(sizeof(char) * (strlen(type) + 1));
-    assert(new_token->content && new_token->category_1 && new_token->category_2 && new_token->type);
+    assert(new_token->content);
     strcpy(new_token->content, content);
+
+    new_token->category_1 = malloc(sizeof(char) * (strlen(category_1) + 1));
+    assert(new_token->category_1);
     strcpy(new_token->category_1, category_1);
+
+    new_token->category_2 = malloc(sizeof(char) * (strlen(category_2) + 1));
+    assert(new_token->category_2);
     strcpy(new_token->category_2, category_2);
+
+    new_token->type = malloc(sizeof(char) * (strlen(type) + 1));
+    assert(new_token->type);
     strcpy(new_token->type, type);
+
     new_token->alpha_token_next = NULL;
     
     if (!list_head)
@@ -56,17 +65,25 @@ alpha_token_t* create_token(char* content, char* category_1, char* category_2, c
 
 void print_token(alpha_token_t* token) {
     printf("%d: #%d\t \"%s\"\t %s\t %s\t <-%s\n", 
-        token->numline, token->numToken, token->content, token->category_1, token->category_2, token->type);    
+        token->numline,
+        token->numToken,
+        token->content,
+        token->category_1,
+        token->category_2,
+        token->type
+    );    
 }
 
 char* toUpperCase(const char *str) {
     char* capital_str = malloc(sizeof(char) * strlen(str));
     assert(capital_str);
-    for (int i = 0; str[i] != '\0'; i++) {
+
+    for (int i = 0; str[i] != '\0'; i++)
         capital_str[i] = toupper((unsigned char)str[i]);
-    }
+
     return capital_str;
 }
+
 %}
 
 KEYWORD             if|else|while|for|function|return|break|continue|and|not|or|local|true|false|nil
@@ -103,21 +120,24 @@ PUNCTUATION         {|}|[|]|(|)|;|,|:|::|.|..
 %%
 
 int main(int argc, char **argv) {
-    if (argc > 1){
-        if (!(yyin = fopen(argv[1], "r"))){
+    if (argc > 1) {
+
+        if (!(yyin = fopen(argv[1], "r"))) {
             fprintf(stderr, "Cannot read file: %s\n", argv[1]);
             return 1;
         }
+
         if (argc == 3){
-            if (!(yyout = fopen(argv[2], "w"))){
+            if (!(yyout = fopen(argv[2], "w"))) {
                 fprintf(stderr, "Cannot write file: %s\n", argv[2]);
                 fclose(yyin);
                 return 1;
             }
-        }else
+        } else
             yyout = stdout;
-    }else
+    } else
         yyin = stdin;
+
     yylex();  // Call the lexer
 
     fclose(yyin);

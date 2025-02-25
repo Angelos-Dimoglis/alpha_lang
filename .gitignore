@@ -2,4 +2,3 @@
 *.out
 *.alpha
 *.c
-lex.yy.c
