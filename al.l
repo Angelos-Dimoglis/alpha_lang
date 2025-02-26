@@ -101,9 +101,19 @@ PUNCTUATION         {|}|[|]|(|)|;|,|:|::|.|..
 IDENTIFIER          {LETTER}({LETTER}|{DIGIT}|_)*
 LINE_COMMENT        (\/\/).*$
 
-BLOCK_COMMENT_START ("/*")
-BLOCK_COMMENT_END   ("*/")
-BLOCK_COMMENT       {BLOCK_COMMENT_START}{ANY_CHARACTER}*{BLOCK_COMMENT_END}$
+BLOCK_COMMENT_START ("\/\*")
+BLOCK_COMMENT_END   ("\*\/")
+/*
+BLOCK_COMMENT       {BLOCK_COMMENT_START}{ANY_CHARACTER}*?{BLOCK_COMMENT_END}
+*/
+
+%x ANY_CHAR
+
+%%
+
+<INITIAL> {BLOCK_COMMENT_START} {
+}
+
 
 %option noyywrap
 %option yylineno
@@ -144,8 +154,9 @@ BLOCK_COMMENT       {BLOCK_COMMENT_START}{ANY_CHARACTER}*{BLOCK_COMMENT_END}$
 }
 
 {BLOCK_COMMENT} {
-    char *start_to_end;
-    alpha_token_t* token = create_token("test_range", "KEYWORD", "BLOCK_COMMENT", "int");
+    char *start_to_end = 0;
+    printf("block comment\n");
+    alpha_token_t* token = create_token("test_range", "COMMENT", "BLOCK_COMMENT", "enumerated");
     print_token(token);
 }
 
