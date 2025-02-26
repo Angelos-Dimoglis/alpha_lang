@@ -58,7 +58,14 @@ void print_token(alpha_token_t* token) {
     char* tab = malloc(sizeof(char) * 2);
     tab = strlen(token->content) >= 5 ? "\t" : "\t\t";
     printf("%d: #%d\t \"%s\"%s %s\t %s\t <-%s\n", 
-        token->numline, token->numToken, token->content, tab, token->category_1, token->category_2, token->type);    
+        token->numline,
+        token->numToken,
+        token->content,
+        tab,
+        token->category_1,
+        token->category_2,
+        token->type
+    );    
 }
 
 char* toUpperCase(const char *str) {
@@ -71,9 +78,9 @@ char* toUpperCase(const char *str) {
 }
 
 void yyerror(const char *msg) {
-        fprintf(stderr, "Error: %s\n", msg);
-        exit(1);
-    }
+    fprintf(stderr, "Error: %s\n", msg);
+    exit(1);
+}
 
 %}
 
@@ -110,51 +117,53 @@ BLOCK_COMMENT       {BLOCK_COMMENT_START}{ANY_CHARACTER}*?{BLOCK_COMMENT_END}
 " " {}
 
 {KEYWORD}  {
-    alpha_token_t* token = create_token(yytext, "KEYWORD", toUpperCase(yytext), "enumerated");\
-    print_token(token);\
+    alpha_token_t* token = create_token(yytext, "KEYWORD", toUpperCase(yytext), "enumerated");
+    print_token(token);
 }
 
 {OPERATOR}  {
-    alpha_token_t* token = create_token(yytext, "OPERATOR", yytext, "enumerated");\
-    print_token(token);\
+    alpha_token_t* token = create_token(yytext, "OPERATOR", yytext, "enumerated");
+    print_token(token);
 }
 
 {INTCONST}  {
-    alpha_token_t* token = create_token(yytext, "INTCONST", yytext, "int");\
-    print_token(token);\
+    alpha_token_t* token = create_token(yytext, "INTCONST", yytext, "int");
+    print_token(token);
 }
 
 {REALCONST}  {
-    alpha_token_t* token = create_token(yytext, "REALCONST", yytext, "double");\
-    print_token(token);\
+    alpha_token_t* token = create_token(yytext, "REALCONST", yytext, "double");
+    print_token(token);
 }
 
 \"  {BEGIN(STRING);}
 <STRING>\n      {yylineno++;}
 <STRING>\"      {
-                    char* temp = malloc(sizeof(char) * yyleng);
-                    for (int i = 0; i < yyleng; i++){
-                        if (yytext[i] == '\\'){
-                            switch (yytext[i+1]){//TODO: Possibility for seg
-                                case '\"': 
-                                    temp[i++] = '\"';
-                                case 't':
-                                    temp[i++] = '\t';
-                                case 'n':
-                                    temp[i++] = '\n';
-                                case '\\':
-                                    temp[i++] = '\\';
-                                default:
-                                    temp[i] = yytext[i];
-                            }
-                        }else
-                            temp[i] = yytext[i];
-                    }
-                    //temp[yyleng - 2] = '\0';
-                    
-                    alpha_token_t* token = create_token(temp, "STRING", temp, "char*");\
-                    print_token(token);
-                    BEGIN(INITIAL);}
+    char* temp = malloc(sizeof(char) * yyleng);
+    for (int i = 0; i < yyleng; i++){
+        if (yytext[i] == '\\'){
+            //TODO: Possibility for seg
+            switch (yytext[i+1]){
+                case '\"': 
+                    temp[i++] = '\"';
+                case 't':
+                    temp[i++] = '\t';
+                case 'n':
+                    temp[i++] = '\n';
+                case '\\':
+                    temp[i++] = '\\';
+                default:
+                    temp[i] = yytext[i];
+            }
+        }else
+            temp[i] = yytext[i];
+    }
+    //temp[yyleng - 2] = '\0';
+
+    alpha_token_t* token = create_token(temp, "STRING", temp, "char*");\
+                           print_token(token);
+    BEGIN(INITIAL);
+}
 <STRING><<EOF>> { yyerror("Unclosed string"); }
 <STRING>.       {}
 
