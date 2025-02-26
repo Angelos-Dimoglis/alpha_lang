@@ -1,8 +1,11 @@
 
+if    
+
+while
+
+My_identifier = 45 * 1024
+
+b0bo = 345.657
 // this is a comment
 
-/* block comment */
-
-/* 
-    multi line comment 
-*/
+// second one line comment
