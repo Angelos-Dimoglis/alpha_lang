@@ -88,20 +88,16 @@ LETTER [a-zA-Z]
 DIGIT [0-9]
 ANY_CHARACTER (.|\n)
 
-KEYWORD             "if"|else|while|for|function|return|break|continue|and|not|or|local|true|false|nil
-OPERATOR            "="|"+"|"-"|"\*"|"\/"|"%"|"=="|"!="|"++"|"--"|">"|"<"|">="|"<="
+KEYWORD             if|else|while|for|function|return|break|continue|and|not|or|local|true|false|nil
+OPERATOR            "="|"+"|"-"|"*"|"/"|"%"|"=="|"!="|"++"|"--"|">"|"<"|">="|"<="
 INTCONST            {DIGIT}+
-
 REALCONST           {INTCONST}\.{INTCONST}
-STRING              \"[^\n"]*\"
-PUNCTUATION         {|}|[|]|(|)|;|,|:|::|\.|\.\.
-
+PUNCTUATION         "{"|"}"|"["|"]"|"("|")"|";"|","|":"|"::"|"."|".."
 IDENTIFIER          {LETTER}({LETTER}|{DIGIT}|_)*
 LINE_COMMENT        (\/\/).*$
 
 BLOCK_COMMENT_START ("\/\*")
 BLOCK_COMMENT_END   ("\*\/")
-
 BLOCK_COMMENT       {BLOCK_COMMENT_START}{ANY_CHARACTER}*?{BLOCK_COMMENT_END}
 
 %option noyywrap
