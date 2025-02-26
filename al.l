@@ -6,6 +6,7 @@
 #include <ctype.h>
 
 FILE* yyout;
+int start = 0;
 
 typedef struct alpha_token {
   unsigned int     numline;
@@ -96,14 +97,14 @@ PUNCTUATION         "{"|"}"|"["|"]"|"("|")"|";"|","|":"|"::"|"."|".."
 IDENTIFIER          {LETTER}({LETTER}|{DIGIT}|_)*
 LINE_COMMENT        (\/\/).*$
 
-BLOCK_COMMENT_START ("\/\*")
-BLOCK_COMMENT_END   ("\*\/")
-BLOCK_COMMENT       {BLOCK_COMMENT_START}{ANY_CHARACTER}*?{BLOCK_COMMENT_END}
+BLOCK_COMMENT_START ("/*")
+BLOCK_COMMENT_END   ("*/")
+%x IN_COMMENT
+
+%x STRING
 
 %option noyywrap
 %option yylineno
-%x STRING
-
 
 %%
 
@@ -180,17 +181,42 @@ BLOCK_COMMENT       {BLOCK_COMMENT_START}{ANY_CHARACTER}*?{BLOCK_COMMENT_END}
 <STRING><<EOF>> { yyerror("Unclosed string"); }
 <STRING>.       { yyerror("Unclosed string"); }
 
-{LINE_COMMENT} {
-    alpha_token_t* token = create_token(yytext, "COMMENT", "LINE_COMMENT", "enumerated");
+{IDENTIFIER} {
+    char *str = malloc(strlen(yytext) + 2);
+    sprintf(str, "\"%s\"", yytext);
+    alpha_token_t* token = create_token(yytext, "ID", str, "char*");
     print_token(token);
 }
 
-{BLOCK_COMMENT} {
-    char *start_to_end = 0;
-    printf("block comment\n");
-    alpha_token_t* token = create_token("test_range", "COMMENT", "BLOCK_COMMENT", "enumerated");
+{LINE_COMMENT} {
+    char *content = yytext + 2;
+    alpha_token_t* token = create_token(content, "COMMENT", "LINE_COMMENT", "enumerated");
     print_token(token);
 }
+
+<INITIAL>{
+    {BLOCK_COMMENT_START} {
+        start = yylineno;
+        BEGIN(IN_COMMENT); 
+    }
+}
+<IN_COMMENT>{
+    {BLOCK_COMMENT_END} {
+        int end = yylineno;
+        char range_str [100];
+
+        snprintf(range_str, sizeof(range_str), "%d - %d", start, end);
+
+        alpha_token_t* token = create_token(range_str, "COMMENT", "BLOCK_COMMENT", "enumerated");
+        print_token(token);
+
+        BEGIN(INITIAL);
+    }
+    [^*\n]+   // eat comment in chunks
+    "*"       // eat the lone star
+    \n
+}
+{ANY_CHARACTER} ECHO;
 
 %%
 

@@ -1,5 +1,6 @@
 
 if    
+ifif
 
 while
 
@@ -8,6 +9,11 @@ My_identifier = 45 * 1024
 b0bo = 345.657
 // this is a comment
 
+//
+
 // second one line comment
 
 "tsdfg\n\n\n\"\\b"
+/*
+this is a test block comment
+*/
