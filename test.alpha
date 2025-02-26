@@ -9,3 +9,5 @@ b0bo = 345.657
 // this is a comment
 
 // second one line comment
+
+"\"\t\\tbob\\n\""

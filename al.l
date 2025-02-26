@@ -113,8 +113,10 @@ BLOCK_COMMENT       {BLOCK_COMMENT_START}{ANY_CHARACTER}*?{BLOCK_COMMENT_END}
 " " {}
 
 {KEYWORD}  {
-    alpha_token_t* token = create_token(yytext, "KEYWORD", toUpperCase(yytext), "enumerated");
+    char* UpperCase = toUpperCase(yytext);
+    alpha_token_t* token = create_token(yytext, "KEYWORD", UpperCase, "enumerated");
     print_token(token);
+    free(UpperCase);
 }
 
 {OPERATOR}  {
@@ -132,36 +134,51 @@ BLOCK_COMMENT       {BLOCK_COMMENT_START}{ANY_CHARACTER}*?{BLOCK_COMMENT_END}
     print_token(token);
 }
 
-\"  {BEGIN(STRING);}
+\"  {
+    unput('\"');
+    BEGIN(STRING);}
 <STRING>\n      {yylineno++;}
-<STRING>\"      {
+<STRING>\".*\"      {
     char* temp = malloc(sizeof(char) * yyleng);
-    for (int i = 0; i < yyleng; i++){
+    int j = 0;
+    for (int i = 1; i < yyleng; i++){
         if (yytext[i] == '\\'){
             //TODO: Possibility for seg
             switch (yytext[i+1]){
                 case '\"': 
-                    temp[i++] = '\"';
+                    temp[j++] = '\"';
+                    i++;
+                    break;
                 case 't':
-                    temp[i++] = '\t';
+                    temp[j++] = '\t';
+                    i++;
+                    break;
                 case 'n':
-                    temp[i++] = '\n';
+                    temp[j++] = '\n';
+                    i++;
+                    break;
                 case '\\':
-                    temp[i++] = '\\';
+                    temp[j++] = '\\';
+                    i++;
+                    break;
                 default:
-                    temp[i] = yytext[i];
+                    temp[j++] = yytext[i];
+                    break;
             }
         }else
-            temp[i] = yytext[i];
+            temp[j++] = yytext[i];
     }
-    //temp[yyleng - 2] = '\0';
+    temp[j - 1] = '\0';
 
-    alpha_token_t* token = create_token(temp, "STRING", temp, "char*");\
+    strcpy(&yytext[1], temp);
+    yytext[j] = '\"';
+    yytext[j+1] = '\0';
+    alpha_token_t* token = create_token(temp, "STRING", yytext, "char*");\
                            print_token(token);
     BEGIN(INITIAL);
 }
 <STRING><<EOF>> { yyerror("Unclosed string"); }
-<STRING>.       {}
+<STRING>.       {printf("god damnit");}
 
 {LINE_COMMENT} {
     alpha_token_t* token = create_token(yytext, "COMMENT", "LINE_COMMENT", "enumerated");
