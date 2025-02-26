@@ -94,21 +94,16 @@ LINE_COMMENT        (\/\/).*$
 
 BLOCK_COMMENT_START ("\/\*")
 BLOCK_COMMENT_END   ("\*\/")
-/*
+
 BLOCK_COMMENT       {BLOCK_COMMENT_START}{ANY_CHARACTER}*?{BLOCK_COMMENT_END}
-*/
-
-%x ANY_CHAR
-
-%%
-
-<INITIAL> {BLOCK_COMMENT_START} {
-}
-
 
 %option noyywrap
 %option yylineno
 %x STRING
+
+
+%%
+
 
 \n {}
 
