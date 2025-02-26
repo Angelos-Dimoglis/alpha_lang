@@ -138,7 +138,7 @@ BLOCK_COMMENT       {BLOCK_COMMENT_START}{ANY_CHARACTER}*?{BLOCK_COMMENT_END}
     unput('\"');
     BEGIN(STRING);}
 <STRING>\n      {yylineno++;}
-<STRING>\".*\"      {
+<STRING>\"(\\.|[^\\"])*\"      {
     char* temp = malloc(sizeof(char) * yyleng);
     int j = 0;
     for (int i = 1; i < yyleng; i++){
@@ -178,7 +178,7 @@ BLOCK_COMMENT       {BLOCK_COMMENT_START}{ANY_CHARACTER}*?{BLOCK_COMMENT_END}
     BEGIN(INITIAL);
 }
 <STRING><<EOF>> { yyerror("Unclosed string"); }
-<STRING>.       {printf("god damnit");}
+<STRING>.       { yyerror("Unclosed string"); }
 
 {LINE_COMMENT} {
     alpha_token_t* token = create_token(yytext, "COMMENT", "LINE_COMMENT", "enumerated");
