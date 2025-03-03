@@ -7,13 +7,11 @@ CC = gcc
 
 all: lex.out
 
-lex.yy.c: al.l
-	flex al.l
+lex.yy.c: al.l stack.c
+	flex al.l stack.c
 
 lex.out: lex.yy.c
 	$(CC) $< -g -o $@
 
-#run_tests:
-
 clean:
-	rm *.out && rm lex.yy.c
+	rm *.out ; rm lex.yy.c

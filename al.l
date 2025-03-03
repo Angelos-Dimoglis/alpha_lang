@@ -5,8 +5,13 @@
 #include <assert.h>
 #include <ctype.h>
 
+#include "stack.h"
+
 FILE* yyout;
-int start = 0;
+//int start = 0;
+Stack *stack;
+
+// TODO: errors with other type of input
 
 typedef struct alpha_token {
   unsigned int     numline;
@@ -105,6 +110,7 @@ BLOCK_COMMENT_END   ("*/")
 
 %option noyywrap
 %option yylineno
+%option stack
 
 %%
 
@@ -137,7 +143,8 @@ BLOCK_COMMENT_END   ("*/")
 
 \"  {
     unput('\"');
-    BEGIN(STRING);}
+    BEGIN(STRING);
+}
 <STRING>\n      {yylineno++;}
 <STRING>\"(\\.|[^\\"])*\"      {
     char* temp = malloc(sizeof(char) * yyleng);
@@ -194,15 +201,17 @@ BLOCK_COMMENT_END   ("*/")
     print_token(token);
 }
 
-<INITIAL>{
-    {BLOCK_COMMENT_START} {
-        start = yylineno;
-        BEGIN(IN_COMMENT); 
-    }
+{BLOCK_COMMENT_START} {
+    push(stack, yylineno);
+    BEGIN(IN_COMMENT); 
 }
 <IN_COMMENT>{
+    {BLOCK_COMMENT_START} {
+        push(stack, yylineno);
+        BEGIN(IN_COMMENT); 
+    }
     {BLOCK_COMMENT_END} {
-        int end = yylineno;
+        int start = pop(stack), end = yylineno;
         char range_str [100];
 
         snprintf(range_str, sizeof(range_str), "%d - %d", start, end);
@@ -210,15 +219,18 @@ BLOCK_COMMENT_END   ("*/")
         alpha_token_t* token = create_token(range_str, "COMMENT", "BLOCK_COMMENT", "enumerated");
         print_token(token);
 
-        BEGIN(INITIAL);
+        if (isEmpty(stack))
+            BEGIN(INITIAL);
     }
-    [^*\n]+   // eat comment in chunks
-    "*"       // eat the lone star
+    [^\/*\n]+
+    "/"
+    "*"
     \n
 }
 {ANY_CHARACTER} ECHO;
 
 %%
+
 
 int main(int argc, char **argv) {
     if (argc > 1){
@@ -236,6 +248,8 @@ int main(int argc, char **argv) {
             yyout = stdout;
     }else
         yyin = stdin;
+
+    stack = initStack();
     yylex();  // Call the lexer
 
     fclose(yyin);
