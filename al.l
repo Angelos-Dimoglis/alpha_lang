@@ -8,10 +8,8 @@
 #include "stack.h"
 
 FILE* yyout;
-//int start = 0;
 Stack *stack;
-
-// TODO: errors with other type of input
+int start_of_string;
 
 typedef struct alpha_token {
   unsigned int     numline;
@@ -83,8 +81,8 @@ char* toUpperCase(const char *str) {
     return capital_str;
 }
 
-void yyerror(const char *msg) {
-    fprintf(stderr, "Error: %s\n", msg);
+void yyerror(const char *msg, int line_number) {
+    fprintf(stderr, "Error at #%d: %s\n", line_number, msg);
     exit(1);
 }
 
@@ -127,7 +125,65 @@ BLOCK_COMMENT_END   ("*/")
 }
 
 {OPERATOR}  {
-    alpha_token_t* token = create_token(yytext, "OPERATOR", yytext, "enumerated");
+    char name_of_character[100];
+
+    switch (yytext[0]) {
+        case '=':
+            if (yytext[1] == '=')
+                strcpy(name_of_character, "EQUALS_EQUALS");
+            else
+                strcpy(name_of_character, "EQUALS");
+
+            break;
+        case '+':
+            if (yytext[1] == '+')
+                strcpy(name_of_character, "PLUS_PLUS");
+            else
+                strcpy(name_of_character, "PLUS");
+
+            break;
+        case '-':
+            if (yytext[1] == '-')
+                strcpy(name_of_character, "MINUS_MINUS");
+            else
+                strcpy(name_of_character, "MINUS");
+
+            break;
+        case '*':
+            strcpy(name_of_character, "ASTERISK");
+            break;
+        case '/':
+            strcpy(name_of_character, "SLASH");
+            break;
+        case '%':
+            strcpy(name_of_character, "PERCENT");
+            break;
+        case '!':
+            if (yytext[1] == '=')
+                strcpy(name_of_character, "BANG_EQUALS");
+            else
+                assert(NULL);
+
+            break;
+        case '>':
+            if (yytext[1] == '=')
+                strcpy(name_of_character, "GREATER_EQALS");
+            else
+                strcpy(name_of_character, "GREATER");
+
+            break;
+        case '<':
+            if (yytext[1] == '=')
+                strcpy(name_of_character, "LESS_EQUALS");
+            else
+                strcpy(name_of_character, "LESS");
+
+            break;
+        default:
+            assert(NULL);
+    }
+
+    alpha_token_t* token = create_token(yytext, "OPERATOR", name_of_character, "enumerated");
     print_token(token);
 }
 
@@ -143,6 +199,7 @@ BLOCK_COMMENT_END   ("*/")
 
 \"  {
     unput('\"');
+    start_of_string = yylineno;
     BEGIN(STRING);
 }
 <STRING>\n      {yylineno++;}
@@ -185,8 +242,59 @@ BLOCK_COMMENT_END   ("*/")
                            print_token(token);
     BEGIN(INITIAL);
 }
-<STRING><<EOF>> { yyerror("Unclosed string"); }
-<STRING>.       { yyerror("Unclosed string"); }
+<STRING><<EOF>> { yyerror("Unclosed string", start_of_string); }
+<STRING>.       { yyerror("Unclosed string", start_of_string); }
+
+{PUNCTUATION} {
+    char name_of_character[100];
+
+    switch (yytext[0]) {
+        case '{':
+            strcpy(name_of_character, "OPENING_BRACE");
+            break;
+        case '}':
+            strcpy(name_of_character, "CLOSING_BRACE");
+            break;
+        case '[':
+            strcpy(name_of_character, "OPENING_BRACKET");
+            break;
+        case ']':
+            strcpy(name_of_character, "CLOSING_BRACKET");
+            break;
+        case '(':
+            strcpy(name_of_character, "OPENING_PARENTHESIS");
+            break;
+        case ')':
+            strcpy(name_of_character, "CLOSING_PARENTHESIS");
+            break;
+        case ';':
+            strcpy(name_of_character, "SEMICOLON");
+            break;
+        case ',':
+            strcpy(name_of_character, "COMMA");
+            break;
+        case ':':
+            if (yytext[1] == ':')
+                strcpy(name_of_character, "DOUBLE_COLON");
+            else
+                strcpy(name_of_character, "COLON");
+
+            break;
+        case '.':
+            if (yytext[1] == '.')
+                strcpy(name_of_character, "DOUBLE_DOT");
+            else
+                strcpy(name_of_character, "DOT");
+
+            break;
+        default:
+            assert(NULL);            
+    }
+
+    alpha_token_t *token = create_token(yytext, "PUNCTUATION", name_of_character, "enumerated");
+    print_token(token);
+}
+
 
 {IDENTIFIER} {
     char *str = malloc(strlen(yytext) + 2);
@@ -226,8 +334,14 @@ BLOCK_COMMENT_END   ("*/")
     "/"
     "*"
     \n
+    <<EOF>> {
+        yyerror("Unclosed comment", peek(stack));
+    }
 }
-{ANY_CHARACTER} ECHO;
+
+. {
+    yyerror("Undefined token", yylineno);
+}
 
 %%
 
