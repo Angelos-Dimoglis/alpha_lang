@@ -129,25 +129,13 @@ BLOCK_COMMENT_END   ("*/")
 
     switch (yytext[0]) {
         case '=':
-            if (yytext[1] == '=')
-                strcpy(name_of_character, "EQUALS_EQUALS");
-            else
-                strcpy(name_of_character, "EQUALS");
-
+            strcpy(name_of_character, (yytext[1] == '=' ? "EQUALS_EQUALS" : "EQUALS"));
             break;
         case '+':
-            if (yytext[1] == '+')
-                strcpy(name_of_character, "PLUS_PLUS");
-            else
-                strcpy(name_of_character, "PLUS");
-
+            strcpy(name_of_character, (yytext[1] == '+' ? "PLUS_PLUS" : "PLUS"));
             break;
         case '-':
-            if (yytext[1] == '-')
-                strcpy(name_of_character, "MINUS_MINUS");
-            else
-                strcpy(name_of_character, "MINUS");
-
+            strcpy(name_of_character, (yytext[1] == '-' ? "MINUS_MINUS" : "MINUS"));
             break;
         case '*':
             strcpy(name_of_character, "ASTERISK");
@@ -166,18 +154,10 @@ BLOCK_COMMENT_END   ("*/")
 
             break;
         case '>':
-            if (yytext[1] == '=')
-                strcpy(name_of_character, "GREATER_EQALS");
-            else
-                strcpy(name_of_character, "GREATER");
-
+            strcpy(name_of_character, (yytext[1] == '=' ? "GREATER_EQALS" : "GREATER"));
             break;
         case '<':
-            if (yytext[1] == '=')
-                strcpy(name_of_character, "LESS_EQUALS");
-            else
-                strcpy(name_of_character, "LESS");
-
+            strcpy(name_of_character, (yytext[1] == '=' ? "LESS_EQUALS" : "LESS"));
             break;
         default:
             assert(NULL);
@@ -274,18 +254,10 @@ BLOCK_COMMENT_END   ("*/")
             strcpy(name_of_character, "COMMA");
             break;
         case ':':
-            if (yytext[1] == ':')
-                strcpy(name_of_character, "DOUBLE_COLON");
-            else
-                strcpy(name_of_character, "COLON");
-
+            strcpy(name_of_character, (yytext[1] == ':' ? "DOUBLE_COLON" : "COLON"));
             break;
         case '.':
-            if (yytext[1] == '.')
-                strcpy(name_of_character, "DOUBLE_DOT");
-            else
-                strcpy(name_of_character, "DOT");
-
+            strcpy(name_of_character, (yytext[1] == '.' ? "DOUBLE_DOT" : "DOT"));
             break;
         default:
             assert(NULL);            
