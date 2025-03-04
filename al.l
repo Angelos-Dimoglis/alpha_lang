@@ -58,10 +58,37 @@ alpha_token_t* create_token(int lineno, char* content, char* category_1, char* c
     return current_token;
 }
 
+void free_token_node (alpha_token_t *node) {
+    assert(node);
+        
+    free(node->content);
+    free(node->category_1);
+    free(node->category_2);
+    free(node->type);
+
+    free(node);
+}
+
+void free_token_list () {
+    
+    if (list_head == NULL) {
+        printf("List is empty\n");
+        return;
+    }
+
+    alpha_token_t *prev = list_head;
+    for (alpha_token_t *curr = list_head->alpha_token_next;
+        curr != NULL; curr = curr->alpha_token_next) {
+        free_token_node(prev);
+        prev = curr;
+    }
+    
+}
+
 void print_token(alpha_token_t* token) {
-    char* tab = malloc(sizeof(char) * 2);
-    tab = strlen(token->content) >= 5 ? "\t" : "\t\t";
-    printf("%d: #%d\t \"%s\"%s %s\t %s\t <-%s\n", 
+    char tab[3];
+    strcpy(tab, (strlen(token->content) >= 5 ? "\t" : "\t\t"));
+    fprintf(yyout, "%d: #%d\t \"%s\"%s %s\t %s\t <-%s\n", 
         token->numline,
         token->numToken,
         token->content,
@@ -82,7 +109,12 @@ char* toUpperCase(const char *str) {
 }
 
 void yyerror(const char *msg, int line_number) {
+
+    if (yyout != stdout)
+        fprintf(yyout, "Error at #%d: %s\n", line_number, msg);
+        
     fprintf(stderr, "\033[0;31mError at #%d: \033[0m%s\n", line_number, msg);
+    free_token_list();
     exit(1);
 }
 
@@ -216,8 +248,9 @@ BLOCK_COMMENT_END   ("*/")
     strcpy(&yytext[1], temp);
     yytext[j] = '\"';
     yytext[j+1] = '\0';
-    alpha_token_t* token = create_token(yylineno, temp, "STRING", yytext, "char*");\
-                           print_token(token);
+    alpha_token_t* token = create_token(yylineno, temp, "STRING", yytext, "char*");
+    print_token(token);
+    free(temp);
     BEGIN(INITIAL);
 }
 <STRING><<EOF>> { yyerror("Unclosed string", start_of_string); }
@@ -271,6 +304,7 @@ BLOCK_COMMENT_END   ("*/")
     sprintf(str, "\"%s\"", yytext);
     alpha_token_t* token = create_token(yylineno, yytext, "ID", str, "char*");
     print_token(token);
+    free(str);
 }
 
 {LINE_COMMENT} {
@@ -330,9 +364,9 @@ int main(int argc, char **argv) {
                 fclose(yyin);
                 return 1;
             }
-        }else
+        } else
             yyout = stdout;
-    }else
+    } else
         yyin = stdin;
 
     stack = initStack();
@@ -340,6 +374,7 @@ int main(int argc, char **argv) {
 
     fclose(yyin);
     fclose(yyout);
+    free_token_list();
 
     return 0;
 }
