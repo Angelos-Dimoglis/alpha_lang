@@ -23,7 +23,7 @@ typedef struct alpha_token {
 
 alpha_token_t *list_head = NULL;
 
-alpha_token_t* create_token(char* content, char* category_1, char* category_2, char* type) {
+alpha_token_t* create_token(int lineno, char* content, char* category_1, char* category_2, char* type) {
     assert(content);
     assert(category_1);
     assert(category_2);
@@ -35,7 +35,7 @@ alpha_token_t* create_token(char* content, char* category_1, char* category_2, c
     alpha_token_t* new_token = malloc(sizeof(alpha_token_t));
     assert(new_token);
 
-    new_token->numline = yylineno;
+    new_token->numline = lineno;
     new_token->numToken = ++yynumToken;
     new_token->content = malloc(sizeof(char) * (strlen(content) + 1));
     new_token->category_1 = malloc(sizeof(char) * (strlen(category_1) + 1));
@@ -82,7 +82,7 @@ char* toUpperCase(const char *str) {
 }
 
 void yyerror(const char *msg, int line_number) {
-    fprintf(stderr, "Error at #%d: %s\n", line_number, msg);
+    fprintf(stderr, "\033[0;31mError at #%d: \033[0m%s\n", line_number, msg);
     exit(1);
 }
 
@@ -113,13 +113,11 @@ BLOCK_COMMENT_END   ("*/")
 %%
 
 
-\n {}
-
-" " {}
+\n|" "|\t {}
 
 {KEYWORD}  {
     char* UpperCase = toUpperCase(yytext);
-    alpha_token_t* token = create_token(yytext, "KEYWORD", UpperCase, "enumerated");
+    alpha_token_t* token = create_token(yylineno, yytext, "KEYWORD", UpperCase, "enumerated");
     print_token(token);
     free(UpperCase);
 }
@@ -163,17 +161,17 @@ BLOCK_COMMENT_END   ("*/")
             assert(NULL);
     }
 
-    alpha_token_t* token = create_token(yytext, "OPERATOR", name_of_character, "enumerated");
+    alpha_token_t* token = create_token(yylineno, yytext, "OPERATOR", name_of_character, "enumerated");
     print_token(token);
 }
 
 {INTCONST}  {
-    alpha_token_t* token = create_token(yytext, "INTCONST", yytext, "int");
+    alpha_token_t* token = create_token(yylineno, yytext, "INTCONST", yytext, "int");
     print_token(token);
 }
 
 {REALCONST}  {
-    alpha_token_t* token = create_token(yytext, "REALCONST", yytext, "double");
+    alpha_token_t* token = create_token(yylineno, yytext, "REALCONST", yytext, "double");
     print_token(token);
 }
 
@@ -218,7 +216,7 @@ BLOCK_COMMENT_END   ("*/")
     strcpy(&yytext[1], temp);
     yytext[j] = '\"';
     yytext[j+1] = '\0';
-    alpha_token_t* token = create_token(temp, "STRING", yytext, "char*");\
+    alpha_token_t* token = create_token(yylineno, temp, "STRING", yytext, "char*");\
                            print_token(token);
     BEGIN(INITIAL);
 }
@@ -263,7 +261,7 @@ BLOCK_COMMENT_END   ("*/")
             assert(NULL);            
     }
 
-    alpha_token_t *token = create_token(yytext, "PUNCTUATION", name_of_character, "enumerated");
+    alpha_token_t *token = create_token(yylineno, yytext, "PUNCTUATION", name_of_character, "enumerated");
     print_token(token);
 }
 
@@ -271,13 +269,13 @@ BLOCK_COMMENT_END   ("*/")
 {IDENTIFIER} {
     char *str = malloc(strlen(yytext) + 2);
     sprintf(str, "\"%s\"", yytext);
-    alpha_token_t* token = create_token(yytext, "ID", str, "char*");
+    alpha_token_t* token = create_token(yylineno, yytext, "ID", str, "char*");
     print_token(token);
 }
 
 {LINE_COMMENT} {
     char *content = yytext + 2;
-    alpha_token_t* token = create_token(content, "COMMENT", "LINE_COMMENT", "enumerated");
+    alpha_token_t* token = create_token(yylineno, content, "COMMENT", "LINE_COMMENT", "enumerated");
     print_token(token);
 }
 
@@ -296,7 +294,7 @@ BLOCK_COMMENT_END   ("*/")
 
         snprintf(range_str, sizeof(range_str), "%d - %d", start, end);
 
-        alpha_token_t* token = create_token(range_str, "COMMENT", "BLOCK_COMMENT", "enumerated");
+        alpha_token_t* token = create_token(start, range_str, "COMMENT", "BLOCK_COMMENT", "enumerated");
         print_token(token);
 
         if (isEmpty(stack))
@@ -312,7 +310,9 @@ BLOCK_COMMENT_END   ("*/")
 }
 
 . {
-    yyerror("Undefined token", yylineno);
+    char str[100];
+    snprintf(str, 100, "Undefined token: %s", yytext);
+    yyerror(str, yylineno);
 }
 
 %%

@@ -13,5 +13,8 @@ lex.yy.c: al.l stack.c
 lex.out: lex.yy.c
 	$(CC) $< -g -o $@
 
+run_tests: lex.out
+	./lex.out tests/general.alpha
+
 clean:
 	rm *.out ; rm lex.yy.c

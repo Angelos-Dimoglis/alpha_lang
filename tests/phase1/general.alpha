@@ -12,7 +12,7 @@ for(local i=0; i<1; ++i){
    if(i!=2){
       b = 1.2;
       local a = b;
-	print(::a, nl);
+    print(::a, nl);
 
    }
    else
