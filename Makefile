@@ -7,8 +7,8 @@ CC = gcc
 
 all: lex.out
 
-lex.yy.c: al.l stack.c
-	flex al.l stack.c
+lex.yy.c: lexer.l stack.c
+	flex lexer.l stack.c
 
 lex.out: lex.yy.c
 	$(CC) $< -g -o $@
