@@ -3,18 +3,18 @@
 
 # compiler related variables
 CC = gcc
-#CFLAGS = -ansi -pedantic -Wall -g
+CFLAGS = -g
 
 all: my_parser.out
 
 lexer.c: lexer.l 
-	flex -o lexer.c lexer.l
+	flex -o lexer.c $^
 
 parser.c: parser.y
-	bison --yacc --defines -o parser.c $<
+	bison --yacc --defines $^ -o parser.c
 
 my_parser.out: lexer.c parser.c stack.c
-	$(CC) lexer.c parser.c stack.c -g -o $@
+	$(CC) $(CFLAGS) $^ -o $@
 
 clean:
-	rm *.out ; rm lexer.c parser.c parser.h
+	rm lexer.c parser.c parser.h my_parser.out

@@ -1,4 +1,6 @@
 *.pdf
 pdfs/
 *.out
-lex.yy.c
+lexer.c
+parser.c
+parser.h
