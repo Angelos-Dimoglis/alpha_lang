@@ -5,7 +5,7 @@
 CC = gcc
 CFLAGS = -g
 
-all: my_parser.out
+all: alpha_compiler.out
 
 lexer.c: lexer.l 
 	flex -o lexer.c $^
@@ -13,7 +13,7 @@ lexer.c: lexer.l
 parser.c: parser.y
 	bison --yacc --defines $^ -o parser.c
 
-my_parser.out: lexer.c parser.c stack.c
+alpha_compiler.out: lexer.c parser.c stack.c
 	$(CC) $(CFLAGS) $^ -o $@
 
 clean:
