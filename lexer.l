@@ -6,6 +6,9 @@
 #include <ctype.h>
 
 #include "stack.h"
+#include "parser.h"
+
+// TODO: add retuns of tokens
 
 FILE* yyout;
 Stack *stack;
@@ -130,6 +133,10 @@ void yyerror(const char *msg, int line_number) {
 
 %}
 
+%option noyywrap
+%option yylineno
+%option stack
+
 LETTER [a-zA-Z]
 DIGIT [0-9]
 ANY_CHARACTER (.|\n)
@@ -148,12 +155,7 @@ BLOCK_COMMENT_END   ("*/")
 
 %x STRING
 
-%option noyywrap
-%option yylineno
-%option stack
-
 %%
-
 
 \n|" "|\t {}
 
@@ -395,7 +397,7 @@ int main(int argc, char **argv) {
         yyin = stdin;
 
     stack = initStack();
-    yylex();  // Call the lexer
+    yylex();
 
     fclose(yyin);
     fclose(yyout);
