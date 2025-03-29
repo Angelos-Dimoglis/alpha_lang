@@ -5,15 +5,15 @@
 CC = gcc
 #CFLAGS = -ansi -pedantic -Wall -g
 
-all: calc
+all: my_parser.out
 
 lexer.c: lexer.l 
-	flex --outfile=lexer.c lexer.l
+	flex -o lexer.c lexer.l
 
 parser.c: parser.y
-	bison --yacc --defines --output=parser.c $<
+	bison --yacc --defines -o parser.c $<
 
-calc: lexer.c parser.c stack.c
+my_parser.out: lexer.c parser.c stack.c
 	$(CC) lexer.c parser.c stack.c -g -o $@
 
 clean:

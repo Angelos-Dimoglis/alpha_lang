@@ -1,8 +1,10 @@
 %{
     #include <stdio.h>
+    #include "stack.h"
     int yylex (void);
     void yyerror(const char *msg);
 
+    extern Stack *stack;
     extern int yylineno;
     extern char *yytext;
     extern FILE *yyin;
@@ -34,10 +36,12 @@ stmt:;
 
 %%
 
+/* NOTE: maybe not needed as it is defined in lexer.l
 void yyerror(const char *msg) {
     fprintf(stderr, "%s at line %s before token: %s\n", msg, yylineno, yytext);
     fprintf(stderr, "INPUT NOT VALID\n");
 }
+*/
 
 int main (int argc, char **argv) {
     if (argc > 1) {
@@ -48,6 +52,15 @@ int main (int argc, char **argv) {
     } else
         yyin = stdin;
 
+
+    stack = initStack();
     yyparse();
+
+    /* TODO: needed?
+    fclose(yyin);
+    fclose(yyout);
+    free_token_list();
+    */
+
     return 0;
 }
