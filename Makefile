@@ -19,4 +19,4 @@ $(TARGET): lexer.c parser.c stack.c
 	$(CC) $(CFLAGS) $^ -o $@
 
 clean:
-	rm lexer.c parser.c parser.h $(TARGET)
+	rm lexer.c parser.{c,h} $(TARGET)
