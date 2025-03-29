@@ -10,10 +10,10 @@ TARGET = alpha_compiler.out
 all: $(TARGET)
 
 lexer.c: lexer.l 
-	flex -o lexer.c $^
+	flex -o $@ $^
 
 parser.c: parser.y
-	bison --yacc --defines $^ -o parser.c
+	bison --yacc --defines $^ -o $@
 
 $(TARGET): lexer.c parser.c stack.c
 	$(CC) $(CFLAGS) $^ -o $@
