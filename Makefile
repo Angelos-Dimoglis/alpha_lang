@@ -17,4 +17,4 @@ alpha_compiler.out: lexer.c parser.c stack.c
 	$(CC) $(CFLAGS) $^ -o $@
 
 clean:
-	rm lexer.c parser.c parser.h my_parser.out
+	rm lexer.c parser.c parser.h alpha_compiler.out
