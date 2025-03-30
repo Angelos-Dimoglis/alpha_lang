@@ -1,6 +1,7 @@
 %{
     #include <stdio.h>
     #include "stack.h"
+
     int yylex (void);
     void yyerror(const char *msg);
 
@@ -15,25 +16,131 @@
 
 %start program
 
-// token list
-%token NUM
+%token KEYWORD
+%token OPERATOR
+%token IDENTIFIER
+%token INTCONST
+%token REALCONST
+// string
+%token PUNCTUATION
+%token IDENTIFIER
+%token LINE_COMMENT
+// block comment
 
+%token GREATER_EQALS 
+%token LESS_EQUAL
+%token EQUAL
+%token BANG_EQUAL
+
+// block comment and strings
 
 // priorities
+/*
 %right '='
 %left ','
 %left '+' '-'
 %left '*' '/'
 %nonassoc UMINUS
 %left '(' ')'
+*/
 
 // grammar
 %%
 
 program: stmt;
 
-stmt:;
+stmt: expr
+    | ifstmt
+    | whilestmt
+    | forstmt
+    | returnstmt
+    | break
+    | continue
+    | block
+    | funcdef
+    ;
 
+expr: assignexpr
+    | expr op expr
+    | term
+    ;
+
+op: '+'
+    | '-'
+    | '*'
+    | '/'
+    | '%'
+    | '>'
+    | GREATER_EQUAL
+    | LESS_EQUAL
+    | EQUAL
+    | BANG_EQUAL
+    | and
+    | or
+    ;
+
+term: ( expr )
+    | - expr
+    | not expr
+    | ++lvalue
+    | lvalue++
+    | --lvalue
+    | lvalue--
+    | primary
+    ;
+
+assginexpr: lvalue = expr;
+
+primary: lvalue
+    | call
+    | objectdef
+    | ( funcdef )
+    | const
+    ;
+
+lvalue: id
+    | local id
+    | :: id
+    | member
+    ;
+
+member: lvalue.id
+    | lvalue [ expr ]
+    | call . id
+    | call [ expr ]
+    ;
+
+call: call ( elist )
+    | lvalue callsuffix
+    | ( funcdef) ( elist )
+    ;
+
+callsuffix: normcall
+    | methodcall
+    ;
+
+normcall: ( elist );
+
+// equivalent to lvalue.id(lvalue, elist)
+methodcall: .. id ( elist ); 
+
+elist: [ expr [, expr] * ];
+
+objectdef: [ [elist | indexed] ];
+indexed: [indexedelem [, indexedelem] * ];
+indexedelem: '{' expr : expr '}';
+
+block: '{' [stmt*] '}'
+
+funcdef: function [id] (idlist) block;
+
+const: number | string | nil | true | false;
+idlist: [id [, id] * ];
+
+ifstmt: if ( expr ) stmt [ else stmt ];
+whilestmt: while ( expr ) stmt;
+forstmt: for ( elist';' expr';' elist) stmt;
+returnstmt: return [expr];
 %%
 
 /* NOTE: maybe not needed as it is defined in lexer.l

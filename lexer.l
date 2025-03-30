@@ -8,8 +8,6 @@
 #include "stack.h"
 #include "parser.h"
 
-// TODO: add retuns of tokens
-
 FILE* yyout;
 Stack *stack;
 int start_of_string;
@@ -165,6 +163,8 @@ BLOCK_COMMENT_END   ("*/")
         create_token(yylineno, yytext, "KEYWORD", UpperCase, "enumerated");
     print_token(token);
     free(UpperCase);
+
+    return KEYWORD;
 }
 
 {OPERATOR}  {
@@ -214,18 +214,24 @@ BLOCK_COMMENT_END   ("*/")
     alpha_token_t* token = create_token(
         yylineno, yytext, "OPERATOR", name_of_character, "enumerated");
     print_token(token);
+
+    return OPERATOR;
 }
 
 {INTCONST}  {
     alpha_token_t* token = create_token(
         yylineno, yytext, "INTCONST", yytext, "int");
     print_token(token);
+
+    return INTCONST;
 }
 
 {REALCONST}  {
     alpha_token_t* token = create_token(
         yylineno, yytext, "REALCONST", yytext, "double");
     print_token(token);
+
+    return REALCONST;
 }
 
 \"  {
@@ -273,6 +279,7 @@ BLOCK_COMMENT_END   ("*/")
         yylineno, temp, "STRING", yytext, "char*");
     print_token(token);
     free(temp);
+
     BEGIN(INITIAL);
 }
 <STRING><<EOF>> { yyerror("Unclosed string", start_of_string); }
@@ -321,6 +328,8 @@ BLOCK_COMMENT_END   ("*/")
     alpha_token_t *token = create_token(
         yylineno, yytext, "PUNCTUATION", name_of_character, "enumerated");
     print_token(token);
+
+    return PUNCTUATION;
 }
 
 
@@ -330,6 +339,8 @@ BLOCK_COMMENT_END   ("*/")
     alpha_token_t* token = create_token(yylineno, yytext, "ID", str, "char*");
     print_token(token);
     free(str);
+
+    return IDENTIFIER;
 }
 
 {LINE_COMMENT} {
@@ -337,6 +348,8 @@ BLOCK_COMMENT_END   ("*/")
     alpha_token_t* token = create_token(
         yylineno, content, "COMMENT", "LINE_COMMENT", "enumerated");
     print_token(token);
+
+    return LINE_COMMENT;
 }
 
 {BLOCK_COMMENT_START} {
