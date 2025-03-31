@@ -129,6 +129,57 @@ void yyerror(const char *msg, int line_number) {
     exit(1);
 }
 
+int translate (char *str) {
+
+    /*
+    if (strcmp(str, "if")) {
+    } else if( strcmp(str, "else")) {
+    } else if( strcmp(str, "while")) {
+    } else if( strcmp(str, "for")) {
+    } else if( strcmp(str, "for")) {
+    } else if( strcmp(str, "function")) {
+    } else if( strcmp(str, "return")) {
+    } else if( strcmp(str, "break")) {
+    } else if( strcmp(str, "continue")) {
+    } else if( strcmp(str, "and")) {
+    } else if( strcmp(str, "not")) {
+    } else if( strcmp(str, "or")) {
+    } else if( strcmp(str, "local")) {
+    } else if( strcmp(str, "true")) {
+    } else if( strcmp(str, "false")) {
+    } else if( strcmp(str, "nil")) {
+    } else if( strcmp(str, "++")) { return PLUSPLUS;
+    } else if( strcmp(str, "--" { return MINMIN;
+    } else if( strcmp(str, "-")) { return MIN;
+    } else if( strcmp(str, "*")) { return MUL;
+    } else if( strcmp(str, "/")) { return DIV;
+    } else if( strcmp(str, "%")) { return MOD;
+    } else if( strcmp(str, "==")) { return EQUAL;
+    } else if( strcmp(str, "!=")) { return NEQUAL;
+    } else if( strcmp(str, "+")) { return PLUS;
+    } else if( strcmp(str, "=")) { return ASSIGN;
+    } else if( strcmp(str, ">")) { return GRTR;
+    } else if( strcmp(str, "<")) { return LESS;
+    } else if( strcmp(str, ">=")) { return GRTREQ;
+    } else if( strcmp(str, "<=")) { return LESSEQ;
+    } else if( strcmp(str, "}")) { 
+    } else if( strcmp(str, "{")) { 
+    } else if( strcmp(str, "(")) { 
+    } else if( strcmp(str, "(")) { 
+    } else if( strcmp(str, "")) { 
+    } else if( strcmp(str, "")) { 
+    } else if( strcmp(str, "")) { 
+    } else if( strcmp(str, "")) { 
+    } else if( strcmp(str, "")) { 
+    } else if( strcmp(str, "")) { 
+    } else if( strcmp(str, "")) { 
+    } else if( strcmp(str, "")) { 
+    } else if( strcmp(str, "")) { 
+    }
+    */
+
+}
+
 %}
 
 %option noyywrap

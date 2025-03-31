@@ -18,7 +18,6 @@
 
 %token KEYWORD
 %token OPERATOR
-%token IDENTIFIER
 %token INTCONST
 %token REALCONST
 // string
@@ -31,8 +30,6 @@
 %token LESS_EQUAL
 %token EQUAL
 %token BANG_EQUAL
-
-// block comment and strings
 
 // priorities
 /*
@@ -49,16 +46,16 @@
 
 program: stmt;
 
-stmt: expr
+stmt: expr';'
     | ifstmt
     | whilestmt
     | forstmt
     | returnstmt
-    | break
-    | continue
+    | break';'
+    | continue';'
     | block
     | funcdef
-    ;
+    |;
 
 expr: assignexpr
     | expr op expr
@@ -79,22 +76,22 @@ op: '+'
     | or
     ;
 
-term: ( expr )
-    | - expr
+term: '(' expr ')'
+    | '-' expr
     | not expr
-    | ++lvalue
-    | lvalue++
+    | "++"lvalue
+    | lvalue"++"
     | --lvalue
     | lvalue--
     | primary
     ;
 
-assginexpr: lvalue = expr;
+assginexpr: lvalue '=' expr;
 
 primary: lvalue
     | call
     | objectdef
-    | ( funcdef )
+    | '('funcdef')'
     | const
     ;
 
@@ -105,42 +102,41 @@ lvalue: id
     ;
 
 member: lvalue.id
-    | lvalue [ expr ]
+    | lvalue '[' expr ']'
     | call . id
-    | call [ expr ]
+    | call '[' expr ']'
     ;
 
-call: call ( elist )
+call: call '(' elist ')'
     | lvalue callsuffix
-    | ( funcdef) ( elist )
+    | '('funcdef')' '(' elist ')'
     ;
 
-callsuffix: normcall
-    | methodcall
-    ;
+callsuffix: normcall | methodcall;
 
-normcall: ( elist );
+normcall: '(' elist ')';
 
 // equivalent to lvalue.id(lvalue, elist)
-methodcall: .. id ( elist ); 
+methodcall: .. id '(' elist ')'; 
 
 elist: [ expr [, expr] * ];
 
-objectdef: [ [elist | indexed] ];
+objectdef: '[' [elist | indexed] ']';
 indexed: [indexedelem [, indexedelem] * ];
-indexedelem: '{' expr : expr '}';
+indexedelem: '{' expr ':' expr '}';
 
-block: '{' [stmt*] '}'
+block: '{'[stmt*]'}'
 
-funcdef: function [id] (idlist) block;
+funcdef: function [id] '('idlist')' block;
 
 const: number | string | nil | true | false;
 idlist: [id [, id] * ];
 
-ifstmt: if ( expr ) stmt [ else stmt ];
-whilestmt: while ( expr ) stmt;
-forstmt: for ( elist';' expr';' elist) stmt;
+ifstmt: if '(' expr ')' stmt [ else stmt ];
+whilestmt: while '(' expr ')' stmt;
+forstmt: for '(' elist';' expr';' elist')' stmt;
 returnstmt: return [expr];
+
 %%
 
 /* NOTE: maybe not needed as it is defined in lexer.l
