@@ -22,22 +22,21 @@
 %token IF ELSE WHILE FOR FUNCTION RETURN BREAK CONTINUE AND NOT OR LOCAL TRUE FALSE NIL
 
 %token OPERATOR
-%token EQUAL_EQAL BANG_EQUAL PLUS_PLUS MINUS_MINUS GREATER_EQUAL LESS_EQUAL
+%token EQUAL_EQUAL BANG_EQUAL PLUS_PLUS MINUS_MINUS GREATER_EQUAL LESS_EQUAL
 
-%token <> INTCONST
-%token <> REALCONST
+%token NUMBER // temp
+%token INTCONST
+%token REALCONST
 
-// string
+%token MY_STRING
 
 %token PUNCTUATION
+%token COLON_COLON DOUBLE_DOT
+
 %token IDENTIFIER
 %token LINE_COMMENT
 // block comment
 
-%token NOT
-%token COLON_COLON
-
-%token 
 
 // priorities
 /*
@@ -61,8 +60,8 @@ stmt: expr';'
     | whilestmt
     | forstmt
     | returnstmt
-    | break';'
-    | continue';'
+    | BREAK';'
+    | CONTINUE';'
     | block
     | funcdef
     | /* empty */;
@@ -80,39 +79,23 @@ op: '+'
     | '>'
     | GREATER_EQUAL
     | LESS_EQUAL
-    | EQUAL
+    | EQUAL_EQUAL
     | BANG_EQUAL
-    | and
-    | or
+    | AND
+    | OR
     ;
 
-term: '(' expr ')' {
-        $$ = ($2);
-    }
-    | '-' expr {
-        $$ = -$2;
-    }
-    | NOT expr {
-        $$ = !$2;
-    }
-    | PLUS_PLUS lvalue {
-        $$ = ++$2;
-    }
-    | lvalue PLUS_PLUS {
-        $$ = $1++;
-    }
-    | MINUS_MINUS lvalue {
-        $$ = --$1;
-    }
-    | lvalue MINUS_MINUS {
-        $$ = $1--;
-    }
-    | primary {
-        $$ = $1;
-    }
+term: '(' expr ')'       { $$ = ($2); }
+    | '-' expr           { $$ = -$2; }
+    | NOT expr           { $$ = !$2; }
+    | PLUS_PLUS lvalue   { $$ = ++$2; }
+    | lvalue PLUS_PLUS   { $$ = $1++; }
+    | MINUS_MINUS lvalue { $$ = --$1; }
+    | lvalue MINUS_MINUS { $$ = $1--; }
+    | primary            { $$ = $1; }
     ;
 
-assginexpr: lvalue '=' expr;
+assignexpr: lvalue '=' expr;
 
 primary: lvalue
     | call
@@ -121,17 +104,15 @@ primary: lvalue
     | const
     ;
 
-lvalue: id
-    | local id
-    | COLON_COLON id {
-        $$ = $1 $2;
-    }
+lvalue:IDENTIFIER 
+    | LOCAL IDENTIFIER 
+    | COLON_COLON IDENTIFIER 
     | member
     ;
 
-member: lvalue.id
+member: lvalue '.' IDENTIFIER 
     | lvalue '[' expr ']'
-    | call . id
+    | call '.' IDENTIFIER 
     | call '[' expr ']'
     ;
 
@@ -145,7 +126,7 @@ callsuffix: normcall | methodcall;
 normcall: '(' elist ')';
 
 // equivalent to lvalue.id(lvalue, elist)
-methodcall: .. id '(' elist ')'; 
+methodcall: DOUBLE_DOT IDENTIFIER '(' elist ')'; 
 
 elist: expr
     | expr ',' elist
@@ -159,31 +140,31 @@ objectdef: '[' elist ']'
 indexed: indexedelem indexed_alt
     | /* empty */;
 
-indexed_alt: ',' indexelem indexed_alt
+indexed_alt: ',' indexedelem indexed_alt
     | /* empty */;
 
 indexedelem: '{' expr ':' expr '}';
 
 block: '{' stmt_series '}'
 
-funcdef: function [id] '('idlist')' block;
+funcdef: FUNCTION [id] '('idlist')' block;
 
-const: number | string | nil | true | false;
+const: NUMBER | MY_STRING | NIL | TRUE | FALSE;
 
-idlist: id idlist_alt
+idlist: IDENTIFIER idlist_alt
     | /* empty */;
 
-idlist_alt: ',' id
+idlist_alt: ',' IDENTIFIER 
     | /* empty */;
 
-ifstmt: if '(' expr ')' stmt ifstmt_alt;
+ifstmt: IF '(' expr ')' stmt ifstmt_alt;
 
-ifstmt_alt: else stmt
+ifstmt_alt: ELSE stmt
     | /* empty */;
 
-whilestmt: while '(' expr ')' stmt;
-forstmt: for '(' elist';' expr';' elist')' stmt;
-returnstmt: return [expr];
+whilestmt: WHILE '(' expr ')' stmt;
+forstmt: FOR '(' elist';' expr';' elist')' stmt;
+returnstmt: RETURN [expr];
 
 %%
 
