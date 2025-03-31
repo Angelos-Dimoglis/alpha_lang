@@ -16,20 +16,28 @@
 
 %start program
 
+//  ### list of terminals ###
+
 %token KEYWORD
+%token IF ELSE WHILE FOR FUNCTION RETURN BREAK CONTINUE AND NOT OR LOCAL TRUE FALSE NIL
+
 %token OPERATOR
-%token INTCONST
-%token REALCONST
+%token EQUAL_EQAL BANG_EQUAL PLUS_PLUS MINUS_MINUS GREATER_EQUAL LESS_EQUAL
+
+%token <> INTCONST
+%token <> REALCONST
+
 // string
+
 %token PUNCTUATION
 %token IDENTIFIER
 %token LINE_COMMENT
 // block comment
 
-%token GREATER_EQALS 
-%token LESS_EQUAL
-%token EQUAL
-%token BANG_EQUAL
+%token NOT
+%token COLON_COLON
+
+%token 
 
 // priorities
 /*
@@ -41,10 +49,12 @@
 %left '(' ')'
 */
 
-// grammar
 %%
 
-program: stmt;
+program: stmt_series;
+
+stmt_series: stmt_series stmt 
+    | /* empty */;
 
 stmt: expr';'
     | ifstmt
@@ -55,7 +65,7 @@ stmt: expr';'
     | continue';'
     | block
     | funcdef
-    |;
+    | /* empty */;
 
 expr: assignexpr
     | expr op expr
@@ -76,14 +86,30 @@ op: '+'
     | or
     ;
 
-term: '(' expr ')'
-    | '-' expr
-    | not expr
-    | "++"lvalue
-    | lvalue"++"
-    | --lvalue
-    | lvalue--
-    | primary
+term: '(' expr ')' {
+        $$ = ($2);
+    }
+    | '-' expr {
+        $$ = -$2;
+    }
+    | NOT expr {
+        $$ = !$2;
+    }
+    | PLUS_PLUS lvalue {
+        $$ = ++$2;
+    }
+    | lvalue PLUS_PLUS {
+        $$ = $1++;
+    }
+    | MINUS_MINUS lvalue {
+        $$ = --$1;
+    }
+    | lvalue MINUS_MINUS {
+        $$ = $1--;
+    }
+    | primary {
+        $$ = $1;
+    }
     ;
 
 assginexpr: lvalue '=' expr;
@@ -97,7 +123,9 @@ primary: lvalue
 
 lvalue: id
     | local id
-    | :: id
+    | COLON_COLON id {
+        $$ = $1 $2;
+    }
     | member
     ;
 
@@ -119,20 +147,40 @@ normcall: '(' elist ')';
 // equivalent to lvalue.id(lvalue, elist)
 methodcall: .. id '(' elist ')'; 
 
-elist: [ expr [, expr] * ];
+elist: expr
+    | expr ',' elist
+    | /* empty */;
 
-objectdef: '[' [elist | indexed] ']';
-indexed: [indexedelem [, indexedelem] * ];
+objectdef: '[' elist ']'
+    | '[' indexed ']'
+    | '[' ']'
+    ;
+
+indexed: indexedelem indexed_alt
+    | /* empty */;
+
+indexed_alt: ',' indexelem indexed_alt
+    | /* empty */;
+
 indexedelem: '{' expr ':' expr '}';
 
-block: '{'[stmt*]'}'
+block: '{' stmt_series '}'
 
 funcdef: function [id] '('idlist')' block;
 
 const: number | string | nil | true | false;
-idlist: [id [, id] * ];
 
-ifstmt: if '(' expr ')' stmt [ else stmt ];
+idlist: id idlist_alt
+    | /* empty */;
+
+idlist_alt: ',' id
+    | /* empty */;
+
+ifstmt: if '(' expr ')' stmt ifstmt_alt;
+
+ifstmt_alt: else stmt
+    | /* empty */;
+
 whilestmt: while '(' expr ')' stmt;
 forstmt: for '(' elist';' expr';' elist')' stmt;
 returnstmt: return [expr];
