@@ -13,6 +13,11 @@
 %}
 
 // TODO: find replacement of %error-verbose
+%union {
+    int intValue;
+    double doubleValue;
+    char *stringValue;
+}
 
 %start program
 
@@ -24,16 +29,15 @@
 %token OPERATOR
 %token EQUAL_EQUAL BANG_EQUAL PLUS_PLUS MINUS_MINUS GREATER_EQUAL LESS_EQUAL
 
-%token NUMBER // temp
-%token INTCONST
-%token REALCONST
+%token <intValue> INTCONST
+%token <doubleValue> REALCONST
 
-%token MY_STRING
+%token <stringValue> MY_STRING
 
 %token PUNCTUATION
-%token COLON_COLON DOUBLE_DOT
+%token COLON_COLON DOT_DOT
 
-%token IDENTIFIER
+%token <stringValue> IDENTIFIER
 %token LINE_COMMENT
 // block comment
 
@@ -126,7 +130,7 @@ callsuffix: normcall | methodcall;
 normcall: '(' elist ')';
 
 // equivalent to lvalue.id(lvalue, elist)
-methodcall: DOUBLE_DOT IDENTIFIER '(' elist ')'; 
+methodcall: DOT_DOT IDENTIFIER '(' elist ')'; 
 
 elist: expr
     | expr ',' elist
@@ -149,7 +153,7 @@ block: '{' stmt_series '}'
 
 funcdef: FUNCTION [id] '('idlist')' block;
 
-const: NUMBER | MY_STRING | NIL | TRUE | FALSE;
+const: INTCONST | REALCONST | MY_STRING | NIL | TRUE | FALSE;
 
 idlist: IDENTIFIER idlist_alt
     | /* empty */;

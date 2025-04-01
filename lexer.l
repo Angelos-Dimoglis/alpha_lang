@@ -131,52 +131,23 @@ void yyerror(const char *msg, int line_number) {
 
 int translate (char *str) {
 
-    /*
-    if (strcmp(str, "if")) {
-    } else if( strcmp(str, "else")) {
-    } else if( strcmp(str, "while")) {
-    } else if( strcmp(str, "for")) {
-    } else if( strcmp(str, "for")) {
-    } else if( strcmp(str, "function")) {
-    } else if( strcmp(str, "return")) {
-    } else if( strcmp(str, "break")) {
-    } else if( strcmp(str, "continue")) {
-    } else if( strcmp(str, "and")) {
-    } else if( strcmp(str, "not")) {
-    } else if( strcmp(str, "or")) {
-    } else if( strcmp(str, "local")) {
-    } else if( strcmp(str, "true")) {
-    } else if( strcmp(str, "false")) {
-    } else if( strcmp(str, "nil")) {
-    } else if( strcmp(str, "++")) { return PLUSPLUS;
-    } else if( strcmp(str, "--" { return MINMIN;
-    } else if( strcmp(str, "-")) { return MIN;
-    } else if( strcmp(str, "*")) { return MUL;
-    } else if( strcmp(str, "/")) { return DIV;
-    } else if( strcmp(str, "%")) { return MOD;
-    } else if( strcmp(str, "==")) { return EQUAL;
-    } else if( strcmp(str, "!=")) { return NEQUAL;
-    } else if( strcmp(str, "+")) { return PLUS;
-    } else if( strcmp(str, "=")) { return ASSIGN;
-    } else if( strcmp(str, ">")) { return GRTR;
-    } else if( strcmp(str, "<")) { return LESS;
-    } else if( strcmp(str, ">=")) { return GRTREQ;
-    } else if( strcmp(str, "<=")) { return LESSEQ;
-    } else if( strcmp(str, "}")) { 
-    } else if( strcmp(str, "{")) { 
-    } else if( strcmp(str, "(")) { 
-    } else if( strcmp(str, "(")) { 
-    } else if( strcmp(str, "")) { 
-    } else if( strcmp(str, "")) { 
-    } else if( strcmp(str, "")) { 
-    } else if( strcmp(str, "")) { 
-    } else if( strcmp(str, "")) { 
-    } else if( strcmp(str, "")) { 
-    } else if( strcmp(str, "")) { 
-    } else if( strcmp(str, "")) { 
-    } else if( strcmp(str, "")) { 
+    if (strcmp(str, "if")) { return IF;
+    } else if( strcmp(str, "else")) { return ELSE;
+    } else if( strcmp(str, "while")) { return WHILE;
+    } else if( strcmp(str, "for")) { return FOR;
+    } else if( strcmp(str, "for")) { return FOR;
+    } else if( strcmp(str, "function")) { return FUNCTION;
+    } else if( strcmp(str, "return")) { return RETURN;
+    } else if( strcmp(str, "break")) { return BREAK;
+    } else if( strcmp(str, "continue")) { return CONTINUE;
+    } else if( strcmp(str, "and")) { return AND;
+    } else if( strcmp(str, "not")) { return NOT;
+    } else if( strcmp(str, "or")) { return OR;
+    } else if( strcmp(str, "local")) { return LOCAL;
+    } else if( strcmp(str, "true")) { return TRUE;
+    } else if( strcmp(str, "false")) { return FALSE;
+    } else if( strcmp(str, "nil")) { return NIL;
     }
-    */
 
 }
 
@@ -215,24 +186,27 @@ BLOCK_COMMENT_END   ("*/")
     print_token(token);
     free(UpperCase);
 
-    return KEYWORD;
+    return translate(yytext);
 }
 
 {OPERATOR}  {
     char name_of_character[100];
+    int return_type = yytext[0]; // pre-assign and change later if needed
+
+    // TODO: change ternaries to single ifs
 
     switch (yytext[0]) {
         case '=':
-            strcpy(name_of_character,
-                (yytext[1] == '=' ? "EQUALS_EQUALS" : "EQUALS"));
+            return_type = (yytext[1] == '=' ? EQUAL_EQUAL : '=');
+            strcpy(name_of_character, (yytext[1] == '=' ? "EQUAL_EQUAL" : "EQUAL"));
             break;
         case '+':
-            strcpy(name_of_character,
-                (yytext[1] == '+' ? "PLUS_PLUS" : "PLUS"));
+            return_type = (yytext[1] == '+' ? PLUS_PLUS : '+');
+            strcpy(name_of_character, (yytext[1] == '+' ? "PLUS_PLUS" : "PLUS"));
             break;
         case '-':
-            strcpy(name_of_character,
-                (yytext[1] == '-' ? "MINUS_MINUS" : "MINUS"));
+            return_type = (yytext[1] == '-' ? MINUS_MINUS : '-');
+            strcpy(name_of_character, (yytext[1] == '-' ? "MINUS_MINUS" : "MINUS"));
             break;
         case '*':
             strcpy(name_of_character, "ASTERISK");
@@ -245,18 +219,19 @@ BLOCK_COMMENT_END   ("*/")
             break;
         case '!':
             if (yytext[1] == '=')
-                strcpy(name_of_character, "BANG_EQUALS");
+                return_type = BANG_EQUAL;
+                strcpy(name_of_character, "BANG_EQUAL");
             else
                 assert(NULL);
 
             break;
         case '>':
-            strcpy(name_of_character,
-                (yytext[1] == '=' ? "GREATER_EQALS" : "GREATER"));
+            return_type = (yytext[1] == '=' ? GREATER_EQAL : '>');
+            strcpy(name_of_character, (yytext[1] == '=' ? "GREATER_EQAL" : "GREATER"));
             break;
         case '<':
-            strcpy(name_of_character,
-                (yytext[1] == '=' ? "LESS_EQUALS" : "LESS"));
+            return_type = (yytext[1] == '=' ? LESS_EQUAL : '<');
+            strcpy(name_of_character, (yytext[1] == '=' ? "LESS_EQUAL" : "LESS"));
             break;
         default:
             assert(NULL);
@@ -266,7 +241,7 @@ BLOCK_COMMENT_END   ("*/")
         yylineno, yytext, "OPERATOR", name_of_character, "enumerated");
     print_token(token);
 
-    return OPERATOR;
+    return return_type;
 }
 
 {INTCONST}  {
@@ -274,7 +249,8 @@ BLOCK_COMMENT_END   ("*/")
         yylineno, yytext, "INTCONST", yytext, "int");
     print_token(token);
 
-    return INTCONST;
+    yylval.intValue = atoi(yytext);
+    return NUMBER;
 }
 
 {REALCONST}  {
@@ -282,7 +258,8 @@ BLOCK_COMMENT_END   ("*/")
         yylineno, yytext, "REALCONST", yytext, "double");
     print_token(token);
 
-    return REALCONST;
+    yylval.doubleValue = atof(yytext);
+    return NUMBER;
 }
 
 \"  {
@@ -332,12 +309,16 @@ BLOCK_COMMENT_END   ("*/")
     free(temp);
 
     BEGIN(INITIAL);
+    
+    yylval.stringValue = strdup(yytext);    
+    return MY_STRING;
 }
 <STRING><<EOF>> { yyerror("Unclosed string", start_of_string); }
 <STRING>.       { yyerror("Unclosed string", start_of_string); }
 
 {PUNCTUATION} {
     char name_of_character[100];
+    int return_type = yytext[0];
 
     switch (yytext[0]) {
         case '{':
@@ -365,12 +346,14 @@ BLOCK_COMMENT_END   ("*/")
             strcpy(name_of_character, "COMMA");
             break;
         case ':':
+            if (yytext[1] == ':') return_type = COLON_COLON ;
             strcpy(name_of_character,
-                (yytext[1] == ':' ? "DOUBLE_COLON" : "COLON"));
+                (yytext[1] == ':' ? "COLON_COLON " : "COLON"));
             break;
         case '.':
+            if (yytext[1] == '.') return_type = DOT_DOT;
             strcpy(name_of_character,
-                (yytext[1] == '.' ? "DOUBLE_DOT" : "DOT"));
+                (yytext[1] == '.' ? "DOT_DOT" : "DOT"));
             break;
         default:
             assert(NULL);            
@@ -391,6 +374,7 @@ BLOCK_COMMENT_END   ("*/")
     print_token(token);
     free(str);
 
+    yylval.stringValue = strdup(yytext);    
     return IDENTIFIER;
 }
 
