@@ -1,5 +1,7 @@
 #include "sym_table.h"
 
+Symbol* emptySymbol = new Symbol();
+
 node* SymTable::scopeNode(unsigned int scope) {
     if (scopeHeads.find(scope) != scopeHeads.end()) {
         return scopeHeads[scope];
@@ -24,9 +26,29 @@ Symbol* createSymbol(enum SymbolType type) {
     }
 }
 
+SymTable::SymTable() {
+    Initialize();
+}
+
+void SymTable::Initialize() {
+    Insert("print", LIBFUNC, 0, 0, std::list<Variable>());
+    Insert("input", LIBFUNC, 0, 0, std::list<Variable>());
+    Insert("objectmemberkeys", LIBFUNC, 0, 0, std::list<Variable>());
+    Insert("objecttotalmembers", LIBFUNC, 0, 0, std::list<Variable>());
+    Insert("objectcopy", LIBFUNC, 0, 0, std::list<Variable>());
+    Insert("totalarguments", LIBFUNC, 0, 0, std::list<Variable>());
+    Insert("argument", LIBFUNC, 0, 0, std::list<Variable>());
+    Insert("typeof", LIBFUNC, 0, 0, std::list<Variable>());
+    Insert("strtonum", LIBFUNC, 0, 0, std::list<Variable>());
+    Insert("sqrt", LIBFUNC, 0, 0, std::list<Variable>());
+    Insert("cos", LIBFUNC, 0, 0, std::list<Variable>());
+    Insert("sin", LIBFUNC, 0, 0, std::list<Variable>());
+}
+
 void SymTable::Insert(const std::string& name, enum SymbolType type, unsigned int line,
                         unsigned int scope, std::list<Variable> arguments) {
-    if (Lookup(name).name.empty()) {
+    Symbol temp = Lookup(name);
+    if (temp.name.empty() || temp.scope != scope && temp.scope) {
         int index = hashFunction(name);
         Symbol* newSymbol = createSymbol(type);
         node* currentCollision = table[index];
@@ -70,8 +92,7 @@ Symbol SymTable::Lookup(const std::string& name) {
         }
         current = current->nextCollision;
     }
-    Symbol* temp = new Symbol();
-    return *temp;
+    return *emptySymbol;
 }
 
 void SymTable::Hide(const std::string& name) {

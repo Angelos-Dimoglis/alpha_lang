@@ -43,8 +43,10 @@ class SymTable {
         std::map<int, node*> scopeHeads;
         int hashFunction(const std::string& key);
         node* scopeNode(unsigned int scope);
-
+        void Initialize();
     public:
+        SymTable();
+
         void Insert(const std::string& name, enum SymbolType type, unsigned int line,
                     unsigned int scope, std::list<Variable> arguments);
 
