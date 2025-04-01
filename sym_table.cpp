@@ -1,17 +1,8 @@
 #include "sym_table.h"
-#include <iostream>
-#include <memory>
 
 node* SymTable::scopeNode(unsigned int scope) {
-    node* current;
-    for (int i = 0; i < tableSize; i++) {
-        current = table[i];
-        while (current != nullptr) {
-            if (current->sym.scope = scope) {
-                return current;
-            }
-            current = current->nextCollision;
-        }
+    if (scopeHeads.find(scope) != scopeHeads.end()) {
+        return scopeHeads[scope];
     }
     return nullptr;
 }
@@ -25,7 +16,7 @@ int SymTable::hashFunction(const std::string& key) {
 }
 
 Symbol* createSymbol(enum SymbolType type) {
-    if (type < 4) {
+    if (type < 3) {
         return new Variable();
     }
     else {
@@ -33,39 +24,39 @@ Symbol* createSymbol(enum SymbolType type) {
     }
 }
 
-void SymTable::Insert(const std::string& name, unsigned int scope,
-                        enum SymbolType type, std::list<Variable> arguments) {
+void SymTable::Insert(const std::string& name, enum SymbolType type, unsigned int line,
+                        unsigned int scope, std::list<Variable> arguments) {
     if (Lookup(name).name.empty()) {
         int index = hashFunction(name);
         Symbol* newSymbol = createSymbol(type);
         node* currentCollision = table[index];
-        if (currentCollision != nullptr) {
-            while (currentCollision->nextCollision) {
-                currentCollision = currentCollision->nextCollision;
-            }
-        }
         node* currentScope = scopeNode(scope);
-        if (currentScope != nullptr) {
-            while (currentScope->nextScope != nullptr) {
-                currentScope = currentScope->nextScope;
-            }
-        }
         newSymbol->name = name;
         newSymbol->scope = scope;
+        newSymbol->line = line;
         newSymbol->type = type;
         newSymbol->isActive = true;
-        if (type > 3) {
+        if (type > 2) {
             ((Function*)newSymbol)->arguments = arguments;
         }
         node* n = new node(*newSymbol);
         if (currentCollision != nullptr) {
+            while (currentCollision->nextCollision) {
+                currentCollision = currentCollision->nextCollision;
+            }
             currentCollision->nextCollision = n;
         }
         else {
             table[index] = n;
         }
         if (currentScope != nullptr) {
+            while (currentScope->nextScope != nullptr) {
+                currentScope = currentScope->nextScope;
+            }
             currentScope->nextScope = n;
+        }
+        else {
+            scopeHeads[scope] = n;
         }
     }
 }
@@ -84,6 +75,48 @@ Symbol SymTable::Lookup(const std::string& name) {
 }
 
 void SymTable::Hide(const std::string& name) {
-    Symbol hSym = Lookup(name);
-    hSym.isActive = false;
+    int index = hashFunction(name);
+    node* current = table[index];
+    while (current != nullptr) {
+        if (current->sym.name == name) {
+            current->sym.isActive = false;
+            return;
+        }
+        current = current->nextCollision;
+    }
+}
+
+void SymTable::PrintTable() {
+    for (int i = 0; i < scopeHeads.size(); i++) {
+        node* current = scopeHeads[i];
+        std::cout << "-----------    Scope #" << i << "    -----------" << std::endl;
+        while (current != nullptr) {
+            std::cout << "\"" << current->sym.name << "\" ";
+            switch (current->sym.type)
+            {
+            case 0:
+                std::cout << "[global variable] ";
+                break;
+            case 1:
+                std::cout << "[local variable] ";
+                break;
+            case 2:
+                std::cout << "[formal argument] ";
+                break;
+            case 3:
+                std::cout << "[user function] ";
+                break;
+            case 4:
+                std::cout << "[library function] ";
+                break;
+            default:
+                std::cout << "[unknown] ";
+                break;
+            }
+            std::cout << "(line " << current->sym.line << ") ";
+            std::cout << "(scope " << current->sym.scope << ")" << std::endl;
+            current = current->nextScope;
+        }
+        std::cout << std::endl;
+    }
 }
