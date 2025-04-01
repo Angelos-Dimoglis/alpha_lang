@@ -15,6 +15,9 @@ lexer.c: lexer.l
 parser.c: parser.y
 	bison --yacc --defines $^ -o $@
 
+counter_parser.c: parser.y
+	bison -Wcounterexamples --yacc --defines $^ -o $@
+
 $(TARGET): lexer.c parser.c stack.c
 	$(CC) $(CFLAGS) $^ -o $@
 

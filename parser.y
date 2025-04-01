@@ -52,6 +52,9 @@
 %left '(' ')'
 */
 
+%type <intValue> expr term lvalue primary
+
+
 %%
 
 program: stmt_series;
@@ -94,7 +97,7 @@ term: '(' expr ')'       { $$ = ($2); }
     | NOT expr           { $$ = !$2; }
     | PLUS_PLUS lvalue   { $$ = ++$2; }
     | lvalue PLUS_PLUS   { $$ = $1++; }
-    | MINUS_MINUS lvalue { $$ = --$1; }
+    | MINUS_MINUS lvalue { $$ = --$2; }
     | lvalue MINUS_MINUS { $$ = $1--; }
     | primary            { $$ = $1; }
     ;
@@ -108,7 +111,7 @@ primary: lvalue
     | const
     ;
 
-lvalue:IDENTIFIER 
+lvalue: IDENTIFIER 
     | LOCAL IDENTIFIER 
     | COLON_COLON IDENTIFIER 
     | member

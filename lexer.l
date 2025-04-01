@@ -218,16 +218,16 @@ BLOCK_COMMENT_END   ("*/")
             strcpy(name_of_character, "PERCENT");
             break;
         case '!':
-            if (yytext[1] == '=')
+            if (yytext[1] == '=') {
                 return_type = BANG_EQUAL;
                 strcpy(name_of_character, "BANG_EQUAL");
-            else
+            } else
                 assert(NULL);
 
             break;
         case '>':
-            return_type = (yytext[1] == '=' ? GREATER_EQAL : '>');
-            strcpy(name_of_character, (yytext[1] == '=' ? "GREATER_EQAL" : "GREATER"));
+            return_type = (yytext[1] == '=' ? GREATER_EQUAL : '>');
+            strcpy(name_of_character, (yytext[1] == '=' ? "GREATER_EQUAL" : "GREATER"));
             break;
         case '<':
             return_type = (yytext[1] == '=' ? LESS_EQUAL : '<');
@@ -250,7 +250,7 @@ BLOCK_COMMENT_END   ("*/")
     print_token(token);
 
     yylval.intValue = atoi(yytext);
-    return NUMBER;
+    return INTCONST;
 }
 
 {REALCONST}  {
@@ -259,7 +259,7 @@ BLOCK_COMMENT_END   ("*/")
     print_token(token);
 
     yylval.doubleValue = atof(yytext);
-    return NUMBER;
+    return REALCONST;
 }
 
 \"  {
