@@ -24,7 +24,13 @@ typedef struct alpha_token {
 
 alpha_token_t *list_head = NULL;
 
-alpha_token_t* create_token(int lineno, char* content, char* category_1, char* category_2, char* type) {
+alpha_token_t* create_token(
+    int lineno,
+    const char* content,
+    const char* category_1,
+    const char* category_2,
+    const char* type
+) {
     assert(
         content &&
         category_1 &&
@@ -147,8 +153,12 @@ int translate (char *str) {
     } else if( strcmp(str, "true")) { return TRUE;
     } else if( strcmp(str, "false")) { return FALSE;
     } else if( strcmp(str, "nil")) { return NIL;
+    } else {
+        assert(NULL);
     }
 
+    // never executes. here to supress waring
+    return 0;
 }
 
 %}
