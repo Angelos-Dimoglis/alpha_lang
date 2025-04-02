@@ -2,7 +2,7 @@
 # AM: csd5078
 
 # compiler related variables
-CC = gcc
+CC = g++
 CFLAGS = -g
 
 TARGET = alpha_compiler.out
@@ -12,14 +12,14 @@ all: $(TARGET)
 lexer.c: lexer.l 
 	flex -o $@ $^
 
-parser.c: parser.y
+parser.cpp: parser.ypp
 	bison --yacc --defines $^ -o $@
 
-counter_parser.c: parser.y
-	bison -Wcounterexamples --yacc --defines $^ -o $@
+sym_table.out: sym_table.cpp
+	g++ $^ -o $@
 
-$(TARGET): lexer.c parser.c stack.c
+$(TARGET): lexer.c parser.cpp stack.c sym_table.cpp
 	$(CC) $(CFLAGS) $^ -o $@
 
 clean:
-	rm lexer.c parser.{c,h} $(TARGET)
+	rm lexer.c parser.{cpp,hpp} $(TARGET) *.out

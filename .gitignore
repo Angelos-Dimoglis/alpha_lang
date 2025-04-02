@@ -2,5 +2,5 @@
 pdfs/
 *.out
 lexer.c
-parser.c
-parser.h
+parser.cpp
+parser.hpp

@@ -3,7 +3,7 @@
 #include <stdlib.h>
 
 Stack *initStack() {
-    Stack *new_stack = malloc(sizeof(Stack));
+    Stack *new_stack = (Stack *) malloc(sizeof(Stack));
     if (!new_stack) {
         fprintf(stderr, "Memory allocation failed\n");
         exit(EXIT_FAILURE);

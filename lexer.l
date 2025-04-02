@@ -6,9 +6,9 @@
 #include <ctype.h>
 
 #include "stack.h"
-#include "parser.h"
+#include "parser.hpp"
 
-FILE* yyout;
+//FILE* yyout;
 Stack *stack;
 int start_of_string;
 
@@ -34,15 +34,15 @@ alpha_token_t* create_token(int lineno, char* content, char* category_1, char* c
 
     static int yynumToken = 0;
     static alpha_token_t* current_token = NULL;
-    alpha_token_t* new_token = malloc(sizeof(alpha_token_t));
+    alpha_token_t *new_token = (alpha_token_t *) malloc(sizeof(alpha_token_t));
     assert(new_token);
 
     new_token->numline = lineno;
     new_token->numToken = ++yynumToken;
-    new_token->content = malloc(sizeof(char) * (strlen(content) + 1));
-    new_token->category_1 = malloc(sizeof(char) * (strlen(category_1) + 1));
-    new_token->category_2 = malloc(sizeof(char) * (strlen(category_2) + 1));
-    new_token->type = malloc(sizeof(char) * (strlen(type) + 1));
+    new_token->content = (char *) malloc(sizeof(char) * (strlen(content) + 1));
+    new_token->category_1 = (char *) malloc(sizeof(char) * (strlen(category_1) + 1));
+    new_token->category_2 = (char *) malloc(sizeof(char) * (strlen(category_2) + 1));
+    new_token->type = (char *) malloc(sizeof(char) * (strlen(type) + 1));
 
     assert(
         new_token->content &&
@@ -109,7 +109,7 @@ void print_token(alpha_token_t* token) {
 }
 
 char* toUpperCase(const char *str) {
-    char* capital_str = malloc(sizeof(char) * strlen(str));
+    char* capital_str = (char *) malloc(sizeof(char) * strlen(str));
     assert(capital_str);
 
     for (int i = 0; str[i] != '\0'; i++)
@@ -269,7 +269,7 @@ BLOCK_COMMENT_END   ("*/")
 }
 <STRING>\n      {yylineno++;}
 <STRING>\"(\\.|[^\\"])*\"      {
-    char* temp = malloc(sizeof(char) * yyleng);
+    char *temp = (char *) malloc(sizeof(char) * yyleng);
     int j = 0;
     for (int i = 1; i < yyleng; i++){
         if (yytext[i] == '\\'){
@@ -368,7 +368,7 @@ BLOCK_COMMENT_END   ("*/")
 
 
 {IDENTIFIER} {
-    char *str = malloc(strlen(yytext) + 2);
+    char *str = (char *) malloc(strlen(yytext) + 2);
     sprintf(str, "\"%s\"", yytext);
     alpha_token_t* token = create_token(yylineno, yytext, "ID", str, "char*");
     print_token(token);
