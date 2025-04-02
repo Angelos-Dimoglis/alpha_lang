@@ -50,9 +50,9 @@ class SymTable {
         void Insert(const std::string& name, enum SymbolType type, unsigned int line,
                     unsigned int scope, std::list<Variable> arguments);
 
-        Symbol Lookup(const std::string& name);
+        Symbol* Lookup(const std::string& name);
 
-        void Hide(const std::string& name);
+        void Hide(unsigned int scope);
         
         void PrintTable();
 

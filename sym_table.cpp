@@ -47,8 +47,8 @@ void SymTable::Initialize() {
 
 void SymTable::Insert(const std::string& name, enum SymbolType type, unsigned int line,
                         unsigned int scope, std::list<Variable> arguments) {
-    Symbol temp = Lookup(name);
-    if (temp.name.empty() || temp.scope != scope && temp.scope) {
+    Symbol* temp = Lookup(name);
+    if (temp->name.empty() || !(temp->isActive)) {
         int index = hashFunction(name);
         Symbol* newSymbol = createSymbol(type);
         node* currentCollision = table[index];
@@ -83,32 +83,28 @@ void SymTable::Insert(const std::string& name, enum SymbolType type, unsigned in
     }
 }
 
-Symbol SymTable::Lookup(const std::string& name) {
+Symbol* SymTable::Lookup(const std::string& name) {
     int index = hashFunction(name);
     node* current = table[index];
     while (current != nullptr) {
         if (current->sym.name == name) {
-            return current->sym;
+            return &(current->sym);
         }
         current = current->nextCollision;
     }
-    return *emptySymbol;
+    return emptySymbol;
 }
 
-void SymTable::Hide(const std::string& name) {
-    int index = hashFunction(name);
-    node* current = table[index];
+void SymTable::Hide(unsigned int scope) {
+    node* current = scopeNode(scope);
     while (current != nullptr) {
-        if (current->sym.name == name) {
-            current->sym.isActive = false;
-            return;
-        }
-        current = current->nextCollision;
+        current->sym.isActive = false;
+        current = current->nextScope;
     }
 }
 
 void SymTable::PrintTable() {
-    for (int i = 0; i < scopeHeads.size(); i++) {
+    for (unsigned int i = 0; i < scopeHeads.size(); i++) {
         node* current = scopeHeads[i];
         std::cout << "-----------    Scope #" << i << "    -----------" << std::endl;
         while (current != nullptr) {
@@ -140,4 +136,17 @@ void SymTable::PrintTable() {
         }
         std::cout << std::endl;
     }
+}
+
+void SymTable::freeTable() {
+    for (int i = 0; i < tableSize; i++) {
+        node* current = table[i];
+        node* temp = nullptr;
+        while (current != nullptr) {
+            temp = current;
+            current = current->nextCollision;
+            delete temp;
+        }
+    }
+    delete emptySymbol;
 }
