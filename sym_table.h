@@ -6,6 +6,7 @@
 #include <iostream>
 #include <memory>
 #include <map>
+#include <stdexcept>
 
 enum SymbolType {
     GLOBAL, LOCAL, FORMAL,
@@ -25,7 +26,7 @@ class Variable : public Symbol {};
 
 class Function : public Symbol {
     public:
-        std::list<Variable> arguments;
+        std::list<Variable*> arguments;
 };
 
 struct node {
@@ -48,9 +49,9 @@ class SymTable {
         SymTable();
 
         void Insert(const std::string& name, enum SymbolType type, unsigned int line,
-                    unsigned int scope, std::list<Variable> arguments);
+                    unsigned int scope, std::list<Variable*> arguments);
 
-        Symbol* Lookup(const std::string& name);
+        Symbol* Lookup(const std::string& name, int scope);
 
         void Hide(unsigned int scope);
         
