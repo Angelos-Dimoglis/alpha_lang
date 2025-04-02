@@ -27,7 +27,7 @@
 %token IF ELSE WHILE FOR FUNCTION RETURN BREAK CONTINUE AND NOT OR LOCAL TRUE FALSE NIL
 
 %token OPERATOR
-%token EQUAL_EQUAL BANG_EQUAL PLUS_PLUS MINUS_MINUS GREATER_EQUAL LESS_EQUAL
+%token EQUAL_EQUAL BANG_EQUAL PLUS_PLUS MINUS_MINUS GREATER_EQUAL LESS_EQUAL MINUS_UNARY
 
 %token <intValue> INTCONST
 %token <doubleValue> REALCONST
@@ -44,13 +44,35 @@
 
 // priorities
 /*
-%right '='
-%left ','
-%left '+' '-'
-%left '*' '/'
-%nonassoc UMINUS
-%left '(' ')'
+
+%right ASSIGN
+%left OR
+%left AND
+%nonassoc EQUAL NEQUAL
+%nonassoc GRTR GRTREQ LESS LESSEQ
+%left PLUS MIN
+%left MUL DIV MOD
+%right NOT PLUSPLUS MINMIN MINUNARY
+%left DOT DOTDOT
+%left BRACK_L BRACK_R
+%left PAR_L PAR_R
+
 */
+
+%right '='
+%left OR
+%left AND
+%nonassoc EQUAL_EQUAL BANG_EQUAL
+%nonassoc '>' GREATER_EQUAL '<' LESS_EQUAL
+%left '+' '-'
+%left '*' '/' '%'
+%right NOT PLUS_PLUS MINUS_MINUS MINUS_UNARY
+%left '.' DOT_DOT
+%left '[' ']'
+%left '(' ')'
+%nonassoc IF
+%nonassoc ELSE
+%precedence OBJECTDEF_EMPTY
 
 %type <intValue> expr term lvalue primary
 
@@ -62,38 +84,36 @@ program: stmt_series;
 stmt_series: stmt_series stmt 
     | /* empty */;
 
-stmt: expr';'
+stmt: expr ';'
     | ifstmt
     | whilestmt
     | forstmt
     | returnstmt
-    | BREAK';'
-    | CONTINUE';'
+    | BREAK ';'
+    | CONTINUE ';'
     | block
     | funcdef
-    | /* empty */;
+    | ';'
+    ;
 
 expr: assignexpr
-    | expr op expr
+    | expr '+' expr
+    | expr '-' expr
+    | expr '*' expr
+    | expr '/' expr
+    | expr '%' expr
+    | expr '>' expr
+    | expr GREATER_EQUAL expr
+    | expr LESS_EQUAL expr
+    | expr EQUAL_EQUAL expr
+    | expr BANG_EQUAL expr
+    | expr AND expr
+    | expr OR expr
     | term
     ;
 
-op: '+'
-    | '-'
-    | '*'
-    | '/'
-    | '%'
-    | '>'
-    | GREATER_EQUAL
-    | LESS_EQUAL
-    | EQUAL_EQUAL
-    | BANG_EQUAL
-    | AND
-    | OR
-    ;
-
 term: '(' expr ')'       { $$ = ($2); }
-    | '-' expr           { $$ = -$2; }
+    | '-' expr           { $$ = -$2; } %prec MINUS_UNARY
     | NOT expr           { $$ = !$2; }
     | PLUS_PLUS lvalue   { $$ = ++$2; }
     | lvalue PLUS_PLUS   { $$ = $1++; }
@@ -135,20 +155,22 @@ normcall: '(' elist ')';
 // equivalent to lvalue.id(lvalue, elist)
 methodcall: DOT_DOT IDENTIFIER '(' elist ')'; 
 
-elist: expr
-    | expr ',' elist
+elist: expr elist_alt
+    | /* empty */
+    ;
+
+elist_alt: ',' expr elist_alt
     | /* empty */;
 
 objectdef: '[' elist ']'
     | '[' indexed ']'
-    | '[' ']'
     ;
 
-indexed: indexedelem indexed_alt
-    | /* empty */;
+indexed: indexedelem indexed_alt;
 
 indexed_alt: ',' indexedelem indexed_alt
-    | /* empty */;
+    | /* empty */
+    ;
 
 indexedelem: '{' expr ':' expr '}';
 
@@ -159,15 +181,16 @@ funcdef: FUNCTION [id] '('idlist')' block;
 const: INTCONST | REALCONST | MY_STRING | NIL | TRUE | FALSE;
 
 idlist: IDENTIFIER idlist_alt
-    | /* empty */;
+    | /* empty */
+    ;
 
 idlist_alt: ',' IDENTIFIER 
-    | /* empty */;
+    | /* empty */
+    ;
 
-ifstmt: IF '(' expr ')' stmt ifstmt_alt;
-
-ifstmt_alt: ELSE stmt
-    | /* empty */;
+ifstmt: IF '(' expr ')' stmt %prec IF
+    | IF '(' expr ')' stmt ELSE stmt
+    ;
 
 whilestmt: WHILE '(' expr ')' stmt;
 forstmt: FOR '(' elist';' expr';' elist')' stmt;
