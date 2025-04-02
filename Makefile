@@ -22,4 +22,4 @@ $(TARGET): lexer.c parser.cpp stack.c sym_table.cpp
 	$(CC) $(CFLAGS) $^ -o $@
 
 clean:
-	rm lexer.c parser.{cpp,hpp} $(TARGET) *.out
+	rm lexer.c parser.{cpp,hpp} $(TARGET)
