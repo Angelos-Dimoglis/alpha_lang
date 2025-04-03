@@ -11,7 +11,6 @@
     extern char *yytext;
     extern FILE *yyin;
 
-    /* NOTE: maybe not needed as it is defined in lexer.l*/
     void yyerror(const char *msg) {
         if (!strcmp(msg, "end of input")) {
             fprintf(stderr, "%s at line %d before token: %s\n", msg, yylineno, yytext);
@@ -20,14 +19,13 @@
 
 %}
 
-// TODO: find replacement of 
+%define parse.error simple
+
 %union {
     int intValue;
     double doubleValue;
     char *stringValue;
 }
-
-%define parse.error verbose
 
 %start program
 
@@ -50,24 +48,7 @@
 %token <stringValue> IDENTIFIER
 %token LINE_COMMENT
 
-
 // priorities
-/*
-
-%right ASSIGN
-%left OR
-%left AND
-%nonassoc EQUAL NEQUAL
-%nonassoc GRTR GRTREQ LESS LESSEQ
-%left PLUS MIN
-%left MUL DIV MOD
-%right NOT PLUSPLUS MINMIN MINUNARY
-%left DOT DOTDOT
-%left BRACK_L BRACK_R
-%left PAR_L PAR_R
-
-*/
-
 %right '='
 %left OR
 %left AND
@@ -83,7 +64,6 @@
 %nonassoc ELSE
 
 %type <intValue> expr term lvalue primary
-
 
 %%
 
@@ -106,7 +86,7 @@ stmt: expr ';'
     | LINE_COMMENT
     ;
 
-expr: assignexpr
+expr: assignexpr {}
     | expr '+' expr
     | expr '-' expr
     | expr '*' expr
@@ -123,12 +103,12 @@ expr: assignexpr
     | term
     ;
 
-term: '(' expr ')'
-    | '-' expr    %prec MINUS_UNARY
-    | NOT expr
-    | PLUS_PLUS lvalue
+term: '(' expr ')' {}
+    | '-' expr {} %prec MINUS_UNARY
+    | NOT expr {}
+    | PLUS_PLUS lvalue {}
     | lvalue PLUS_PLUS
-    | MINUS_MINUS lvalue
+    | MINUS_MINUS lvalue {}
     | lvalue MINUS_MINUS
     | primary
     ;
@@ -136,16 +116,16 @@ term: '(' expr ')'
 assignexpr: lvalue '=' expr;
 
 primary: lvalue
-    | call
-    | objectdef
-    | '('funcdef')'
-    | const
+    | call {}
+    | objectdef {}
+    | '('funcdef')' {}
+    | const {}
     ;
 
-lvalue: IDENTIFIER 
-    | LOCAL IDENTIFIER 
-    | COLON_COLON IDENTIFIER 
-    | member
+lvalue: IDENTIFIER {}
+    | LOCAL IDENTIFIER {}
+    | COLON_COLON IDENTIFIER {}
+    | member {}
     ;
 
 member: lvalue '.' IDENTIFIER 
@@ -212,6 +192,8 @@ returnstmt: RETURN [expr];
 
 
 int main (int argc, char **argv) {
+
+    // uncomment for debug mode
     //yydebug = 1;
     if (argc > 1) {
         if (!(yyin = fopen(argv[1], "r"))) {

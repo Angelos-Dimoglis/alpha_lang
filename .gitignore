@@ -4,3 +4,4 @@ pdfs/
 lexer.c
 parser.cpp
 parser.hpp
+parser.output
