@@ -1,7 +1,7 @@
 *.pdf
 pdfs/
 *.out
-lexer.c
+lexer.cpp
 parser.cpp
 parser.hpp
 parser.output

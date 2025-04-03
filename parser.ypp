@@ -12,14 +12,13 @@
     extern FILE *yyin;
 
     void yyerror(const char *msg) {
-        if (!strcmp(msg, "end of input")) {
-            fprintf(stderr, "%s at line %d before token: %s\n", msg, yylineno, yytext);
-        }
+        fprintf(stderr, "%s at line %d before token: %s\n",
+                msg, yylineno, yytext);
     }
 
 %}
 
-%define parse.error simple
+%define parse.error detailed
 
 %union {
     int intValue;
@@ -122,8 +121,12 @@ primary: lvalue
     | const {}
     ;
 
-lvalue: IDENTIFIER {}
-    | LOCAL IDENTIFIER {}
+lvalue: IDENTIFIER {
+
+    }
+    | LOCAL IDENTIFIER {
+        add_local_id(scope);
+    }
     | COLON_COLON IDENTIFIER {}
     | member {}
     ;
