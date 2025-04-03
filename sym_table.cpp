@@ -1,6 +1,11 @@
 #include "sym_table.h"
 
-Symbol* emptySymbol = new Symbol();
+Symbol* emptySymbol = new Symbol;
+
+
+const std::string library_functions[12] = {"print", "input", "objectmemberkeys", "objecttotalmembers",
+                                        "objectcopy", "totalarguments", "argument", "typeof", 
+                                        "strtonum", "sqrt", "cos", "sin"};
 
 node* SymTable::scopeNode(unsigned int scope) {
     if (scopeHeads.find(scope) != scopeHeads.end()) {
@@ -31,76 +36,83 @@ SymTable::SymTable() {
 }
 
 void SymTable::Initialize() {
-    Insert("print", LIBFUNC, 0, 0, std::list<Variable*>());
-    Insert("input", LIBFUNC, 0, 0, std::list<Variable*>());
-    Insert("objectmemberkeys", LIBFUNC, 0, 0, std::list<Variable*>());
-    Insert("objecttotalmembers", LIBFUNC, 0, 0, std::list<Variable*>());
-    Insert("objectcopy", LIBFUNC, 0, 0, std::list<Variable*>());
-    Insert("totalarguments", LIBFUNC, 0, 0, std::list<Variable*>());
-    Insert("argument", LIBFUNC, 0, 0, std::list<Variable*>());
-    Insert("typeof", LIBFUNC, 0, 0, std::list<Variable*>());
-    Insert("strtonum", LIBFUNC, 0, 0, std::list<Variable*>());
-    Insert("sqrt", LIBFUNC, 0, 0, std::list<Variable*>());
-    Insert("cos", LIBFUNC, 0, 0, std::list<Variable*>());
-    Insert("sin", LIBFUNC, 0, 0, std::list<Variable*>());
+    for (int i = 0; i < 12; i++) {
+        Insert(library_functions[i], LIBFUNC, 0, 0, std::list<Variable*>());
+    }
+}
+
+bool libfunc_check(const std::string& name) {
+    for (int i = 0; i < 12; i++) {
+        if (name == library_functions[i]) {
+            return true;
+        }
+    }
+    return false;
 }
 
 void SymTable::Insert(const std::string& name, enum SymbolType type, unsigned int line,
                         unsigned int scope, std::list<Variable*> arguments) {
-    Symbol* temp = Lookup(name, scope);
-    if (temp->name.empty()) {
-        int index = hashFunction(name);
-        Symbol* newSymbol = createSymbol(type);
-        node* currentCollision = table[index];
-        node* currentScope = scopeNode(scope);
-        if (name.empty()) {
-            newSymbol->name = "_f1";
-        }
-        else {
-            newSymbol->name = name;
-        }
-        newSymbol->scope = scope;
-        newSymbol->line = line;
-        newSymbol->type = type;
-        newSymbol->isActive = true;
-        if (type > 2) {
-            ((Function*)newSymbol)->arguments = arguments;
-        }
-        node* n = new node(*newSymbol);
-        if (currentCollision != nullptr) {
-            while (currentCollision->nextCollision) {
-                currentCollision = currentCollision->nextCollision;
-            }
-            currentCollision->nextCollision = n;
-        }
-        else {
-            table[index] = n;
-        }
-        if (currentScope != nullptr) {
-            while (currentScope->nextScope != nullptr) {
-                currentScope = currentScope->nextScope;
-            }
-            currentScope->nextScope = n;
-        }
-        else {
-            scopeHeads[scope] = n;
-        }
+    if (libfunc_check(name) && (type != LIBFUNC)) {
+        throw std::runtime_error("Name can't be a library function.");
+    }
+    int index = hashFunction(name);
+    Symbol* newSymbol = createSymbol(type);
+    node* currentCollision = table[index];
+    node* currentScope = scopeNode(scope);
+    if (name.empty()) {
+        newSymbol->name = "_f1";
     }
     else {
-        throw std::runtime_error("Unable to add symbol to table.");
+        newSymbol->name = name;
+    }
+    newSymbol->scope = scope;
+    newSymbol->line = line;
+    newSymbol->type = type;
+    newSymbol->isActive = true;
+    if (type == USERFUNC) {
+        ((Function*)newSymbol)->arguments = arguments;
+    }
+    node* n = new node(*newSymbol);
+    if (currentCollision != nullptr) {
+        while (currentCollision->nextCollision) {
+            currentCollision = currentCollision->nextCollision;
+        }
+        currentCollision->nextCollision = n;
+    }
+    else {
+        table[index] = n;
+    }
+    if (currentScope != nullptr) {
+        while (currentScope->nextScope != nullptr) {
+            currentScope = currentScope->nextScope;
+        }
+        currentScope->nextScope = n;
+    }
+    else {
+        scopeHeads[scope] = n;
     }
 }
 
-Symbol* SymTable::Lookup(const std::string& name, int scope) {
-    int index = hashFunction(name);
-    node* current = table[index];
-    while (current != nullptr) {
-        if (current->sym.name == name) {
-            if (current->sym.isActive && current->sym.scope == scope) {
+Symbol* SymTable::Lookup(const std::string& name, int scope, bool mode) {
+    node* current;
+    if (!mode) {
+        current = scopeNode(scope);
+        while (current != nullptr) {
+            if (current->sym.name == name && current->sym.isActive) {
                 return &(current->sym);
             }
+            current = current->nextScope;
         }
-        current = current->nextCollision;
+    }
+    else {
+        int index = hashFunction(name);
+        current = table[index];
+        while (current != nullptr) {
+            if (current->sym.name == name && current->sym.isActive) {
+                return &(current->sym);
+            }
+            current = current->nextCollision;
+        }
     }
     return emptySymbol;
 }
@@ -108,9 +120,7 @@ Symbol* SymTable::Lookup(const std::string& name, int scope) {
 void SymTable::Hide(unsigned int scope) {
     node* current = scopeNode(scope);
     while (current != nullptr) {
-        if (current->sym.type < 3) {
-            current->sym.isActive = false;
-        }
+        current->sym.isActive = false;
         current = current->nextScope;
     }
 }
@@ -123,19 +133,19 @@ void SymTable::PrintTable() {
             std::cout << "\"" << current->sym.name << "\" ";
             switch (current->sym.type)
             {
-            case 0:
+            case LOCAL:
                 std::cout << "[global variable] ";
                 break;
-            case 1:
+            case GLOBAL:
                 std::cout << "[local variable] ";
                 break;
-            case 2:
+            case FORMAL:
                 std::cout << "[formal argument] ";
                 break;
-            case 3:
+            case USERFUNC:
                 std::cout << "[user function] ";
                 break;
-            case 4:
+            case LIBFUNC:
                 std::cout << "[library function] ";
                 break;
             default:

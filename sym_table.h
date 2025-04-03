@@ -51,7 +51,7 @@ class SymTable {
         void Insert(const std::string& name, enum SymbolType type, unsigned int line,
                     unsigned int scope, std::list<Variable*> arguments);
 
-        Symbol* Lookup(const std::string& name, int scope);
+        Symbol* Lookup(const std::string& name, int scope, bool mode);
 
         void Hide(unsigned int scope);
         
