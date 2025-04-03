@@ -2,7 +2,6 @@
 
 Symbol* emptySymbol = new Symbol;
 
-
 const std::string library_functions[12] = {"print", "input", "objectmemberkeys", "objecttotalmembers",
                                         "objectcopy", "totalarguments", "argument", "typeof", 
                                         "strtonum", "sqrt", "cos", "sin"};
@@ -105,13 +104,14 @@ Symbol* SymTable::Lookup(const std::string& name, int scope, bool mode) {
         }
     }
     else {
-        int index = hashFunction(name);
-        current = table[index];
-        while (current != nullptr) {
-            if (current->sym.name == name && current->sym.isActive) {
-                return &(current->sym);
+        for (int i = scope; i >= 0; i--) {
+            current = scopeNode(i);
+            while (current != nullptr) {
+                if (current->sym.name == name && current->sym.isActive) {
+                    return &(current->sym);
+                }
+                current = current->nextScope;
             }
-            current = current->nextCollision;
         }
     }
     return emptySymbol;
