@@ -9,7 +9,7 @@
 #include <stdexcept>
 
 enum SymbolType {
-    GLOBAL, LOCAL, FORMAL,
+    GLOBAL, _LOCAL, FORMAL,
     USERFUNC, LIBFUNC
 };
 
@@ -44,6 +44,10 @@ class SymTable {
         std::map<int, node*> scopeHeads;
         int hashFunction(const std::string& key);
         node* scopeNode(unsigned int scope);
+        bool libfunc_check(const std::string& name);
+        const std::string library_functions[12] = {"print", "input", "objectmemberkeys", "objecttotalmembers",
+            "objectcopy", "totalarguments", "argument", "typeof", 
+            "strtonum", "sqrt", "cos", "sin"};
         void Initialize();
     public:
         SymTable();

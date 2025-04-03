@@ -18,7 +18,7 @@ parser.cpp: parser.ypp
 sym_table.out: sym_table.cpp
 	$(CC) $(CFLAGS) $^ -o $@
 
-$(TARGET): lexer.cpp parser.cpp stack.c sym_table.cpp
+$(TARGET): lexer.cpp parser.cpp stack.c sym_table.cpp parser_functions.cpp
 	$(CC) $(CFLAGS) $^ -o $@
 
 clean:

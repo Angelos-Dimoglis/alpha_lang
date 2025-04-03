@@ -2,10 +2,6 @@
 
 Symbol* emptySymbol = new Symbol;
 
-const std::string library_functions[12] = {"print", "input", "objectmemberkeys", "objecttotalmembers",
-                                        "objectcopy", "totalarguments", "argument", "typeof", 
-                                        "strtonum", "sqrt", "cos", "sin"};
-
 node* SymTable::scopeNode(unsigned int scope) {
     if (scopeHeads.find(scope) != scopeHeads.end()) {
         return scopeHeads[scope];
@@ -40,7 +36,7 @@ void SymTable::Initialize() {
     }
 }
 
-bool libfunc_check(const std::string& name) {
+bool SymTable::libfunc_check(const std::string& name) {
     for (int i = 0; i < 12; i++) {
         if (name == library_functions[i]) {
             return true;
@@ -133,10 +129,10 @@ void SymTable::PrintTable() {
             std::cout << "\"" << current->sym.name << "\" ";
             switch (current->sym.type)
             {
-            case LOCAL:
+            case GLOBAL:
                 std::cout << "[global variable] ";
                 break;
-            case GLOBAL:
+            case _LOCAL:
                 std::cout << "[local variable] ";
                 break;
             case FORMAL:

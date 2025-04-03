@@ -2,6 +2,7 @@
     #include <stdio.h>
     #include <string.h>
     #include "stack.h"
+    #include "parser_functions.h"
 
     extern int yylex (void);
     extern void yyerror(const char *msg, int line_number);
@@ -10,9 +11,13 @@
     extern int yylineno;
     extern char *yytext;
     extern FILE *yyin;
+    unsigned int scope = 0;
+    SymTable sym_table;
+    list<Variable*> args;
 
     void yyerror(const char *msg) {
-        fprintf(stderr, "%s at line %d before token: %s\n",
+        if (strcmp(msg, "syntax error, unexpected end of file"))
+            fprintf(stderr, "%s at line %d before token: %s\n",
                 msg, yylineno, yytext);
     }
 
@@ -122,12 +127,14 @@ primary: lvalue
     ;
 
 lvalue: IDENTIFIER {
-
+        add_id($1);
     }
     | LOCAL IDENTIFIER {
-        add_local_id(scope);
+        add_local_id($2);
     }
-    | COLON_COLON IDENTIFIER {}
+    | COLON_COLON IDENTIFIER {
+        lookup_global_id($2);
+    }
     | member {}
     ;
 
@@ -166,11 +173,11 @@ indexed_alt: ',' indexedelem indexed_alt
     | /* empty */
     ;
 
-indexedelem: '{' expr ':' expr '}';
+indexedelem: '{' {scope++;} expr ':' expr '}' {sym_table.Hide(scope--);};
 
-block: '{' stmt_series '}'
+block: '{' {scope++;} stmt_series '}' {sym_table.Hide(scope--);};
 
-funcdef: FUNCTION IDENTIFIER '(' idlist ')' block
+funcdef: FUNCTION IDENTIFIER '(' {scope++;} idlist ')' {scope--; add_func($2, args);} block
     | FUNCTION '(' idlist ')' block;
 
 const: INTCONST | REALCONST | MY_STRING | NIL | TRUE | FALSE;
