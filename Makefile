@@ -9,17 +9,19 @@ TARGET = alpha_compiler.out
 
 all: $(TARGET)
 
+debug: 
+
 lexer.c: lexer.l 
 	flex -o $@ $^
 
 parser.cpp: parser.ypp
-	bison --yacc --defines $^ -o $@
+	bison --yacc --defines -t -d -v $^ -o $@
 
 sym_table.out: sym_table.cpp
-	g++ $^ -o $@
+	g++ -g $^ -o $@
 
 $(TARGET): lexer.c parser.cpp stack.c sym_table.cpp
 	$(CC) $(CFLAGS) $^ -o $@
 
 clean:
-	rm lexer.c parser.{cpp,hpp} $(TARGET)
+	rm lexer.c parser.cpp parser.hpp parser.output $(TARGET)

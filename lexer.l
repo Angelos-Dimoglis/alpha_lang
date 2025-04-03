@@ -137,22 +137,21 @@ void yyerror(const char *msg, int line_number) {
 
 int translate (char *str) {
 
-    if (strcmp(str, "if")) { return IF;
-    } else if( strcmp(str, "else")) { return ELSE;
-    } else if( strcmp(str, "while")) { return WHILE;
-    } else if( strcmp(str, "for")) { return FOR;
-    } else if( strcmp(str, "for")) { return FOR;
-    } else if( strcmp(str, "function")) { return FUNCTION;
-    } else if( strcmp(str, "return")) { return RETURN;
-    } else if( strcmp(str, "break")) { return BREAK;
-    } else if( strcmp(str, "continue")) { return CONTINUE;
-    } else if( strcmp(str, "and")) { return AND;
-    } else if( strcmp(str, "not")) { return NOT;
-    } else if( strcmp(str, "or")) { return OR;
-    } else if( strcmp(str, "local")) { return LOCAL;
-    } else if( strcmp(str, "true")) { return TRUE;
-    } else if( strcmp(str, "false")) { return FALSE;
-    } else if( strcmp(str, "nil")) { return NIL;
+    if (strcmp(str, "if") == 0) { printf("\n\n%s\n\n", str); return IF;
+    } else if( strcmp(str, "else") == 0) { return ELSE;
+    } else if( strcmp(str, "while") == 0) { return WHILE;
+    } else if( strcmp(str, "for") == 0) { return FOR;
+    } else if( strcmp(str, "function") == 0) { return FUNCTION;
+    } else if( strcmp(str, "return") == 0) { return RETURN;
+    } else if( strcmp(str, "break") == 0) { return BREAK;
+    } else if( strcmp(str, "continue") == 0) { return CONTINUE;
+    } else if( strcmp(str, "and") == 0) { return AND;
+    } else if( strcmp(str, "not") == 0) { return NOT;
+    } else if( strcmp(str, "or") == 0) { return OR;
+    } else if( strcmp(str, "local") == 0) { return LOCAL;
+    } else if( strcmp(str, "true") == 0) { return TRUE;
+    } else if( strcmp(str, "false") == 0) { return FALSE;
+    } else if( strcmp(str, "nil") == 0) { return NIL;
     } else {
         assert(NULL);
     }
@@ -373,7 +372,7 @@ BLOCK_COMMENT_END   ("*/")
         yylineno, yytext, "PUNCTUATION", name_of_character, "enumerated");
     print_token(token);
 
-    return PUNCTUATION;
+    return return_type;
 }
 
 

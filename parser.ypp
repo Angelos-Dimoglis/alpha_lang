@@ -1,23 +1,33 @@
 %{
     #include <stdio.h>
+    #include <string.h>
     #include "stack.h"
 
-    int yylex (void);
-    void yyerror(const char *msg);
+    extern int yylex (void);
+    extern void yyerror(const char *msg, int line_number);
 
     extern Stack *stack;
     extern int yylineno;
     extern char *yytext;
     extern FILE *yyin;
 
+    /* NOTE: maybe not needed as it is defined in lexer.l*/
+    void yyerror(const char *msg) {
+        if (!strcmp(msg, "end of input")) {
+            fprintf(stderr, "%s at line %d before token: %s\n", msg, yylineno, yytext);
+        }
+    }
+
 %}
 
-// TODO: find replacement of %error-verbose
+// TODO: find replacement of 
 %union {
     int intValue;
     double doubleValue;
     char *stringValue;
 }
+
+%define parse.error verbose
 
 %start program
 
@@ -39,7 +49,6 @@
 
 %token <stringValue> IDENTIFIER
 %token LINE_COMMENT
-// block comment
 
 
 // priorities
@@ -72,7 +81,6 @@
 %left '(' ')'
 %nonassoc IF
 %nonassoc ELSE
-%precedence OBJECTDEF_EMPTY
 
 %type <intValue> expr term lvalue primary
 
@@ -82,7 +90,8 @@
 program: stmt_series;
 
 stmt_series: stmt_series stmt 
-    | /* empty */;
+    | /* empty */
+    ;
 
 stmt: expr ';'
     | ifstmt
@@ -94,6 +103,7 @@ stmt: expr ';'
     | block
     | funcdef
     | ';'
+    | LINE_COMMENT
     ;
 
 expr: assignexpr
@@ -103,6 +113,7 @@ expr: assignexpr
     | expr '/' expr
     | expr '%' expr
     | expr '>' expr
+    | expr '<' expr
     | expr GREATER_EQUAL expr
     | expr LESS_EQUAL expr
     | expr EQUAL_EQUAL expr
@@ -112,14 +123,14 @@ expr: assignexpr
     | term
     ;
 
-term: '(' expr ')'       { $$ = ($2); }
-    | '-' expr           { $$ = -$2; } %prec MINUS_UNARY
-    | NOT expr           { $$ = !$2; }
-    | PLUS_PLUS lvalue   { $$ = ++$2; }
-    | lvalue PLUS_PLUS   { $$ = $1++; }
-    | MINUS_MINUS lvalue { $$ = --$2; }
-    | lvalue MINUS_MINUS { $$ = $1--; }
-    | primary            { $$ = $1; }
+term: '(' expr ')'
+    | '-' expr    %prec MINUS_UNARY
+    | NOT expr
+    | PLUS_PLUS lvalue
+    | lvalue PLUS_PLUS
+    | MINUS_MINUS lvalue
+    | lvalue MINUS_MINUS
+    | primary
     ;
 
 assignexpr: lvalue '=' expr;
@@ -176,7 +187,8 @@ indexedelem: '{' expr ':' expr '}';
 
 block: '{' stmt_series '}'
 
-funcdef: FUNCTION [id] '('idlist')' block;
+funcdef: FUNCTION IDENTIFIER '(' idlist ')' block
+    | FUNCTION '(' idlist ')' block;
 
 const: INTCONST | REALCONST | MY_STRING | NIL | TRUE | FALSE;
 
@@ -184,7 +196,7 @@ idlist: IDENTIFIER idlist_alt
     | /* empty */
     ;
 
-idlist_alt: ',' IDENTIFIER 
+idlist_alt: ',' IDENTIFIER  idlist_alt
     | /* empty */
     ;
 
@@ -198,14 +210,9 @@ returnstmt: RETURN [expr];
 
 %%
 
-/* NOTE: maybe not needed as it is defined in lexer.l*/
-void yyerror(const char *msg) {
-    fprintf(stderr, "%s at line %s before token: %s\n", msg, yylineno, yytext);
-    fprintf(stderr, "INPUT NOT VALID\n");
-}
-
 
 int main (int argc, char **argv) {
+    //yydebug = 1;
     if (argc > 1) {
         if (!(yyin = fopen(argv[1], "r"))) {
             fprintf(stderr, "Cannot read file: %s\n", argv[1]);
