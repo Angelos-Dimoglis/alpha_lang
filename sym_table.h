@@ -19,7 +19,7 @@ class Symbol {
         enum SymbolType type;
         unsigned int line;
         unsigned int scope;
-        bool isActive;     
+        bool isActive;
 };
 
 class Variable : public Symbol {};
@@ -43,7 +43,6 @@ class SymTable {
         node* table[tableSize] = {nullptr};
         std::map<int, node*> scopeHeads;
         int hashFunction(const std::string& key);
-        node* scopeNode(unsigned int scope);
         bool libfunc_check(const std::string& name);
         const std::string library_functions[12] = {"print", "input", "objectmemberkeys", "objecttotalmembers",
             "objectcopy", "totalarguments", "argument", "typeof", 
@@ -62,6 +61,8 @@ class SymTable {
         void PrintTable();
 
         void freeTable();
+
+        node* scopeNode(unsigned int scope);
 };
 
 #endif

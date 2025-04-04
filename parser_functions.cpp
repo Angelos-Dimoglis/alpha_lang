@@ -5,25 +5,26 @@ using namespace std;
 extern SymTable sym_table;
 extern int yylineno;
 extern unsigned int scope;
+extern list<Variable*> args;
 
 void add_local_id(const string name){
-    if (sym_table.Lookup(name, scope, false)->name.empty()){
+    if (sym_table.Lookup(name, scope, false) == nullptr){
         try{
             sym_table.Insert(name, (scope == 0) ? GLOBAL : _LOCAL, yylineno, scope, list<Variable*>());
-        }catch(const std::runtime_error &e){cout << "debugging: " << e.what() << endl;}
+        }catch(const std::runtime_error &e){cout << "ERROR: " << e.what() << endl;}
     }
-    sym_table.PrintTable();
 }
 
 void lookup_global_id(const string name){
-    if (sym_table.Lookup(name, 0, false)->name.empty()){
-        cout << "Unable to locate global symbol: \"" << name << "\"" << endl;
+    if (sym_table.Lookup(name, 0, false) == nullptr){
+        cout << "ERROR: Unable to locate global symbol: \"" << name << "\"" << endl;
     }
 }
 
 
 void add_id(const string name){
-    if (sym_table.Lookup(name, scope, true)->name.empty()) {
+    Symbol* temp = sym_table.Lookup(name, scope, true);
+    if (temp == nullptr) {
         try{
             sym_table.Insert(name, (scope == 0) ? GLOBAL : _LOCAL, yylineno, scope, list<Variable*>());
         }catch(std::runtime_error &e){
@@ -31,17 +32,55 @@ void add_id(const string name){
             assert(0);
         }
     }
-    sym_table.PrintTable();
+    else if (temp->type == _LOCAL || temp->type == FORMAL) {
+        for (int i = scope-1; i >= temp->scope; i--) {
+            node* current = sym_table.scopeNode(i);
+            while (current != nullptr) {
+                if (current->sym.type == USERFUNC && current->sym.isActive) {
+                    cout << "ERROR: Symbol \"" << name << "\" isn't accesible in function \"" << current->sym.name << "\"." <<endl;
+                    return;
+                }
+                current = current->nextScope;
+            }
+        }
+    }
 }
 
-void add_func(const string name, list<Variable*> args) {
-    if (sym_table.Lookup(name, scope, false)->name.empty()) {
+void add_func(string name) {
+    static int anon_func_counter = 1;
+    Symbol* temp = sym_table.Lookup(name, scope, false);
+    if (name == "_f") {
+        name += to_string(anon_func_counter++);
+    }
+    if (temp == nullptr) {
         try {
             sym_table.Insert(name, USERFUNC, yylineno, scope, args);
-        }catch(const std::runtime_error &e){cout << "debugging: " << e.what() << endl;}
+        }catch(const std::runtime_error &e){cout << "ERROR: " << e.what() << endl;}
+        args.clear();
     }
     else {
-        cout << "Name \"" << name << "\" already exists in current scope." << endl;
+        cout << "ERROR: Symbol name \"" << name << "\" already exists in current scope (defined in line: " << temp->line << ")" << endl;
     }
-    sym_table.PrintTable();
+}
+
+
+void add_formal_argument(const string name){
+    if (sym_table.Lookup(name, scope, false) == nullptr) {
+        try {
+            sym_table.Insert(name, FORMAL, yylineno, scope, list<Variable*>());
+        }catch(const std::runtime_error &e){cout << "ERROR: " << e.what() << endl; return;}
+        args.push_back((Variable*)sym_table.Lookup(name, scope, false));
+    }
+    else {
+        cout << "ERROR: Formal argument \"" << name << "\" already exists in current scope." << endl;
+    }
+}
+
+void check_lvalue(const string name) {
+    Symbol* temp = sym_table.Lookup(name, scope, true);
+    if (temp != nullptr){
+        if (temp->type == USERFUNC || temp->type == LIBFUNC) {
+            cout << "ERROR: Cannot use function \"" << name << "\" as an lvalue." << endl;
+        }
+    }
 }

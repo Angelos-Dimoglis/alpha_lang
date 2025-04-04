@@ -1,7 +1,5 @@
 #include "sym_table.h"
 
-Symbol* emptySymbol = new Symbol;
-
 node* SymTable::scopeNode(unsigned int scope) {
     if (scopeHeads.find(scope) != scopeHeads.end()) {
         return scopeHeads[scope];
@@ -48,18 +46,13 @@ bool SymTable::libfunc_check(const std::string& name) {
 void SymTable::Insert(const std::string& name, enum SymbolType type, unsigned int line,
                         unsigned int scope, std::list<Variable*> arguments) {
     if (libfunc_check(name) && (type != LIBFUNC)) {
-        throw std::runtime_error("Name can't be a library function.");
+        throw std::runtime_error("Name \"" + name + "\" clashes with a library function.");
     }
     int index = hashFunction(name);
     Symbol* newSymbol = createSymbol(type);
     node* currentCollision = table[index];
     node* currentScope = scopeNode(scope);
-    if (name.empty()) {
-        newSymbol->name = "_f1";
-    }
-    else {
-        newSymbol->name = name;
-    }
+    newSymbol->name = name;
     newSymbol->scope = scope;
     newSymbol->line = line;
     newSymbol->type = type;
@@ -110,7 +103,7 @@ Symbol* SymTable::Lookup(const std::string& name, int scope, bool mode) {
             }
         }
     }
-    return emptySymbol;
+    return nullptr;
 }
 
 void SymTable::Hide(unsigned int scope) {
@@ -166,5 +159,4 @@ void SymTable::freeTable() {
             delete temp;
         }
     }
-    delete emptySymbol;
 }

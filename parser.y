@@ -11,6 +11,7 @@
     extern int yylineno;
     extern char *yytext;
     extern FILE *yyin;
+    extern int print_lexer_tokens;
     unsigned int scope = 0;
     SymTable sym_table;
     list<Variable*> args;
@@ -67,7 +68,7 @@
 %nonassoc IF
 %nonassoc ELSE
 
-%type <intValue> expr term lvalue primary
+%type <stringValue> expr term lvalue primary member
 
 %%
 
@@ -110,14 +111,14 @@ expr: assignexpr {}
 term: '(' expr ')' {}
     | '-' expr {} %prec MINUS_UNARY
     | NOT expr {}
-    | PLUS_PLUS lvalue {}
-    | lvalue PLUS_PLUS
-    | MINUS_MINUS lvalue {}
-    | lvalue MINUS_MINUS
+    | PLUS_PLUS lvalue {check_lvalue($2);}
+    | lvalue PLUS_PLUS {check_lvalue($1);}
+    | MINUS_MINUS lvalue {check_lvalue($2);}
+    | lvalue MINUS_MINUS {check_lvalue($1);}
     | primary
     ;
 
-assignexpr: lvalue '=' expr;
+assignexpr: lvalue '=' expr {check_lvalue($1);}; 
 
 primary: lvalue
     | call {}
@@ -127,21 +128,24 @@ primary: lvalue
     ;
 
 lvalue: IDENTIFIER {
+        $$ = $1;
         add_id($1);
     }
     | LOCAL IDENTIFIER {
+        $$ = $2;
         add_local_id($2);
     }
     | COLON_COLON IDENTIFIER {
+        $$ = $2;
         lookup_global_id($2);
     }
     | member {}
     ;
 
-member: lvalue '.' IDENTIFIER 
+member: lvalue '.' IDENTIFIER {$$ = $3;}
     | lvalue '[' expr ']'
-    | call '.' IDENTIFIER 
-    | call '[' expr ']'
+    | call '.' IDENTIFIER {$$ = $3;}
+    | call '[' expr ']' {}
     ;
 
 call: call '(' elist ')'
@@ -173,20 +177,20 @@ indexed_alt: ',' indexedelem indexed_alt
     | /* empty */
     ;
 
-indexedelem: '{' {scope++;} expr ':' expr '}' {sym_table.Hide(scope--);};
+indexedelem: '{' expr ':' expr '}';
 
 block: '{' {scope++;} stmt_series '}' {sym_table.Hide(scope--);};
 
-funcdef: FUNCTION IDENTIFIER '(' {scope++;} idlist ')' {scope--; add_func($2, args);} block
-    | FUNCTION '(' idlist ')' block;
+funcdef: FUNCTION IDENTIFIER '(' {scope++;} idlist ')' {scope--; add_func($2);} block
+    | FUNCTION '(' {scope++;} idlist ')' {scope--; add_func("_f");} block;
 
 const: INTCONST | REALCONST | MY_STRING | NIL | TRUE | FALSE;
 
-idlist: IDENTIFIER idlist_alt
+idlist: IDENTIFIER {add_formal_argument($1);} idlist_alt
     | /* empty */
     ;
 
-idlist_alt: ',' IDENTIFIER  idlist_alt
+idlist_alt: ',' IDENTIFIER {add_formal_argument($2);} idlist_alt
     | /* empty */
     ;
 
@@ -204,7 +208,10 @@ returnstmt: RETURN [expr];
 int main (int argc, char **argv) {
 
     // uncomment for debug mode
-    //yydebug = 1;
+    // yydebug = 1;
+
+    // Uncomment if you want to see the prints from the lexer for the tokens
+    // print_lexer_tokens = 1;
     if (argc > 1) {
         if (!(yyin = fopen(argv[1], "r"))) {
             fprintf(stderr, "Cannot read file: %s\n", argv[1]);
@@ -222,6 +229,9 @@ int main (int argc, char **argv) {
     fclose(yyout);
     free_token_list();
     */
+
+    sym_table.PrintTable();
+    sym_table.freeTable();  
 
     return 0;
 }

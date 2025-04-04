@@ -12,7 +12,7 @@ all: $(TARGET)
 lexer.cpp: lexer.l 
 	flex -o $@ $^
 
-parser.cpp: parser.ypp
+parser.cpp: parser.y
 	bison --yacc --defines -tdv $^ -o $@
 
 sym_table.out: sym_table.cpp
@@ -22,4 +22,4 @@ $(TARGET): lexer.cpp parser.cpp stack.c sym_table.cpp parser_functions.cpp
 	$(CC) $(CFLAGS) $^ -o $@
 
 clean:
-	rm lexer.cpp parser.{cpp,hpp,output} $(TARGET)
+	rm lexer.cpp parser.cpp parser.hpp parser.output $(TARGET)

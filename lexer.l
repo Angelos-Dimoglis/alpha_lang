@@ -100,18 +100,22 @@ void free_token_list () {
     
 }
 
+int print_lexer_tokens;
+
 void print_token(alpha_token_t* token) {
-    char tab[3];
-    strcpy(tab, (strlen(token->content) >= 5 ? "\t" : "\t\t"));
-    fprintf(yyout, "%d: #%d\t \"%s\"%s %s\t %s\t <-%s\n", 
-        token->numline,
-        token->numToken,
-        token->content,
-        tab,
-        token->category_1,
-        token->category_2,
-        token->type
-    );    
+    if (print_lexer_tokens){
+        char tab[3];
+        strcpy(tab, (strlen(token->content) >= 5 ? "\t" : "\t\t"));
+        fprintf(yyout, "%d: #%d\t \"%s\"%s %s\t %s\t <-%s\n", 
+            token->numline,
+            token->numToken,
+            token->content,
+            tab,
+            token->category_1,
+            token->category_2,
+            token->type
+        );    
+    }
 }
 
 char* toUpperCase(const char *str) {
@@ -137,7 +141,7 @@ void yyerror(const char *msg, int line_number) {
 
 int translate (char *str) {
 
-    if (strcmp(str, "if") == 0) { printf("\n\n%s\n\n", str); return IF;
+    if (strcmp(str, "if") == 0) { return IF;
     } else if( strcmp(str, "else") == 0) { return ELSE;
     } else if( strcmp(str, "while") == 0) { return WHILE;
     } else if( strcmp(str, "for") == 0) { return FOR;
