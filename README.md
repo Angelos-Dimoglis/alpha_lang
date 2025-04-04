@@ -30,3 +30,17 @@
  - [ ] Phase 3
  - [ ] Phase 4
  - [ ] Phase 5
+
+## dir structure
+* TODO
+
+* src -> cpp files
+* lib -> h files
+* obj -> o files
+
+* parser -> parser.*
+* lexer -> lexer.*
+
+separate main function
+
+
