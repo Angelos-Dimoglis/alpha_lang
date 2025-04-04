@@ -15,10 +15,7 @@ lexer.cpp: lexer.l
 parser.cpp: parser.y
 	bison --yacc --defines -tdv $^ -o $@
 
-sym_table.out: sym_table.cpp
-	$(CC) $(CFLAGS) $^ -o $@
-
-$(TARGET): lexer.cpp parser.cpp stack.c sym_table.cpp parser_functions.cpp
+$(TARGET): lexer.cpp parser.cpp sym_table.cpp parser_functions.cpp
 	$(CC) $(CFLAGS) $^ -o $@
 
 clean:
