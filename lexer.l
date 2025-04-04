@@ -8,7 +8,6 @@
 #include "stack.h"
 #include "parser.hpp"
 
-//FILE* yyout;
 Stack *stack;
 int start_of_string;
 
@@ -103,19 +102,19 @@ void free_token_list () {
 int print_lexer_tokens;
 
 void print_token(alpha_token_t* token) {
-    if (print_lexer_tokens){
-        char tab[3];
-        strcpy(tab, (strlen(token->content) >= 5 ? "\t" : "\t\t"));
-        fprintf(yyout, "%d: #%d\t \"%s\"%s %s\t %s\t <-%s\n", 
-            token->numline,
-            token->numToken,
-            token->content,
-            tab,
-            token->category_1,
-            token->category_2,
-            token->type
-        );    
-    }
+    if (!print_lexer_tokens) return;
+
+    char tab[3];
+    strcpy(tab, (strlen(token->content) >= 5 ? "\t" : "\t\t"));
+    fprintf(yyout, "%d: #%d\t \"%s\"%s %s\t %s\t <-%s\n", 
+        token->numline,
+        token->numToken,
+        token->content,
+        tab,
+        token->category_1,
+        token->category_2,
+        token->type
+    );    
 }
 
 char* toUpperCase(const char *str) {

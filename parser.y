@@ -1,6 +1,7 @@
 %{
     #include <stdio.h>
     #include <string.h>
+
     #include "stack.h"
     #include "parser_functions.h"
 
@@ -12,6 +13,7 @@
     extern char *yytext;
     extern FILE *yyin;
     extern int print_lexer_tokens;
+
     unsigned int scope = 0;
     SymTable sym_table;
     list<Variable*> args;
@@ -165,7 +167,8 @@ elist: expr elist_alt
     ;
 
 elist_alt: ',' expr elist_alt
-    | /* empty */;
+    | /* empty */
+    ;
 
 objectdef: '[' elist ']'
     | '[' indexed ']'
@@ -212,6 +215,7 @@ int main (int argc, char **argv) {
 
     // Uncomment if you want to see the prints from the lexer for the tokens
     // print_lexer_tokens = 1;
+
     if (argc > 1) {
         if (!(yyin = fopen(argv[1], "r"))) {
             fprintf(stderr, "Cannot read file: %s\n", argv[1]);
