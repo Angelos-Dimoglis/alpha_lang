@@ -210,7 +210,7 @@ int main (int argc, char **argv) {
     // yydebug = 1;
 
     // Uncomment if you want to see the prints from the lexer for the tokens
-    print_lexer_tokens = 1;
+    //print_lexer_tokens = 1;
 
     if (argc > 1) {
         if (!(yyin = fopen(argv[1], "r"))) {
