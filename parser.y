@@ -2,13 +2,11 @@
     #include <stdio.h>
     #include <string.h>
 
-    #include "stack.h"
     #include "parser_functions.h"
 
     extern int yylex (void);
     extern void yyerror(const char *msg, int line_number);
 
-    extern Stack *stack;
     extern int yylineno;
     extern char *yytext;
     extern FILE *yyin;
@@ -53,7 +51,6 @@
 %token COLON_COLON DOT_DOT
 
 %token <stringValue> IDENTIFIER
-%token LINE_COMMENT
 
 // priorities
 %right '='
@@ -90,7 +87,6 @@ stmt: expr ';'
     | block
     | funcdef
     | ';'
-    | LINE_COMMENT
     ;
 
 expr: assignexpr {}
@@ -214,7 +210,7 @@ int main (int argc, char **argv) {
     // yydebug = 1;
 
     // Uncomment if you want to see the prints from the lexer for the tokens
-    // print_lexer_tokens = 1;
+    print_lexer_tokens = 1;
 
     if (argc > 1) {
         if (!(yyin = fopen(argv[1], "r"))) {
@@ -225,7 +221,6 @@ int main (int argc, char **argv) {
         yyin = stdin;
 
 
-    stack = initStack();
     yyparse();
 
     /* TODO: needed?

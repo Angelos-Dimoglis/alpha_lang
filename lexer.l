@@ -4,11 +4,11 @@
 #include <stdlib.h>
 #include <assert.h>
 #include <ctype.h>
+#include <stack>
 
-#include "stack.h"
 #include "parser.hpp"
 
-Stack *stack;
+std::stack<int> comment_stack;
 int start_of_string;
 
 typedef struct alpha_token {
@@ -395,21 +395,20 @@ BLOCK_COMMENT_END   ("*/")
     alpha_token_t* token = create_token(
         yylineno, content, "COMMENT", "LINE_COMMENT", "enumerated");
     print_token(token);
-
-    return LINE_COMMENT;
 }
 
 {BLOCK_COMMENT_START} {
-    push(stack, yylineno);
+    comment_stack.push(yylineno);
     BEGIN(IN_COMMENT); 
 }
 <IN_COMMENT>{
     {BLOCK_COMMENT_START} {
-        push(stack, yylineno);
+        comment_stack.push(yylineno);
         BEGIN(IN_COMMENT); 
     }
     {BLOCK_COMMENT_END} {
-        int start = pop(stack), end = yylineno;
+        int start = comment_stack.top(); comment_stack.pop();
+        int end = yylineno;
         char range_str [100];
 
         snprintf(range_str, sizeof(range_str), "%d - %d", start, end);
@@ -418,7 +417,7 @@ BLOCK_COMMENT_END   ("*/")
             start, range_str, "COMMENT", "BLOCK_COMMENT", "enumerated");
         print_token(token);
 
-        if (isEmpty(stack))
+        if (comment_stack.empty())
             BEGIN(INITIAL);
     }
     [^\/*\n]+
@@ -426,7 +425,7 @@ BLOCK_COMMENT_END   ("*/")
     "*"
     \n
     <<EOF>> {
-        yyerror("Unclosed comment", peek(stack));
+        yyerror("Unclosed comment", comment_stack.top());
     }
 }
 
