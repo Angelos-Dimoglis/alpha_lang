@@ -13,7 +13,7 @@ void add_local_id(const string name) {
 
     try {
         sym_table.Insert(name, (scope == 0) ? GLOBAL : _LOCAL, yylineno, scope, list<Variable*>());
-    } catch(const std::runtime_error &e){
+    } catch(const std::runtime_error &e) {
         cout << "ERROR: " << e.what() << endl;
     }
 }
@@ -29,9 +29,9 @@ void add_id(const string name) {
     Symbol* temp = sym_table.Lookup(name, scope, true);
 
     if (temp == nullptr) {
-        try{
+        try {
             sym_table.Insert(name, (scope == 0) ? GLOBAL : _LOCAL, yylineno, scope, list<Variable*>());
-        }catch(std::runtime_error &e){
+        } catch(std::runtime_error &e) {
             cout << e.what() << endl;
             assert(0);
         }
@@ -39,17 +39,16 @@ void add_id(const string name) {
         return;
     }
 
-    if (temp->type == _LOCAL || temp->type == FORMAL) {
-        for (int i = scope-1; i >= temp->scope; i--) {
-            for (
-                node* p = sym_table.scopeNode(i); p != nullptr; p = p->nextScope
-            ) {
-                if (p->sym.type == USERFUNC && p->sym.isActive) {
-                    cout << "ERROR: Symbol \"" << name <<
-                        "\" isn't accesible in function \"" << p->sym.name <<
-                        "\"." <<endl;
-                    return;
-                }
+    if (!(temp->type == _LOCAL || temp->type == FORMAL))
+        return;
+
+    for (int i = scope-1; i >= temp->scope; i--) {
+        for (node* p = sym_table.scopeNode(i); p != nullptr; p = p->nextScope) {
+            if (p->sym.type == USERFUNC && p->sym.isActive) {
+                cout << "ERROR: Symbol \"" << name <<
+                    "\" isn't accesible in function \"" << p->sym.name <<
+                    "\"." <<endl;
+                return;
             }
         }
     }
