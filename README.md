@@ -41,6 +41,11 @@
 * parser -> parser.*
 * lexer -> lexer.*
 
-separate main function
+* separate main function
 
+## phase 3
+
+* typechecking
+* runtime errors
+* expretion evaluation and checking
 
