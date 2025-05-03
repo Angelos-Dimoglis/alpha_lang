@@ -1,6 +1,8 @@
 %{
     #include <stdio.h>
     #include <string.h>
+    #include <stack>
+    #include <assert.h>
 
     #include "parser_functions.h"
 
@@ -20,6 +22,42 @@
         if (strcmp(msg, "syntax error, unexpected end of file"))
             fprintf(stderr, "%s at line %d before token: %s\n",
                 msg, yylineno, yytext);
+    }
+
+    std::stack<int> loopcounter;
+
+    void push_loopcounter() {
+        loopcounter.push(0);
+    }
+    void pop_loopcounter() {
+        int temp = loopcounter.top();
+        loopcounter.pop();
+        assert(temp == 0);
+    }
+
+
+
+    void increase_loopcounter() {
+        int temp = loopcounter.top() + 1;
+        loopcounter.pop();
+        loopcounter.push(temp);
+    }
+    void decrease_loopcounter() {
+        int temp = loopcounter.top() - 1;
+        loopcounter.pop();
+        loopcounter.push(temp);
+    }
+
+    void break_continue_valid(string break_or_continue) {
+        if (loopcounter.empty() || loopcounter.top() == 0) {
+            yyerror(("Use of \'" + break_or_continue + "\' while not in a loop").c_str());
+        }
+    }
+
+    void return_valid() {
+        if (loopcounter.empty()) {
+            yyerror("Use of \'return\' while not in a function");
+        }
     }
 
 %}
@@ -82,8 +120,8 @@ stmt: expr ';'
     | whilestmt
     | forstmt
     | returnstmt
-    | BREAK ';'
-    | CONTINUE ';'
+    | BREAK ';' {break_continue_valid("break");}
+    | CONTINUE ';' {break_continue_valid("continue");}
     | block
     | funcdef
     | ';'
@@ -180,8 +218,10 @@ indexedelem: '{' expr ':' expr '}';
 
 block: '{' {scope++;} stmt_series '}' {sym_table.Hide(scope--);};
 
-funcdef: FUNCTION IDENTIFIER '(' {scope++;} idlist ')' {scope--; add_func($2);} block
-    | FUNCTION '(' {scope++;} idlist ')' {scope--; add_func("_f");} block;
+funcblockstart: { push_loopcounter(); }
+funcblockend: { pop_loopcounter(); }
+funcdef: FUNCTION IDENTIFIER '(' {scope++;} idlist ')' {scope--; add_func($2);} funcblockstart block funcblockend
+    | FUNCTION '(' {scope++;} idlist ')' {scope--; add_func("_f");} funcblockstart block funcblockend;
 
 const: INTCONST | REALCONST | MY_STRING | NIL | TRUE | FALSE;
 
@@ -197,9 +237,13 @@ ifstmt: IF '(' expr ')' stmt %prec IF
     | IF '(' expr ')' stmt ELSE stmt
     ;
 
-whilestmt: WHILE '(' expr ')' stmt;
-forstmt: FOR '(' elist';' expr';' elist')' stmt;
-returnstmt: RETURN [expr];
+loopstart: { increase_loopcounter; }
+loopend: { decrease_loopcounter; }
+whilestmt: WHILE '(' expr ')' loopstart stmt loopend;
+forstmt: FOR '(' elist';' expr';' elist')' loopstart stmt loopend;
+returnstmt: RETURN {return_valid();}
+    | RETURN  expr {return_valid();}
+    ;
 
 %%
 
