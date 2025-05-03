@@ -60,6 +60,9 @@
         }
     }
 
+    /* Thought: Every rule that uses expr should have a command next to it to reset the temporary variables that are used
+        to calculate that expr, so that they are free to be used for any proceeding expr */
+
 %}
 
 %define parse.error detailed
