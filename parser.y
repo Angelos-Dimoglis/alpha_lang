@@ -29,19 +29,19 @@
     void push_loopcounter() {
         loopcounter.push(0);
     }
+
     void pop_loopcounter() {
         int temp = loopcounter.top();
         loopcounter.pop();
         assert(temp == 0);
     }
 
-
-
     void increase_loopcounter() {
         int temp = loopcounter.top() + 1;
         loopcounter.pop();
         loopcounter.push(temp);
     }
+
     void decrease_loopcounter() {
         int temp = loopcounter.top() - 1;
         loopcounter.pop();
@@ -60,8 +60,47 @@
         }
     }
 
-    /* Thought: Every rule that uses expr should have a command next to it to reset the temporary variables that are used
-        to calculate that expr, so that they are free to be used for any proceeding expr */
+    enum iopcode {
+        assign = 0, add, sub, mul, div, mod, uminus,
+        and, or, not,
+        if_eq, if_noteq, if_lesseq, if_greatereq, if_less, if_greater,
+        call, param, ret, get_ret_val, func_start, func_end,
+        table_create, table_get_elem, table_set_elem
+    }
+
+    enum expr_t {
+        var_e = 0, table_item_e,
+        program_func_e, library_func_e,
+        arith_expr_e, bool_expr_e, assign_expr_e, new_table_e,
+        const_num_e, const_bool_e, const_string_e
+    }
+
+    struct expr {
+        expr_t type;
+        symbol *sym;
+        expr *index;
+        double num_const;
+        char *str_const;
+        unsigned char bool_const;
+        expr *next;
+    }
+
+    struct quad {
+        iopcode op;
+        expr *result;
+        expr *arg1;
+        expr *arg2;
+        unsigned label;
+        unsigned line;
+    }
+
+    quad *quads = (quad*) 0;
+    unsigned total = 0;
+    unsigned int curr_quad = 0;
+
+    #define EXPAND_SIZE 1024
+    #define CURR_SIZE (total*sizeof(quad))
+    #define NEW_SIZE (EXPAND_SIZE*sizeof(quad)+CURRSIZE)
 
 %}
 
