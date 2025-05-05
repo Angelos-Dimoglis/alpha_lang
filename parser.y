@@ -61,38 +61,38 @@
     }
 
     enum iopcode {
-        assign = 0, add, sub, mul, div, mod, uminus,
-        and, or, not,
+        assign = 0, add, sub, mul, _div, mod, uminus,
+        _and, _or, _not,
         if_eq, if_noteq, if_lesseq, if_greatereq, if_less, if_greater,
         call, param, ret, get_ret_val, func_start, func_end,
         table_create, table_get_elem, table_set_elem
-    }
+    };
 
     enum expr_t {
         var_e = 0, table_item_e,
         program_func_e, library_func_e,
         arith_expr_e, bool_expr_e, assign_expr_e, new_table_e,
         const_num_e, const_bool_e, const_string_e
-    }
+    };
 
     struct expr {
         expr_t type;
-        symbol *sym;
+        Symbol *sym;
         expr *index;
         double num_const;
         char *str_const;
         unsigned char bool_const;
         expr *next;
-    }
+    };
 
     struct quad {
         iopcode op;
-        expr *result;
         expr *arg1;
         expr *arg2;
+        expr *result;
         unsigned label;
         unsigned line;
-    }
+    };
 
     quad *quads = (quad*) 0;
     unsigned total = 0;
