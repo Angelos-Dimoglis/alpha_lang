@@ -22,7 +22,8 @@ using namespace std;
 
 enum SymbolType {
     global, local, formal,
-    userfunc, libfunc
+    userfunc, libfunc,
+    hidden
 };
 
 class Symbol {
@@ -72,7 +73,7 @@ class SymTable {
         void freeTable();
 
         node* collisionNode(const string& key);
-        
+
         node* scopeNode(unsigned int scope);
 };
 
