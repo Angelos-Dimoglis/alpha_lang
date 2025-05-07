@@ -1,11 +1,15 @@
 #include "parser_functions.h"
 #include <cassert>
+
 using namespace std;
 
 extern SymTable sym_table;
 extern int yylineno;
 extern unsigned int scope;
 extern list<Variable*> args;
+
+#define ALL_SCOPES true
+#define THIS_SCOPE false
 
 void add_local_id(const string name) {
     if (sym_table.Lookup(name, scope, false) != nullptr)

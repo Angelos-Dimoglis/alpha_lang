@@ -170,11 +170,21 @@ stmt: expr ';'
     ;
 
 expr: assignexpr {}
-    | expr '+' expr
-    | expr '-' expr
-    | expr '*' expr
-    | expr '/' expr
-    | expr '%' expr
+    | expr '+' expr {
+        f(expr1, expr2, operator);
+    }
+    | expr '-' expr {
+
+    }
+    | expr '*' expr {
+
+    }
+    | expr '/' expr {
+
+    }
+    | expr '%' expr {
+
+    }
     | expr '>' expr
     | expr '<' expr
     | expr GREATER_EQUAL expr
@@ -314,6 +324,8 @@ int main (int argc, char **argv) {
     fclose(yyout);
     free_token_list();
     */
+
+    // TODO: write all quads in a file
 
     sym_table.PrintTable();
     sym_table.freeTable();  
