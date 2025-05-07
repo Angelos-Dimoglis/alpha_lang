@@ -72,8 +72,6 @@ class SymTable {
         void PrintTable();
 
         void freeTable();
-
-        node* scopeNode(unsigned int scope);
 };
 
 #endif
