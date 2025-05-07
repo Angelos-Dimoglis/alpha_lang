@@ -283,8 +283,8 @@ loopstart: { increase_loopcounter; }
 loopend: { decrease_loopcounter; }
 whilestmt: WHILE '(' expr ')' loopstart stmt loopend;
 forstmt: FOR '(' elist';' expr';' elist')' loopstart stmt loopend;
-returnstmt: RETURN {return_valid();}
-    | RETURN  expr {return_valid();}
+returnstmt: RETURN ';' {return_valid();}
+    | RETURN  expr ';' {return_valid();}
     ;
 
 %%
