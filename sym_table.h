@@ -53,8 +53,6 @@ class SymTable {
     private:
         unordered_map<string, node*> table;
         map<int, node*> scopeHeads;
-        node* collisionNode(const string& key);
-        node* scopeNode(unsigned int scope);
         const std::string library_functions[12] = {"print", "input", "objectmemberkeys", "objecttotalmembers",
             "objectcopy", "totalarguments", "argument", "typeof", 
             "strtonum", "sqrt", "cos", "sin"};
@@ -72,6 +70,10 @@ class SymTable {
         void PrintTable();
 
         void freeTable();
+
+        node* collisionNode(const string& key);
+        
+        node* scopeNode(unsigned int scope);
 };
 
 #endif
