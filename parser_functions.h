@@ -10,14 +10,14 @@
 
 using namespace std;
 
-void add_local_id(const string name);
+Symbol* add_local_id(const string name);
 
-void lookup_global_id(const string name);
+Symbol* lookup_global_id(const string name);
 
-void add_id(const string name);
+Symbol* add_id(const string name);
 
-void add_func(const string name);
+Symbol* add_func(const string name);
 
-void add_formal_argument(const string name);
+Symbol* add_formal_argument(const string name);
 
-void check_lvalue(const string name);
+Symbol* check_lvalue(const string name);
