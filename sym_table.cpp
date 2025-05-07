@@ -1,7 +1,5 @@
 #include "sym_table.h"
 
-Symbol* emptySymbol = new Symbol;
-
 node* SymTable::scopeNode(unsigned int scope) {
     if (scopeHeads.find(scope) != scopeHeads.end()) {
         return scopeHeads[scope];
@@ -154,5 +152,4 @@ void SymTable::freeTable() {
         delete pair.second;
     }
     table.clear();
-    delete emptySymbol;
 }
