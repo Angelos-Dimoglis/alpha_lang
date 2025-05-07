@@ -6,6 +6,8 @@
 
     #include "parser_functions.h"
 
+    #define bobo 3
+
     extern int yylex (void);
     extern void yyerror(const char *msg, int line_number);
 
