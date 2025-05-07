@@ -10,12 +10,12 @@ extern list<Variable*> args;
 
 
 
-void add_local_id(const string name) {
+void addlocal_id(const string name) {
     if (sym_table.Lookup(name, scope, THIS_SCOPE) != nullptr)
         return;
 
     try {
-        sym_table.Insert(name, (scope == 0) ? GLOBAL : _LOCAL, yylineno, scope, list<Variable*>());
+        sym_table.Insert(name, (scope == 0) ? global : local, yylineno, scope, list<Variable*>());
     } catch(const std::runtime_error &e) {
         cout << "ERROR: " << e.what() << endl;
     }
@@ -33,7 +33,7 @@ void add_id(const string name) {
 
     if (temp == nullptr) {
         try {
-            sym_table.Insert(name, (scope == 0) ? GLOBAL : _LOCAL, yylineno, scope, list<Variable*>());
+            sym_table.Insert(name, (scope == 0) ? global : local, yylineno, scope, list<Variable*>());
         } catch(std::runtime_error &e) {
             cout << e.what() << endl;
             assert(0);
@@ -42,12 +42,12 @@ void add_id(const string name) {
         return;
     }
 
-    if (!(temp->type == _LOCAL || temp->type == FORMAL))
+    if (!(temp->type == local || temp->type == formal))
         return;
 
     for (int i = scope-1; i >= temp->scope; i--) {
         for (node* p = sym_table.scopeNode(i); p != nullptr; p = p->nextScope) {
-            if (p->sym.type == USERFUNC && p->sym.isActive) {
+            if (p->sym.type == userfunc && p->sym.isActive) {
                 cout << "ERROR: Symbol \"" << name <<
                     "\" isn't accesible in function \"" << p->sym.name <<
                     "\"." <<endl;
@@ -66,7 +66,7 @@ void add_func(string name) {
 
     if (temp == nullptr) {
         try {
-            sym_table.Insert(name, USERFUNC, yylineno, scope, args);
+            sym_table.Insert(name, userfunc, yylineno, scope, args);
         } catch(const std::runtime_error &e) {
             cout << "ERROR: " << e.what() << endl;
         }
@@ -81,11 +81,11 @@ void add_func(string name) {
 
 void add_formal_argument(const string name){
     if (sym_table.Lookup(name, scope, THIS_SCOPE) != nullptr)
-        cout << "ERROR: Formal argument \"" << name <<
+        cout << "ERROR: formal argument \"" << name <<
             "\" already exists in current scope." << endl;
 
     try {
-        sym_table.Insert(name, FORMAL, yylineno, scope, list<Variable*>());
+        sym_table.Insert(name, formal, yylineno, scope, list<Variable*>());
     } catch(const std::runtime_error &e) {
         cout << "ERROR: " << e.what() << endl;
         return;
@@ -97,7 +97,7 @@ void add_formal_argument(const string name){
 void check_lvalue(const string name) {
     Symbol* temp = sym_table.Lookup(name, scope, ALL_SCOPES);
 
-    if (temp != nullptr && (temp->type == USERFUNC || temp->type == LIBFUNC))
+    if (temp != nullptr && (temp->type == userfunc || temp->type == libfunc))
         cout << "ERROR: Cannot use function \"" << name << 
             "\" as an lvalue." << endl;
 }
