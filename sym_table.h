@@ -6,14 +6,19 @@
 #include <iostream>
 #include <memory>
 #include <map>
+#include <unordered_map>
 #include <stdexcept>
 
+<<<<<<< HEAD
 #ifndef ALL_SCOPES
 
 #define ALL_SCOPES true
 #define THIS_SCOPE false
 
 #endif
+=======
+using namespace std;
+>>>>>>> 614beb4 (added new sym table)
 
 enum SymbolType {
     GLOBAL, _LOCAL, FORMAL,
@@ -22,7 +27,7 @@ enum SymbolType {
 
 class Symbol {
     public:
-        std::string name;
+        string name;
         enum SymbolType type;
         unsigned int line;
         unsigned int scope;
@@ -33,7 +38,7 @@ class Variable : public Symbol {};
 
 class Function : public Symbol {
     public:
-        std::list<Variable*> arguments;
+        list<Variable*> arguments;
 };
 
 struct node {
@@ -46,6 +51,7 @@ struct node {
 
 class SymTable {
     private:
+<<<<<<< HEAD
         static const int tableSize = 1987;
         node* table[tableSize] = {nullptr};
         std::map<int, node*> scopeHeads;
@@ -55,13 +61,19 @@ class SymTable {
             "objectcopy", "totalarguments", "argument", "typeof", 
             "strtonum", "sqrt", "cos", "sin"};
         void Initialize();
+=======
+        unordered_map<string, node*> table;
+        map<int, node*> scopeHeads;
+        node* collisionNode(const string& key);
+        node* scopeNode(unsigned int scope);
+>>>>>>> 614beb4 (added new sym table)
     public:
         SymTable();
 
-        void Insert(const std::string& name, enum SymbolType type, unsigned int line,
-                    unsigned int scope, std::list<Variable*> arguments);
+        void Insert(const string& name, enum SymbolType type, unsigned int line,
+                    unsigned int scope, list<Variable*> arguments);
 
-        Symbol* Lookup(const std::string& name, int scope, bool mode);
+        Symbol* Lookup(const string& name, int scope, bool mode);
 
         void Hide(unsigned int scope);
         
