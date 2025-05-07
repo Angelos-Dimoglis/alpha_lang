@@ -1,14 +1,10 @@
 #include "parser_functions.h"
 #include <cassert>
 
-using namespace std;
-
 extern SymTable sym_table;
 extern int yylineno;
 extern unsigned int scope;
 extern list<Variable*> args;
-
-
 
 void addlocal_id(const string name) {
     if (sym_table.Lookup(name, scope, THIS_SCOPE) != nullptr)
@@ -16,7 +12,7 @@ void addlocal_id(const string name) {
 
     try {
         sym_table.Insert(name, (scope == 0) ? global : local, yylineno, scope, list<Variable*>());
-    } catch(const std::runtime_error &e) {
+    } catch(const runtime_error &e) {
         cout << "ERROR: " << e.what() << endl;
     }
 }
@@ -34,7 +30,7 @@ void add_id(const string name) {
     if (temp == nullptr) {
         try {
             sym_table.Insert(name, (scope == 0) ? global : local, yylineno, scope, list<Variable*>());
-        } catch(std::runtime_error &e) {
+        } catch(runtime_error &e) {
             cout << e.what() << endl;
             assert(0);
         }
@@ -67,7 +63,7 @@ void add_func(string name) {
     if (temp == nullptr) {
         try {
             sym_table.Insert(name, userfunc, yylineno, scope, args);
-        } catch(const std::runtime_error &e) {
+        } catch(const runtime_error &e) {
             cout << "ERROR: " << e.what() << endl;
         }
         args.clear();
@@ -86,7 +82,7 @@ void add_formal_argument(const string name){
 
     try {
         sym_table.Insert(name, formal, yylineno, scope, list<Variable*>());
-    } catch(const std::runtime_error &e) {
+    } catch(const runtime_error &e) {
         cout << "ERROR: " << e.what() << endl;
         return;
     }
