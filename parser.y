@@ -83,6 +83,9 @@
         char *str_const;
         unsigned char bool_const;
         expr *next;
+
+        expr(expr_t type) : type(type), sym(nullptr), index(nullptr), num_const(0), str_const(nullptr),
+                            bool_const(false), next(nullptr) {};
     };
 
     struct quad {
@@ -170,11 +173,21 @@ stmt: expr ';'
     ;
 
 expr: assignexpr {}
-    | expr '+' expr 
-    | expr '-' expr
-    | expr '*' expr
-    | expr '/' expr
-    | expr '%' expr
+    | expr '+' expr {
+        f(expr1, expr2, operator);
+    }
+    | expr '-' expr {
+
+    }
+    | expr '*' expr {
+
+    }
+    | expr '/' expr {
+
+    }
+    | expr '%' expr {
+
+    }
     | expr '>' expr
     | expr '<' expr
     | expr GREATER_EQUAL expr
@@ -206,8 +219,10 @@ primary: lvalue
     ;
 
 lvalue: IDENTIFIER {
-        $$ = $1;
+        // $$ = $1;
+        Symbol sym;
         add_id($1);
+        $$ -> sym = sym;
     }
     | LOCAL IDENTIFIER {
         $$ = $2;
