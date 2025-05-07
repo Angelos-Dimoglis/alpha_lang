@@ -9,20 +9,20 @@
 #include <unordered_map>
 #include <stdexcept>
 
-<<<<<<< HEAD
+#define LIB_MAX 12
+
 #ifndef ALL_SCOPES
 
 #define ALL_SCOPES true
 #define THIS_SCOPE false
 
 #endif
-=======
+
 using namespace std;
->>>>>>> 614beb4 (added new sym table)
 
 enum SymbolType {
-    GLOBAL, _LOCAL, FORMAL,
-    USERFUNC, LIBFUNC
+    global, local, formal,
+    userfunc, libfunc
 };
 
 class Symbol {
@@ -51,22 +51,14 @@ struct node {
 
 class SymTable {
     private:
-<<<<<<< HEAD
-        static const int tableSize = 1987;
-        node* table[tableSize] = {nullptr};
-        std::map<int, node*> scopeHeads;
-        int hashFunction(const std::string& key);
-        bool libfunc_check(const std::string& name);
-        const std::string library_functions[12] = {"print", "input", "objectmemberkeys", "objecttotalmembers",
-            "objectcopy", "totalarguments", "argument", "typeof", 
-            "strtonum", "sqrt", "cos", "sin"};
-        void Initialize();
-=======
         unordered_map<string, node*> table;
         map<int, node*> scopeHeads;
         node* collisionNode(const string& key);
         node* scopeNode(unsigned int scope);
->>>>>>> 614beb4 (added new sym table)
+        const std::string library_functions[12] = {"print", "input", "objectmemberkeys", "objecttotalmembers",
+            "objectcopy", "totalarguments", "argument", "typeof", 
+            "strtonum", "sqrt", "cos", "sin"};
+        bool libfunc_check(const string& name);
     public:
         SymTable();
 

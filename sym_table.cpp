@@ -2,10 +2,6 @@
 
 Symbol* emptySymbol = new Symbol;
 
-const string library_functions[12] = {"print", "input", "objectmemberkeys", "objecttotalmembers",
-                                        "objectcopy", "totalarguments", "argument", "typeof", 
-                                        "strtonum", "sqrt", "cos", "sin"};
-
 node* SymTable::scopeNode(unsigned int scope) {
     if (scopeHeads.find(scope) != scopeHeads.end()) {
         return scopeHeads[scope];
@@ -30,14 +26,13 @@ Symbol* createSymbol(enum SymbolType type) {
 }
 
 SymTable::SymTable() {
-    for (int i = 0; i < 12; i++) {
-        Insert(library_functions[i], LIBFUNC, 0, 0, list<Variable*>());
+    for (int i = 0; i < LIB_MAX; i++) {
+        Insert(library_functions[i], libfunc, 0, 0, list<Variable*>());
     }
 }
 
-//bool SymTable::libfunc_check(const std::string& name) {
-bool libfunc_check(const string& name) {
-    for (int i = 0; i < 12; i++) {
+bool SymTable::libfunc_check(const string& name) {
+    for (int i = 0; i < LIB_MAX; i++) {
         if (name == library_functions[i]) {
             return true;
         }
@@ -47,8 +42,8 @@ bool libfunc_check(const string& name) {
 
 void SymTable::Insert(const string& name, enum SymbolType type, unsigned int line,
                         unsigned int scope, list<Variable*> arguments) {
-    if (libfunc_check(name) && (type != LIBFUNC)) {
-        throw std::runtime_error("Name \"" + name + "\" clashes with a library function.");
+    if (libfunc_check(name) && (type != libfunc)) {
+        throw runtime_error("Name \"" + name + "\" clashes with a library function.");
     }
     Symbol* newSymbol = createSymbol(type);
     node* currentCollision = collisionNode(name);
@@ -58,7 +53,7 @@ void SymTable::Insert(const string& name, enum SymbolType type, unsigned int lin
     newSymbol->line = line;
     newSymbol->type = type;
     newSymbol->isActive = true;
-    if (type == USERFUNC) {
+    if (type == userfunc) {
         ((Function*)newSymbol)->arguments = arguments;
     }
     node* n = new node(*newSymbol);
@@ -93,7 +88,7 @@ Symbol* SymTable::Lookup(const string& name, int scope, bool mode) {
             current = current->nextScope;
         }
     }
-    else if (mode == ALL_SCOPES){
+    else if (mode == ALL_SCOPES) {
         for (int i = scope; i >= 0; i--) {
             for (current = scopeNode(i); current != nullptr; current = current->nextScope) {
                 if (current->sym.name == name && current->sym.isActive) {
@@ -121,19 +116,19 @@ void SymTable::PrintTable() {
             cout << "\"" << current->sym.name << "\" ";
             switch (current->sym.type)
             {
-            case GLOBAL:
-                std::cout << "[global variable] ";
+            case global:
+                cout << "[global variable] ";
                 break;
-            case _LOCAL:
-                std::cout << "[local variable] ";
+            case local:
+                cout << "[local variable] ";
                 break;
-            case FORMAL:
+            case formal:
                 cout << "[formal argument] ";
                 break;
-            case USERFUNC:
+            case userfunc:
                 cout << "[user function] ";
                 break;
-            case LIBFUNC:
+            case libfunc:
                 cout << "[library function] ";
                 break;
             default:
@@ -158,7 +153,6 @@ void SymTable::freeTable() {
         }
         delete pair.second;
     }
-    // may delete those lines
     table.clear();
     delete emptySymbol;
 }
