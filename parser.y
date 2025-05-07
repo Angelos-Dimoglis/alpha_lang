@@ -4,6 +4,8 @@
     #include <stack>
     #include <assert.h>
 
+    #define katebenis 1024
+
     #include "parser_functions.h"
 
     #define bobo 3
