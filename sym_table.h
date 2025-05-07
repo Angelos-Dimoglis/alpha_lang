@@ -8,6 +8,13 @@
 #include <map>
 #include <stdexcept>
 
+#ifndef ALL_SCOPES
+
+#define ALL_SCOPES true
+#define THIS_SCOPE false
+
+#endif
+
 enum SymbolType {
     GLOBAL, _LOCAL, FORMAL,
     USERFUNC, LIBFUNC

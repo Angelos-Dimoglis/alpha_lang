@@ -1,6 +1,13 @@
 #pragma once
 #include "sym_table.h"
 
+#ifndef ALL_SCOPES
+
+#define ALL_SCOPES true
+#define THIS_SCOPE false
+
+#endif
+
 using namespace std;
 
 void add_local_id(const string name);

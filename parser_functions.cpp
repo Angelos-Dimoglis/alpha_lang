@@ -8,11 +8,10 @@ extern int yylineno;
 extern unsigned int scope;
 extern list<Variable*> args;
 
-#define ALL_SCOPES true
-#define THIS_SCOPE false
+
 
 void add_local_id(const string name) {
-    if (sym_table.Lookup(name, scope, false) != nullptr)
+    if (sym_table.Lookup(name, scope, THIS_SCOPE) != nullptr)
         return;
 
     try {
@@ -23,14 +22,14 @@ void add_local_id(const string name) {
 }
 
 void lookup_global_id(const string name) {
-    if (sym_table.Lookup(name, 0, false) == nullptr)
+    if (sym_table.Lookup(name, 0, THIS_SCOPE) == nullptr)
         cout << "ERROR: Unable to locate global symbol: \"" <<
             name << "\"" << endl;
 }
 
 
 void add_id(const string name) {
-    Symbol* temp = sym_table.Lookup(name, scope, true);
+    Symbol* temp = sym_table.Lookup(name, scope, ALL_SCOPES);
 
     if (temp == nullptr) {
         try {
@@ -60,7 +59,7 @@ void add_id(const string name) {
 
 void add_func(string name) {
     static int anon_func_counter = 1;
-    Symbol* temp = sym_table.Lookup(name, scope, false);
+    Symbol* temp = sym_table.Lookup(name, scope, THIS_SCOPE);
 
     if (name == "_f")
         name += to_string(anon_func_counter++);
@@ -81,7 +80,7 @@ void add_func(string name) {
 
 
 void add_formal_argument(const string name){
-    if (sym_table.Lookup(name, scope, false) != nullptr)
+    if (sym_table.Lookup(name, scope, THIS_SCOPE) != nullptr)
         cout << "ERROR: Formal argument \"" << name <<
             "\" already exists in current scope." << endl;
 
@@ -92,11 +91,11 @@ void add_formal_argument(const string name){
         return;
     }
 
-    args.push_back((Variable*)sym_table.Lookup(name, scope, false));
+    args.push_back((Variable*)sym_table.Lookup(name, scope, THIS_SCOPE));
 }
 
 void check_lvalue(const string name) {
-    Symbol* temp = sym_table.Lookup(name, scope, true);
+    Symbol* temp = sym_table.Lookup(name, scope, ALL_SCOPES);
 
     if (temp != nullptr && (temp->type == USERFUNC || temp->type == LIBFUNC))
         cout << "ERROR: Cannot use function \"" << name << 

@@ -83,7 +83,7 @@ void SymTable::Insert(const std::string& name, enum SymbolType type, unsigned in
 
 Symbol* SymTable::Lookup(const std::string& name, int scope, bool mode) {
     node* current;
-    if (!mode) {
+    if (mode == THIS_SCOPE) {
         current = scopeNode(scope);
         while (current != nullptr) {
             if (current->sym.name == name && current->sym.isActive) {
@@ -92,7 +92,7 @@ Symbol* SymTable::Lookup(const std::string& name, int scope, bool mode) {
             current = current->nextScope;
         }
     }
-    else {
+    else if (mode == ALL_SCOPES){
         for (int i = scope; i >= 0; i--) {
             current = scopeNode(i);
             while (current != nullptr) {
