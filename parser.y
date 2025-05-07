@@ -80,12 +80,13 @@
         Symbol *sym;
         expr *index;
         double num_const;
-        char *str_const;
+        string str_const;
         unsigned char bool_const;
         expr *next;
 
-        expr(expr_t type) : type(type), sym(nullptr), index(nullptr), num_const(0), str_const(nullptr),
-                            bool_const(false), next(nullptr) {};
+        expr(expr_t type, string str_const = nullptr) : type(type), sym(nullptr), index(nullptr),
+                                                        num_const(0), str_const(str_const),
+                                                        bool_const(false), next(nullptr) {};
     };
 
     struct quad {
@@ -103,7 +104,59 @@
 
     #define EXPAND_SIZE 1024
     #define CURR_SIZE (total*sizeof(quad))
-    #define NEW_SIZE (EXPAND_SIZE*sizeof(quad)+CURRSIZE)
+    #define NEW_SIZE (EXPAND_SIZE*sizeof(quad)+CURR_SIZE)
+
+    void expand (void) {
+        assert(total == curr_quad);
+        quad* p = (quad*) malloc(NEW_SIZE);
+        if (quads) {
+            memcpy(p, quads, CURR_SIZE);
+            free(quads);
+        }
+        quads = p;
+        total += EXPAND_SIZE;
+    }
+
+    void emit (iopcode op, expr* arg1, expr* arg2, expr* result, unsigned label, unsigned line) {
+        if (curr_quad == total) 
+            expand();
+        quad* p = quads + curr_quad++;
+        p->op = op;
+        p->arg1 = arg1;
+        p->arg2 = arg2;
+        p->result = result;
+        p->label = label;
+        p->line = line;
+    }
+
+    int tmp_var_counter = 0;
+
+    Symbol *newtemp() {
+        string name = "_t" + tmp_var_counter++;
+        sym_table.Insert(name, hidden, yylineno, scope, list<Variable*>());
+        return sym_table.Lookup(name, scope, THIS_SCOPE);
+    }
+
+    expr* emit_iftableitem(expr* e) {
+        if (e->type != table_item_e) 
+            return e;
+        else {
+            expr* result = new expr(var_e);
+            result->sym = newtemp();
+            emit(table_get_elem, e, e->index, result, 0, yylineno);
+            return result;
+        }
+    }
+
+
+
+    expr *member_item(expr *lvalue, string name) {
+        lvalue = emit_iftableitem(lvalue);
+        expr *item = new expr(table_item_e);
+        item->sym = lvalue->sym;
+        item->index = new expr(const_string_e, name);
+        return item;
+    }
 
 %}
 
@@ -113,6 +166,7 @@
     int intValue;
     double doubleValue;
     char *stringValue;
+    struct expr *exprValue;
 }
 
 %start program
@@ -150,7 +204,7 @@
 %nonassoc IF
 %nonassoc ELSE
 
-%type <stringValue> expr term lvalue primary member
+%type <exprValue> expr term lvalue primary member
 
 %%
 
@@ -174,7 +228,7 @@ stmt: expr ';'
 
 expr: assignexpr {}
     | expr '+' expr {
-        f(expr1, expr2, operator);
+        //f(expr1, expr2, operator);
     }
     | expr '-' expr {
 
@@ -202,14 +256,14 @@ expr: assignexpr {}
 term: '(' expr ')' {}
     | '-' expr {} %prec MINUS_UNARY
     | NOT expr {}
-    | PLUS_PLUS lvalue {check_lvalue($2);}
-    | lvalue PLUS_PLUS {check_lvalue($1);}
-    | MINUS_MINUS lvalue {check_lvalue($2);}
-    | lvalue MINUS_MINUS {check_lvalue($1);}
+    | PLUS_PLUS lvalue {check_lvalue($2->sym->name);}
+    | lvalue PLUS_PLUS {check_lvalue($1->sym->name);}
+    | MINUS_MINUS lvalue {check_lvalue($2->sym->name);}
+    | lvalue MINUS_MINUS {check_lvalue($1->sym->name);}
     | primary
     ;
 
-assignexpr: lvalue '=' expr {check_lvalue($1);}; 
+assignexpr: lvalue '=' expr {check_lvalue($1->sym->name);}; 
 
 primary: lvalue
     | call {}
@@ -220,24 +274,23 @@ primary: lvalue
 
 lvalue: IDENTIFIER {
         // $$ = $1;
-        Symbol sym;
-        add_id($1);
+        Symbol* sym = add_id($1);
         $$ -> sym = sym;
     }
     | LOCAL IDENTIFIER {
-        $$ = $2;
-        add_local_id($2);
+        // $$ = $2;
+        Symbol* sym = add_local_id($2);
     }
     | COLON_COLON IDENTIFIER {
-        $$ = $2;
-        lookup_global_id($2);
+        // $$ = $2;
+        Symbol* sym = lookup_global_id($2);
     }
     | member {}
     ;
 
-member: lvalue '.' IDENTIFIER {$$ = $3;}
+member: lvalue '.' IDENTIFIER {$$ = member_item($1, $3);}
     | lvalue '[' expr ']'
-    | call '.' IDENTIFIER {$$ = $3;}
+    | call '.' IDENTIFIER {/* $$ = $3; */}
     | call '[' expr ']' {}
     ;
 
