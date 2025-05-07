@@ -6,7 +6,7 @@ extern int yylineno;
 extern unsigned int scope;
 extern list<Variable*> args;
 
-void addlocal_id(const string name) {
+void add_local_id(const string name) {
     if (sym_table.Lookup(name, scope, THIS_SCOPE) != nullptr)
         return;
 

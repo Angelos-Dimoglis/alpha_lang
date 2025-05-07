@@ -170,21 +170,11 @@ stmt: expr ';'
     ;
 
 expr: assignexpr {}
-    | expr '+' expr {
-        f(expr1, expr2, operator);
-    }
-    | expr '-' expr {
-
-    }
-    | expr '*' expr {
-
-    }
-    | expr '/' expr {
-
-    }
-    | expr '%' expr {
-
-    }
+    | expr '+' expr 
+    | expr '-' expr
+    | expr '*' expr
+    | expr '/' expr
+    | expr '%' expr
     | expr '>' expr
     | expr '<' expr
     | expr GREATER_EQUAL expr
