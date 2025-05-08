@@ -75,17 +75,5 @@ void resettemp() {
 
 Symbol *newtemp() {
     string name = newtempname();
-    Symbol *sym = sym_table.Lookup(name, scope, THIS_SCOPE);
-    if (sym == nullptr) {
-
-        try {
-            sym_table.Insert(name, hidden, yylineno, scope, std::list<Variable *>());
-        } catch () {
-        
-        }
-
-        return sym_table.Lookup(name, scope, THIS_SCOPE);
-    }
-
-    return sym;
+    return add_id(name);
 }

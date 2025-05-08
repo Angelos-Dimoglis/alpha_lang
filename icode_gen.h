@@ -7,6 +7,7 @@
 #include <string>
 
 #include "sym_table.h"
+#include "parser_functions.h"
 
 extern int yylineno;
 extern unsigned int scope;
