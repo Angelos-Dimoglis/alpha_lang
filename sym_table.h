@@ -21,9 +21,7 @@
 using namespace std;
 
 enum SymbolType {
-    global, local, formal,
-    userfunc, libfunc,
-    hidden
+    global, local, formal, userfunc, libfunc, hidden
 };
 
 class Symbol {
@@ -35,7 +33,9 @@ class Symbol {
         bool isActive;
 };
 
-class Variable : public Symbol {};
+class Variable : public Symbol {
+
+};
 
 class Function : public Symbol {
     public:
@@ -54,15 +54,32 @@ class SymTable {
     private:
         unordered_map<string, node*> table;
         map<int, node*> scopeHeads;
-        const std::string library_functions[12] = {"print", "input", "objectmemberkeys", "objecttotalmembers",
-            "objectcopy", "totalarguments", "argument", "typeof", 
-            "strtonum", "sqrt", "cos", "sin"};
+        const std::string library_functions[12] = {
+            "print",
+            "input",
+            "objectmemberkeys",
+            "objecttotalmembers",
+            "objectcopy",
+            "totalarguments",
+            "argument",
+            "typeof",
+            "strtonum",
+            "sqrt",
+            "cos",
+            "sin"
+        };
+
         bool libfunc_check(const string& name);
     public:
         SymTable();
 
-        void Insert(const string& name, enum SymbolType type, unsigned int line,
-                    unsigned int scope, list<Variable*> arguments);
+        void Insert(
+            const string& name,
+            enum SymbolType type,
+            unsigned int line,
+            unsigned int scope,
+            list<Variable*> arguments
+        );
 
         Symbol* Lookup(const string& name, int scope, bool mode);
 
