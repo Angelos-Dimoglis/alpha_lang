@@ -17,8 +17,7 @@ node* SymTable::collisionNode(const string& key) {
 Symbol* createSymbol(enum SymbolType type) {
     if (type < 3) {
         return new Variable();
-    }
-    else {
+    } else {
         return new Function();
     }
 }
@@ -38,8 +37,14 @@ bool SymTable::libfunc_check(const string& name) {
     return false;
 }
 
-void SymTable::Insert(const string& name, enum SymbolType type, unsigned int line,
-                        unsigned int scope, list<Variable*> arguments) {
+void SymTable::Insert(
+    const string& name,
+    enum SymbolType type,
+    unsigned int line,
+    unsigned int scope,
+    list<Variable*> arguments
+) {
+
     if (libfunc_check(name) && (type != libfunc)) {
         throw runtime_error("Name \"" + name + "\" clashes with a library function.");
     }

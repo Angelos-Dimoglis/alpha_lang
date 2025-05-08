@@ -5,6 +5,7 @@
     #include <assert.h>
 
     #include "parser_functions.h"
+    #include "icode_gen.h"
 
     extern int yylex (void);
     extern void yyerror(const char *msg, int line_number);
@@ -17,6 +18,10 @@
     unsigned int scope = 0;
     SymTable sym_table;
     list<Variable*> args;
+
+    quad *quads = (quad*) 0;
+    unsigned total = 0;
+    unsigned int curr_quad = 0;
 
     void yyerror(const char *msg) {
         if (strcmp(msg, "syntax error, unexpected end of file"))
@@ -58,104 +63,6 @@
         if (loopcounter.empty()) {
             yyerror("Use of \'return\' while not in a function");
         }
-    }
-
-    enum iopcode {
-        assign = 0, add, sub, mul, _div, mod, uminus,
-        _and, _or, _not,
-        if_eq, if_noteq, if_lesseq, if_greatereq, if_less, if_greater,
-        call, param, ret, get_ret_val, func_start, func_end,
-        table_create, table_get_elem, table_set_elem
-    };
-
-    enum expr_t {
-        var_e = 0, table_item_e,
-        program_func_e, library_func_e,
-        arith_expr_e, bool_expr_e, assign_expr_e, new_table_e,
-        const_num_e, const_bool_e, const_string_e
-    };
-
-    struct expr {
-        expr_t type;
-        Symbol *sym;
-        expr *index;
-        double num_const;
-        string str_const;
-        unsigned char bool_const;
-        expr *next;
-
-        expr(expr_t type, string str_const = nullptr) : type(type), sym(nullptr), index(nullptr),
-                                                        num_const(0), str_const(str_const),
-                                                        bool_const(false), next(nullptr) {};
-    };
-
-    struct quad {
-        iopcode op;
-        expr *arg1;
-        expr *arg2;
-        expr *result;
-        unsigned label;
-        unsigned line;
-    };
-
-    quad *quads = (quad*) 0;
-    unsigned total = 0;
-    unsigned int curr_quad = 0;
-
-    #define EXPAND_SIZE 1024
-    #define CURR_SIZE (total*sizeof(quad))
-    #define NEW_SIZE (EXPAND_SIZE*sizeof(quad)+CURR_SIZE)
-
-    void expand (void) {
-        assert(total == curr_quad);
-        quad* p = (quad*) malloc(NEW_SIZE);
-        if (quads) {
-            memcpy(p, quads, CURR_SIZE);
-            free(quads);
-        }
-        quads = p;
-        total += EXPAND_SIZE;
-    }
-
-    void emit (iopcode op, expr* arg1, expr* arg2, expr* result, unsigned label, unsigned line) {
-        if (curr_quad == total) 
-            expand();
-        quad* p = quads + curr_quad++;
-        p->op = op;
-        p->arg1 = arg1;
-        p->arg2 = arg2;
-        p->result = result;
-        p->label = label;
-        p->line = line;
-    }
-
-    int tmp_var_counter = 0;
-
-    Symbol *newtemp() {
-        string name = "_t" + tmp_var_counter++;
-        sym_table.Insert(name, hidden, yylineno, scope, list<Variable*>());
-        return sym_table.Lookup(name, scope, THIS_SCOPE);
-    }
-
-    expr* emit_iftableitem(expr* e) {
-        if (e->type != table_item_e) 
-            return e;
-        else {
-            expr* result = new expr(var_e);
-            result->sym = newtemp();
-            emit(table_get_elem, e, e->index, result, 0, yylineno);
-            return result;
-        }
-    }
-
-
-
-    expr *member_item(expr *lvalue, string name) {
-        lvalue = emit_iftableitem(lvalue);
-        expr *item = new expr(table_item_e);
-        item->sym = lvalue->sym;
-        item->index = new expr(const_string_e, name);
-        return item;
     }
 
 %}
@@ -384,6 +291,8 @@ int main (int argc, char **argv) {
     */
 
     // TODO: write all quads in a file
+    for (int i = 0; i < total; i++)
+        print_quad(&(quads[i]));
 
     sym_table.PrintTable();
     sym_table.freeTable();  
