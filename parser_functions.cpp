@@ -52,9 +52,9 @@ Symbol* add_id(const string name) {
 
     for (int i = scope-1; i >= temp->scope; i--) {
         for (node* p = sym_table.scopeNode(i); p != nullptr; p = p->nextScope) {
-            if (p->sym.type == userfunc && p->sym.isActive) {
+            if (p->sym->type == userfunc && p->sym->isActive) {
                 cout << "ERROR: Symbol \"" << name <<
-                    "\" isn't accesible in function \"" << p->sym.name <<
+                    "\" isn't accesible in function \"" << p->sym->name <<
                     "\"." <<endl;
             }
         }

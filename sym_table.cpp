@@ -1,5 +1,37 @@
 #include "sym_table.h"
 
+std::stack<int> scope_space_offset_stack{ std::deque<int>{0} };
+
+scopespace_t currscopespace() {
+    if (scope_space_offset_stack.size() == 1) {
+        return program_var;
+    }else if(scope_space_offset_stack.size() % 2 == 0) {
+        return formal_arg;
+    }else {
+        return function_local;
+    }
+}
+
+int getoffset() {
+    return scope_space_offset_stack.top();
+}
+
+void inccurrscopeoffset (void) {
+    assert(!scope_space_offset_stack.empty());
+    int tmp = scope_space_offset_stack.top();
+    scope_space_offset_stack.pop();
+    scope_space_offset_stack.push(tmp + 1);
+}
+
+void enterscopespace (void) {
+    scope_space_offset_stack.push(0); 
+}
+
+void exitscopespace (void) {
+    assert(scope_space_offset_stack.size() > 1);
+    scope_space_offset_stack.pop(); 
+}
+
 node* SymTable::scopeNode(unsigned int scope) {
     if (scopeHeads.find(scope) != scopeHeads.end()) {
         return scopeHeads[scope];
@@ -58,12 +90,14 @@ void SymTable::Insert(
     newSymbol->type = type;
     newSymbol->isActive = true;
     if (IS_VARIABLE(type)) {
-
+        ((Variable *) newSymbol)->space = currscopespace();
+        ((Variable *) newSymbol)->offset = getoffset();
+        inccurrscopeoffset();
     }
     if (type == userfunc) {
         ((Function*)newSymbol)->arguments = arguments;
     }
-    node* n = new node(*newSymbol);
+    node* n = new node(newSymbol);
     if (currentCollision != nullptr) {
         while (currentCollision->nextCollision != nullptr) {
             currentCollision = currentCollision->nextCollision;
@@ -89,8 +123,8 @@ Symbol* SymTable::Lookup(const string& name, int scope, bool mode) {
     if (mode == THIS_SCOPE) {
         current = scopeNode(scope);
         while (current != nullptr) {
-            if (current->sym.name == name && current->sym.isActive) {
-                return &(current->sym);
+            if (current->sym->name == name && current->sym->isActive) {
+                return current->sym;
             }
             current = current->nextScope;
         }
@@ -98,8 +132,8 @@ Symbol* SymTable::Lookup(const string& name, int scope, bool mode) {
     else if (mode == ALL_SCOPES) {
         for (int i = scope; i >= 0; i--) {
             for (current = scopeNode(i); current != nullptr; current = current->nextScope) {
-                if (current->sym.name == name && current->sym.isActive) {
-                    return &(current->sym);
+                if (current->sym->name == name && current->sym->isActive) {
+                    return current->sym;
                 }
             }
         }
@@ -110,9 +144,21 @@ Symbol* SymTable::Lookup(const string& name, int scope, bool mode) {
 void SymTable::Hide(unsigned int scope) {
     node* current = scopeNode(scope);
     while (current != nullptr) {
-        current->sym.isActive = false;
+        current->sym->isActive = false;
         current = current->nextScope;
     }
+}
+
+string spaceToString(scopespace_t space) {
+    switch (space) {
+        case program_var:
+            return "program_var";
+        case function_local:
+            return "function_local";
+        case formal_arg:
+            return "formal_arg";
+    }
+    return "";
 }
 
 void SymTable::PrintTable() {
@@ -120,8 +166,8 @@ void SymTable::PrintTable() {
         node* current = scopeHeads[i];
         cout << "-----------    Scope #" << i << "    -----------" << endl;
         while (current != nullptr) {
-            cout << "\"" << current->sym.name << "\" ";
-            switch (current->sym.type)
+            cout << "\"" << current->sym->name << "\" ";
+            switch (current->sym->type)
             {
             case global:
                 cout << "[global variable] ";
@@ -142,8 +188,13 @@ void SymTable::PrintTable() {
                 cout << "[unknown] ";
                 break;
             }
-            cout << "(line " << current->sym.line << ") ";
-            cout << "(scope " << current->sym.scope << ")" << endl;
+            cout << "(line " << current->sym->line << ") ";
+            cout << "(scope " << current->sym->scope << ") ";
+            if (IS_VARIABLE(current->sym->type)) {
+                cout << "(space " << spaceToString(((Variable*) (current->sym))->space) << ") ";
+                cout << "(offset " << ((Variable*) (current->sym))->offset << ")";
+            }
+            cout << endl;
             current = current->nextScope;
         }
         cout << endl;

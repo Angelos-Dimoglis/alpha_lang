@@ -8,6 +8,9 @@
 #include <map>
 #include <unordered_map>
 #include <stdexcept>
+#include <cassert>
+#include <stack>
+#include <initializer_list>
 
 #define LIB_MAX 12
 
@@ -21,8 +24,17 @@
 
 using namespace std;
 
+void enterscopespace (void);
+void exitscopespace (void);
+
 enum SymbolType {
     global, local, formal, hidden, userfunc, libfunc
+};
+
+enum scopespace_t {
+    program_var,
+    function_local,
+    formal_arg
 };
 
 class Symbol {
@@ -35,7 +47,9 @@ class Symbol {
 };
 
 class Variable : public Symbol {
-    
+    public:
+        scopespace_t space;
+        unsigned int offset;
 };
 
 class Function : public Symbol {
@@ -44,11 +58,11 @@ class Function : public Symbol {
 };
 
 struct node {
-    Symbol sym;
+    Symbol* sym;
     node* nextCollision;
     node* nextScope;
 
-    node(Symbol s) : sym(s), nextCollision(nullptr), nextScope(nullptr) {}
+    node(Symbol* s) : sym(s), nextCollision(nullptr), nextScope(nullptr) {}
 };
 
 class SymTable {

@@ -235,10 +235,15 @@ indexedelem: '{' expr ':' expr '}';
 
 block: '{' {scope++;} stmt_series '}' {sym_table.Hide(scope--);};
 
-funcblockstart: { push_loopcounter(); }
-funcblockend: { pop_loopcounter(); }
-funcdef: FUNCTION IDENTIFIER '(' {scope++;} idlist ')' {scope--; add_func($2);} funcblockstart block funcblockend
-    | FUNCTION '(' {scope++;} idlist ')' {scope--; add_func("_f");} funcblockstart block funcblockend;
+funcblockstart: { scope--; enterscopespace(); push_loopcounter(); };
+funcblockend: { pop_loopcounter(); exitscopespace(); exitscopespace();};
+formal_arguments: '(' {scope++; enterscopespace();} idlist ')';
+funcdef: FUNCTION IDENTIFIER
+        formal_arguments
+        funcblockstart {add_func($2);} block funcblockend
+    | FUNCTION 
+        formal_arguments 
+        funcblockstart {add_func("_f");} block funcblockend;
 
 const: INTCONST | REALCONST | MY_STRING | NIL | TRUE | FALSE;
 
