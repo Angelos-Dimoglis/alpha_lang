@@ -15,13 +15,14 @@
 
 #define ALL_SCOPES true
 #define THIS_SCOPE false
+#define IS_VARIABLE(x) (x == global || x == local || x == formal || x == hidden)
 
 #endif
 
 using namespace std;
 
 enum SymbolType {
-    global, local, formal, userfunc, libfunc, hidden
+    global, local, formal, hidden, userfunc, libfunc
 };
 
 class Symbol {
@@ -34,7 +35,7 @@ class Symbol {
 };
 
 class Variable : public Symbol {
-
+    
 };
 
 class Function : public Symbol {

@@ -15,7 +15,7 @@ node* SymTable::collisionNode(const string& key) {
 }
 
 Symbol* createSymbol(enum SymbolType type) {
-    if (type < 3) {
+    if (IS_VARIABLE(type)) {
         return new Variable();
     } else {
         return new Function();
@@ -49,6 +49,7 @@ void SymTable::Insert(
         throw runtime_error("Name \"" + name + "\" clashes with a library function.");
     }
     Symbol* newSymbol = createSymbol(type);
+    
     node* currentCollision = collisionNode(name);
     node* currentScope = scopeNode(scope);
     newSymbol->name = name;
@@ -56,6 +57,9 @@ void SymTable::Insert(
     newSymbol->line = line;
     newSymbol->type = type;
     newSymbol->isActive = true;
+    if (IS_VARIABLE(type)) {
+
+    }
     if (type == userfunc) {
         ((Function*)newSymbol)->arguments = arguments;
     }
