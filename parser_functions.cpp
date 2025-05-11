@@ -6,11 +6,11 @@ extern int yylineno;
 extern unsigned int scope;
 extern list<Variable*> args;
 
-Symbol* add_local_id(const string name) {
+Variable* add_local_id(const string name) {
     Symbol* sym = sym_table.Lookup(name, scope, THIS_SCOPE);
 
     if (sym != nullptr)
-        return sym;
+        return (Variable *) sym;
 
     try {
         sym_table.Insert(name, (scope == 0) ? global : local, yylineno, scope, list<Variable*>());
@@ -18,7 +18,7 @@ Symbol* add_local_id(const string name) {
         cout << "ERROR: " << e.what() << endl;
         return nullptr;
     }
-    return sym_table.Lookup(name, scope, THIS_SCOPE);
+    return (Variable *) sym_table.Lookup(name, scope, THIS_SCOPE);
 }
 
 Symbol* lookup_global_id(const string name) {
@@ -32,7 +32,7 @@ Symbol* lookup_global_id(const string name) {
 }
 
 
-Symbol* add_id(const string name) {
+Variable* add_id(const string name) {
     Symbol* temp = sym_table.Lookup(name, scope, ALL_SCOPES);
 
     if (temp == nullptr) {
@@ -40,15 +40,15 @@ Symbol* add_id(const string name) {
             sym_table.Insert(name, (scope == 0) ? global : local, yylineno, scope, list<Variable*>());
         } catch(runtime_error &e) {
             cout << e.what() << endl;
-            assert(0);
+            // assert(0);
             return nullptr;
         }
 
-        return sym_table.Lookup(name, scope, THIS_SCOPE);
+        return (Variable*) sym_table.Lookup(name, scope, THIS_SCOPE);
     }
 
     if (!(temp->type == local || temp->type == formal))
-        return temp;
+        return (Variable*) temp;
 
     for (int i = scope-1; i >= temp->scope; i--) {
         for (node* p = sym_table.scopeNode(i); p != nullptr; p = p->nextScope) {
@@ -59,10 +59,10 @@ Symbol* add_id(const string name) {
             }
         }
     }
-    return temp;
+    return (Variable*) temp;
 }
 
-Symbol* add_func(string name) {
+Function* add_func(string name) {
     static int anon_func_counter = 1;
     Symbol* temp = sym_table.Lookup(name, scope, THIS_SCOPE);
 
@@ -76,22 +76,22 @@ Symbol* add_func(string name) {
             cout << "ERROR: " << e.what() << endl;
         }
         args.clear();
-        return sym_table.Lookup(name, scope, THIS_SCOPE);
+        return (Function*) sym_table.Lookup(name, scope, THIS_SCOPE);
     } else {
         cout << "ERROR: Symbol name \"" << name <<
             "\" already exists in current scope (defined in line: " <<
             temp->line << ")" << endl;
     }
-    return temp;
+    return (Function*) temp;
 }
 
 
-Symbol* add_formal_argument(const string name) {
+Variable* add_formal_argument(const string name) {
     Symbol* sym = sym_table.Lookup(name, scope, THIS_SCOPE);
     if (sym != nullptr) {
         cout << "ERROR: formal argument \"" << name <<
             "\" already exists in current scope." << endl;
-        return sym;
+        return (Variable*) sym;
     }
 
     try {
@@ -102,14 +102,14 @@ Symbol* add_formal_argument(const string name) {
     }
 
     args.push_back((Variable*)sym_table.Lookup(name, scope, THIS_SCOPE));
-    return sym_table.Lookup(name, scope, THIS_SCOPE);
+    return (Variable*) sym_table.Lookup(name, scope, THIS_SCOPE);
 }
 
-Symbol* check_lvalue(const string name) {
+Variable* check_lvalue(const string name) {
     Symbol* temp = sym_table.Lookup(name, scope, ALL_SCOPES);
 
     if (temp != nullptr && (temp->type == userfunc || temp->type == libfunc))
         cout << "ERROR: Cannot use function \"" << name << 
             "\" as an lvalue." << endl;
-    return temp;
+    return (Variable*) temp;
 }

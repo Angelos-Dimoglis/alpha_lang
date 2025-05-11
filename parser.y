@@ -74,7 +74,7 @@
     double doubleValue;
     char *stringValue;
     struct expr *exprValue;
-    struct Symbol *symValue;
+    struct Function *funcSymValue;
 }
 
 %start program
@@ -114,7 +114,7 @@
 
 %type <exprValue> expr term lvalue primary member
 %type <intValue> block
-%type <symValue> funcname
+%type <funcSymValue> funcname
 
 %%
 
@@ -184,12 +184,12 @@ primary: lvalue
 
 lvalue: IDENTIFIER {
         // $$ = $1;
-        Symbol* sym = add_id($1);
+        Variable* sym = add_id($1);
         $$ -> sym = sym;
     }
     | LOCAL IDENTIFIER {
         // $$ = $2;
-        Symbol* sym = add_local_id($2);
+        Variable* sym = add_local_id($2);
     }
     | COLON_COLON IDENTIFIER {
         // $$ = $2;
@@ -246,7 +246,7 @@ funcname: IDENTIFIER { $$ = add_func($1);}
 
 funcdef: FUNCTION funcname
         formal_arguments
-        funcblockstart block { ((Function*)$2)->num_of_locals = $5; } funcblockend;
+        funcblockstart block { $2 ->num_of_locals = $5; } funcblockend;
                                             //^ Possibility for errors
                                             // if function is not
                                             // initialized due to errors
