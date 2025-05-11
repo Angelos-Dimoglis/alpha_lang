@@ -93,8 +93,7 @@ void SymTable::Insert(
         ((Variable *) newSymbol)->space = currscopespace();
         ((Variable *) newSymbol)->offset = getoffset();
         inccurrscopeoffset();
-    }
-    if (type == userfunc) {
+    }else if (type == userfunc) {
         ((Function*)newSymbol)->arguments = arguments;
     }
     node* n = new node(newSymbol);
@@ -193,6 +192,8 @@ void SymTable::PrintTable() {
             if (IS_VARIABLE(current->sym->type)) {
                 cout << "(space " << spaceToString(((Variable*) (current->sym))->space) << ") ";
                 cout << "(offset " << ((Variable*) (current->sym))->offset << ")";
+            }else if (current->sym->type == userfunc){
+                cout << "(num_of_locals " << ((Function*) (current->sym))->num_of_locals << ") ";
             }
             cout << endl;
             current = current->nextScope;

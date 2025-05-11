@@ -74,6 +74,7 @@
     double doubleValue;
     char *stringValue;
     struct expr *exprValue;
+    struct Symbol *symValue;
 }
 
 %start program
@@ -112,6 +113,8 @@
 %nonassoc ELSE
 
 %type <exprValue> expr term lvalue primary member
+%type <intValue> block
+%type <symValue> funcname
 
 %%
 
@@ -233,17 +236,20 @@ indexed_alt: ',' indexedelem indexed_alt
 
 indexedelem: '{' expr ':' expr '}';
 
-block: '{' {scope++;} stmt_series '}' {sym_table.Hide(scope--);};
+block: '{' {scope++;} stmt_series '}' {sym_table.Hide(scope--); $$ = getoffset();};
 
 funcblockstart: { scope--; enterscopespace(); push_loopcounter(); };
-funcblockend: { pop_loopcounter(); exitscopespace(); exitscopespace();};
+funcblockend: { exitscopespace(); exitscopespace(); pop_loopcounter(); };
 formal_arguments: '(' {scope++; enterscopespace();} idlist ')';
-funcdef: FUNCTION IDENTIFIER
+funcname: IDENTIFIER { $$ = add_func($1);}
+    | { $$ = add_func("_f"); };
+
+funcdef: FUNCTION funcname
         formal_arguments
-        funcblockstart {add_func($2);} block funcblockend
-    | FUNCTION 
-        formal_arguments 
-        funcblockstart {add_func("_f");} block funcblockend;
+        funcblockstart block { ((Function*)$2)->num_of_locals = $5; } funcblockend;
+                                            //^ Possibility for errors
+                                            // if function is not
+                                            // initialized due to errors
 
 const: INTCONST | REALCONST | MY_STRING | NIL | TRUE | FALSE;
 

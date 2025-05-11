@@ -26,6 +26,7 @@ using namespace std;
 
 void enterscopespace (void);
 void exitscopespace (void);
+int getoffset();
 
 enum SymbolType {
     global, local, formal, hidden, userfunc, libfunc
@@ -55,6 +56,7 @@ class Variable : public Symbol {
 class Function : public Symbol {
     public:
         list<Variable*> arguments;
+        unsigned int num_of_locals = 0;
 };
 
 struct node {
