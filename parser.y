@@ -198,7 +198,9 @@ expr: assignexpr {}
     }
     | expr AND expr
     | expr OR expr
-    | term
+    | term {
+        $$ = $1;
+    }
     ;
 
 term: '(' expr ')' {$$ = $2;}
@@ -235,7 +237,9 @@ term: '(' expr ')' {$$ = $2;}
         emit(sub, $1, temp, $1, 0, yylineno);
         $$ = $1;
     }
-    | primary
+    | primary {
+        $$ = $1;
+    }
     ;
 
 assignexpr: lvalue '=' expr 
@@ -260,34 +264,37 @@ primary: lvalue { $$ = emit_iftableitem($1); }
     | objectdef {}
     | '('funcdef')' {}
     | const {
-
+        $$ == $1;
     }
     ;
 
 lvalue: IDENTIFIER {
         // $$ = $1;
         Variable* sym = add_id($1);
+        $$ = new expr(var_e);
         $$ -> sym = sym;
     }
     | LOCAL IDENTIFIER {
-        // $$ = $2;
         Variable* sym = add_local_id($2);
+        $$ = new expr(var_e);
+        $$ -> sym = sym;
     }
     | COLON_COLON IDENTIFIER {
-        // $$ = $2;
         Symbol* sym = lookup_global_id($2);
+        $$ = new expr(var_e);
+        $$ -> sym = sym;
     }
     | member {}
     ;
 
 member: lvalue '.' IDENTIFIER {$$ = member_item($1, $3);}
     | lvalue '[' expr ']' {
-        $1 = emit_iftableitem($lvalue);
+        $1 = emit_iftableitem($1);
         $$ = new expr(table_item_e);
         $$->sym = $1 ->sym;
         $$->index = $3;
     }
-    | call '.' IDENTIFIER {/* $$ = $3; */}
+    | call '.' IDENTIFIER {}
     | call '[' expr ']' {}
     ;
 

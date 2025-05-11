@@ -64,14 +64,30 @@ string get_tabs(string str) {
     return tabs;
 }
 
+std::string doubleToString(double value) {
+    std::string result = to_string(value);
+    
+    // Remove trailing zeros after decimal point
+    size_t dot_pos = result.find('.');
+    if (dot_pos != std::string::npos) {
+        // Trim trailing zeros
+        result.erase(result.find_last_not_of('0') + 1);
+        // If the decimal point is now the last character, remove it too
+        if (result.back() == '.') {
+            result.pop_back();
+        }
+    }
+    return result;
+}
+
 void print_expr_content(expr* exp) {
     if (!exp) {
         return;
     }
     string str;
     switch (exp->type) {
-        case const_num_e: 
-            str = exp->num_const;
+        case const_num_e:
+            str = doubleToString(exp->num_const);
             break;
         case const_bool_e:
             str = (exp->bool_const ? "TRUE" : "FALSE");
@@ -83,7 +99,10 @@ void print_expr_content(expr* exp) {
             str = "NIL";
             break;
         default:
-            str = exp->sym->name;
+            if (exp->sym)
+                str = exp->sym->name;
+            else
+                str = "";
     }
     string tabs = get_tabs(str);
     cout << str << tabs;
@@ -163,8 +182,9 @@ void emit (iopcode op, expr* arg1, expr* arg2, expr* result, unsigned label, uns
 int tmp_var_counter = 0;
 
 expr* emit_iftableitem(expr* e) {
-    if (e->type != table_item_e) 
+    if (e->type != table_item_e)  {
         return e;
+    }
 
     expr* result = new expr(var_e);
     result->sym = newtemp();
