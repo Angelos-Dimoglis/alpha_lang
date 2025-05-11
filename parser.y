@@ -72,7 +72,9 @@
 %union {
     int intValue;
     double doubleValue;
+    bool boolValue;
     char *stringValue;
+    void *nilValue;
     struct expr *exprValue;
     struct Function *funcSymValue;
     struct quad * quadValue;
@@ -83,15 +85,15 @@
 //  ### list of terminals ###
 
 %token KEYWORD
-%token IF ELSE WHILE FOR FUNCTION RETURN BREAK CONTINUE AND NOT OR LOCAL TRUE FALSE NIL
+%token IF ELSE WHILE FOR FUNCTION RETURN BREAK CONTINUE AND NOT OR LOCAL
 
 %token OPERATOR
 %token EQUAL_EQUAL BANG_EQUAL PLUS_PLUS MINUS_MINUS GREATER_EQUAL LESS_EQUAL MINUS_UNARY
 
-%token <intValue> INTCONST
-%token <doubleValue> REALCONST
-
+%token <doubleValue> REALCONST INTCONST
 %token <stringValue> MY_STRING
+%token <nilValue> NIL
+%token <boolValue> TRUE FALSE
 
 %token PUNCTUATION
 %token COLON_COLON DOT_DOT
@@ -113,7 +115,7 @@
 %nonassoc IF
 %nonassoc ELSE
 
-%type <exprValue> expr term lvalue primary member assignexpr
+%type <exprValue> expr term lvalue primary member assignexpr const
 %type <intValue> block
 %type <funcSymValue> funcname funcdef // NOTE: THIS MIGHT HAVE TO BECOME symValue LATER ON lec 10, sl 7
 
@@ -178,23 +180,13 @@ assignexpr: lvalue '=' expr
     {
         check_lvalue($1->sym->name);
         if ($1->type = table_item_e) {
-            emit( // lvalue[index] = expr
-            table_set_elem,
-            $1,
-            $1->index,
-            $3, // Use result operand for the assigned value
-            0,
-            yylineno);
+            // lvalue[index] = expr
+            emit(table_set_elem, $1, $1->index, $3, 0, yylineno);
             $$ = emit_iftableitem($1); // Will always emit
             $$->type = assign_expr_e;
         } else {
-            emit( // that is: lvalue = expr
-            assign,
-            $3,
-            NULL,
-            $1,
-            0,
-            yylineno);
+            // that is: lvalue = expr
+            emit(assign, $3, NULL, $1, 0, yylineno);
             $$ = new expr(assign_expr_e);
             $$->sym = newtemp();
             emit(assign, $1, NULL, $$, 0, yylineno);
@@ -205,7 +197,9 @@ primary: lvalue { $$ = emit_iftableitem($1); }
     | call {}
     | objectdef {}
     | '('funcdef')' {}
-    | const {}
+    | const {
+
+    }
     ;
 
 lvalue: IDENTIFIER {
@@ -275,22 +269,41 @@ formal_arguments: '(' {scope++; enterscopespace();} idlist ')';
 funcname: IDENTIFIER { $$ = add_func($1); }
     | { $$ = add_func("_f"); };
 
-funcdef: FUNCTION funcname
-            /* IMPORTANT NOTE: It would seem that blocks of code count as new tokens . 
-                here, the token block is $6 */
-            {
-                $2 -> index_address = nextquadlabel();
-                expr* temp = new expr(program_func_e, $2);
-                emit(func_start, temp, NULL, NULL, 0, yylineno);
-            }
-        formal_arguments
-        funcblockstart block { $2 ->num_of_locals = $6; } funcblockend {
-                $$ = $2;
-                expr* temp = new expr(program_func_e, $2);
-                emit(func_end, temp, NULL, NULL, 0, yylineno);
-            };
+/* IMPORTANT NOTE: It would seem that blocks of code count as new tokens . here, the token block is $6 */
+funcdef: FUNCTION
+    funcname {
+        $2 -> index_address = nextquadlabel();
+        expr* temp = new expr(program_func_e, $2);
+        emit(func_start, temp, NULL, NULL, 0, yylineno);
+    }
+    formal_arguments
+    funcblockstart block {
+        $2 ->num_of_locals = $6;
+    }
+    funcblockend {
+        $$ = $2;
+        expr* temp = new expr(program_func_e, $2);
+        emit(func_end, temp, NULL, NULL, 0, yylineno);
+    };
 
-const: INTCONST | REALCONST | MY_STRING | NIL | TRUE | FALSE;
+const: INTCONST {
+        $$ = new expr( (double) $1);
+    }
+    | REALCONST {
+        $$ = new expr($1);
+    }
+    | MY_STRING {
+        $$ = new expr($1);
+    }
+    | NIL {
+        $$ = new expr();
+    }
+    | TRUE {
+        $$ = new expr($1);
+    }
+    | FALSE {
+        $$ = new expr($1);
+    };
 
 idlist: IDENTIFIER {add_formal_argument($1);} idlist_alt
     | /* empty */
@@ -340,12 +353,13 @@ int main (int argc, char **argv) {
     free_token_list();
     */
 
-    // TODO: write all quads in a file
-    for (int i = 0; i < total; i++)
-        print_quad(&(quads[i]));
-
     sym_table.PrintTable();
     sym_table.freeTable();  
+
+    printf("\n\nprinting quads\n\n");
+
+    // TODO: write all quads in a file
+    print_quads();
 
     return 0;
 }

@@ -261,7 +261,7 @@ BLOCK_COMMENT_END   ("*/")
         yylineno, yytext, "INTCONST", yytext, "int");
     print_token(token);
 
-    yylval.intValue = atoi(yytext);
+    yylval.doubleValue = (double) atoi(yytext);
     return INTCONST;
 }
 

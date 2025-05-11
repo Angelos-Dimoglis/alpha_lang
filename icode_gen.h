@@ -25,9 +25,10 @@ enum expr_t {
     var_e = 0, table_item_e,
     program_func_e, library_func_e,
     arith_expr_e, bool_expr_e, assign_expr_e, new_table_e,
-    const_num_e, const_bool_e, const_string_e
+    const_num_e, const_bool_e, const_string_e, const_nil_e
 };
 
+// TODO: add a union for the data
 struct expr {
     expr_t type;
     Symbol *sym;
@@ -37,12 +38,57 @@ struct expr {
     unsigned char bool_const;
     expr *next;
 
-    expr(expr_t type, string str_const = "") : type(type), sym(nullptr), index(nullptr),
-        num_const(0), str_const(str_const),
-        bool_const(false), next(nullptr) {};
-    expr(expr_t type, Symbol* sym) : type(type), sym(sym), index(nullptr),
+    expr () : 
+        type(const_nil_e),
+        sym(nullptr),
+        index(nullptr),
+        num_const(0),
+        str_const(""),
+        bool_const(false),
+        next(nullptr) 
+    {
+
+    };
+
+    expr(expr_t type, Symbol* sym = nullptr) : type(type), sym(sym), index(nullptr),
         num_const(0), str_const(""),
-        bool_const(false), next(nullptr) {};
+        bool_const(false), next(nullptr) {
+        //assert(type == )
+    };
+
+    expr(double num_const) :
+        type(const_num_e),
+        sym(nullptr),
+        index(nullptr),
+        num_const(num_const),
+        str_const(""),
+        bool_const(false),
+        next(nullptr) 
+    {
+    };
+
+    expr(string str_const) :
+        type(const_string_e),
+        sym(nullptr),
+        index(nullptr),
+        num_const(0),
+        str_const(str_const),
+        bool_const(false),
+        next(nullptr)
+    {
+    };
+
+    expr(bool bool_const) :
+        type(const_bool_e),
+        sym(nullptr),
+        index(nullptr),
+        num_const(0),
+        str_const(""),
+        bool_const(bool_const),
+        next(nullptr)
+    {
+    };
+
 };
 
 struct quad {
@@ -63,6 +109,8 @@ unsigned int nextquadlabel();
 void patchlabel (unsigned quadNo, unsigned label);
 
 void print_quad (struct quad *q);
+
+void print_quads ();
 
 void expand (void);
 

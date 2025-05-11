@@ -22,12 +22,61 @@ void patchlabel (unsigned quadNo, unsigned label) {
 }
 
 string opcode_to_string(iopcode opcode) {
+
+    switch (opcode) {
+        case assign: return "assign";
+        case add: return "add";
+        case sub: return "sub";
+        case mul: return "mul";
+        case _div: return "div";
+        case mod: return "mod";
+        case uminus: return "uminus";
+        case _and: return "and";
+        case _or: return "or";
+        case _not: return "not";
+        case if_eq: return "if_eq";
+        case if_noteq: return "if_noteq";
+        case if_lesseq: return "if_lesseq";
+        case if_greatereq: return "if_greatereq";
+        case if_less: return "if_less";
+        case if_greater: return "if_greater";
+        case call: return "call";
+        case param: return "param";
+        case ret: return "ret";
+        case get_ret_val: return "get_ret_val";
+        case func_start: return "func_start";
+        case func_end: return "func_end";
+        case table_create: return "table_create";
+        case table_get_elem: return "table_get_elem";
+        case table_set_elem: return "table_set_elem";
+        default:
+            assert(0);
+    }
+
     return "";
 }
 
 void print_quad (struct quad *q) {
-    printf("opcode: %d, arg1: %p, arg2: %p, res: %p\n", 
-           q->op, q->arg1, q->arg2, q->result);
+
+    cout << q->line << ": ";
+
+    cout << "opcode: " << opcode_to_string(q->op) << " ";
+
+    if (q->arg1)
+        cout << "arg1: " << q->arg1->sym->name << " ";
+
+    if (q->arg2)
+        cout << "arg2: " << q->arg2->sym->name << " ";
+
+    if (q->result)
+        cout << "res: " << q->result->sym->name;
+
+    cout << endl;
+}
+
+void print_quads () {
+    for (int i = 0; i < curr_quad; i++)
+        print_quad(&(quads[i]));
 }
 
 void expand (void) {
@@ -72,7 +121,7 @@ expr *member_item(expr *lvalue, string name) {
     lvalue = emit_iftableitem(lvalue);
     expr *item = new expr(table_item_e);
     item->sym = lvalue->sym;
-    item->index = new expr(const_string_e, name);
+    item->index = new expr(name);
     return item;
 }
 
