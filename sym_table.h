@@ -57,6 +57,7 @@ class Function : public Symbol {
     public:
         list<Variable*> arguments;
         unsigned int num_of_locals = 0;
+        unsigned int index_address = 0;
 };
 
 struct node {

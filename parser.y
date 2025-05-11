@@ -75,6 +75,7 @@
     char *stringValue;
     struct expr *exprValue;
     struct Function *funcSymValue;
+    struct quad * quadValue;
 }
 
 %start program
@@ -112,9 +113,9 @@
 %nonassoc IF
 %nonassoc ELSE
 
-%type <exprValue> expr term lvalue primary member
+%type <exprValue> expr term lvalue primary member assignexpr
 %type <intValue> block
-%type <funcSymValue> funcname
+%type <funcSymValue> funcname funcdef // NOTE: THIS MIGHT HAVE TO BECOME symValue LATER ON lec 10, sl 7
 
 %%
 
@@ -173,9 +174,34 @@ term: '(' expr ')' {}
     | primary
     ;
 
-assignexpr: lvalue '=' expr {check_lvalue($1->sym->name);}; 
+assignexpr: lvalue '=' expr 
+    {
+        check_lvalue($1->sym->name);
+        if ($1->type = table_item_e) {
+            emit( // lvalue[index] = expr
+            table_set_elem,
+            $1,
+            $1->index,
+            $3, // Use result operand for the assigned value
+            0,
+            yylineno);
+            $$ = emit_iftableitem($1); // Will always emit
+            $$->type = assign_expr_e;
+        } else {
+            emit( // that is: lvalue = expr
+            assign,
+            $3,
+            NULL,
+            $1,
+            0,
+            yylineno);
+            $$ = new expr(assign_expr_e);
+            $$->sym = newtemp();
+            emit(assign, $1, NULL, $$, 0, yylineno);
+        }
+    }; 
 
-primary: lvalue
+primary: lvalue { $$ = emit_iftableitem($1); }
     | call {}
     | objectdef {}
     | '('funcdef')' {}
@@ -199,7 +225,12 @@ lvalue: IDENTIFIER {
     ;
 
 member: lvalue '.' IDENTIFIER {$$ = member_item($1, $3);}
-    | lvalue '[' expr ']'
+    | lvalue '[' expr ']' {
+        $1 = emit_iftableitem($lvalue);
+        $$ = new expr(table_item_e);
+        $$->sym = $1 ->sym;
+        $$->index = $3;
+    }
     | call '.' IDENTIFIER {/* $$ = $3; */}
     | call '[' expr ']' {}
     ;
@@ -241,15 +272,23 @@ block: '{' {scope++;} stmt_series '}' {sym_table.Hide(scope--); $$ = getoffset()
 funcblockstart: { scope--; enterscopespace(); push_loopcounter(); };
 funcblockend: { exitscopespace(); exitscopespace(); pop_loopcounter(); };
 formal_arguments: '(' {scope++; enterscopespace();} idlist ')';
-funcname: IDENTIFIER { $$ = add_func($1);}
+funcname: IDENTIFIER { $$ = add_func($1); }
     | { $$ = add_func("_f"); };
 
 funcdef: FUNCTION funcname
+            /* IMPORTANT NOTE: It would seem that blocks of code count as new tokens . 
+                here, the token block is $6 */
+            {
+                $2 -> index_address = nextquadlabel();
+                expr* temp = new expr(program_func_e, $2);
+                emit(func_start, temp, NULL, NULL, 0, yylineno);
+            }
         formal_arguments
-        funcblockstart block { $2 ->num_of_locals = $5; } funcblockend;
-                                            //^ Possibility for errors
-                                            // if function is not
-                                            // initialized due to errors
+        funcblockstart block { $2 ->num_of_locals = $6; } funcblockend {
+                $$ = $2;
+                expr* temp = new expr(program_func_e, $2);
+                emit(func_end, temp, NULL, NULL, 0, yylineno);
+            };
 
 const: INTCONST | REALCONST | MY_STRING | NIL | TRUE | FALSE;
 

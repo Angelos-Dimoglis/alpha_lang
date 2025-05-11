@@ -40,6 +40,9 @@ struct expr {
     expr(expr_t type, string str_const = "") : type(type), sym(nullptr), index(nullptr),
         num_const(0), str_const(str_const),
         bool_const(false), next(nullptr) {};
+    expr(expr_t type, Symbol* sym) : type(type), sym(sym), index(nullptr),
+        num_const(0), str_const(""),
+        bool_const(false), next(nullptr) {};
 };
 
 struct quad {
@@ -54,6 +57,10 @@ struct quad {
 #define EXPAND_SIZE 1024
 #define CURR_SIZE (total*sizeof(quad))
 #define NEW_SIZE (EXPAND_SIZE*sizeof(quad)+CURR_SIZE)
+
+unsigned int nextquadlabel();
+
+void patchlabel (unsigned quadNo, unsigned label);
 
 void print_quad (struct quad *q);
 

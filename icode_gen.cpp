@@ -12,6 +12,19 @@ extern quad *quads;
 extern unsigned total;
 extern unsigned int curr_quad;
 
+unsigned int nextquadlabel() {
+    return curr_quad + 1;
+}
+
+void patchlabel (unsigned quadNo, unsigned label) {
+    assert(quadNo < curr_quad);
+    quads[quadNo].label = label;
+}
+
+string opcode_to_string(iopcode opcode) {
+    return "";
+}
+
 void print_quad (struct quad *q) {
     printf("opcode: %d, arg1: %p, arg2: %p, res: %p\n", 
            q->op, q->arg1, q->arg2, q->result);
@@ -77,3 +90,4 @@ Symbol *newtemp() {
     string name = newtempname();
     return add_id(name);
 }
+
