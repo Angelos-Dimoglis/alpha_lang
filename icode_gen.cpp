@@ -56,27 +56,82 @@ string opcode_to_string(iopcode opcode) {
     return "";
 }
 
-void print_quad (struct quad *q) {
+string get_tabs(string str) {
+    string tabs = "";
+    for (int i = 0; i <= 2 - (str.size() / 8); i++) {
+        tabs += "\t";
+    }
+    return tabs;
+}
 
-    cout << q->line << ": ";
+void print_expr_content(expr* exp) {
+    if (!exp) {
+        return;
+    }
+    string str;
+    switch (exp->type) {
+        case const_num_e: 
+            str = exp->num_const;
+            break;
+        case const_bool_e:
+            str = (exp->bool_const ? "TRUE" : "FALSE");
+            break;
+        case const_string_e:
+            str = exp->str_const;
+            break;
+        case const_nil_e:
+            str = "NIL";
+            break;
+        default:
+            str = exp->sym->name;
+    }
+    string tabs = get_tabs(str);
+    cout << str << tabs;
+}
 
-    cout << "opcode: " << opcode_to_string(q->op) << " ";
+void print_quad (struct quad *q, int index) {
 
-    if (q->arg1)
-        cout << "arg1: " << q->arg1->sym->name << " ";
+    cout << index << ": \t\t";
 
-    if (q->arg2)
-        cout << "arg2: " << q->arg2->sym->name << " ";
+    string tabs = get_tabs(opcode_to_string(q->op));
 
-    if (q->result)
-        cout << "res: " << q->result->sym->name;
+    cout << opcode_to_string(q->op) << tabs;
+    
+    if (q->result) {
+        print_expr_content(q->result);
+    }
 
-    cout << endl;
+    if (q->arg1) {
+        print_expr_content(q->arg1);
+    }
+
+    if (q->arg2) {
+        print_expr_content(q->arg2);
+    }
+
 }
 
 void print_quads () {
-    for (int i = 0; i < curr_quad; i++)
-        print_quad(&(quads[i]));
+    const std::string highlight = "\033[48;5;240m"; // Gray background
+    const std::string reset = "\033[0m"; // Reset formatting
+
+    cout << "quad#\t\topcode\t\t\tresult\t\t\targ1\t\t\targ2\t\t\tlabel\n" <<
+    "-------------------------------------------------------------------------" <<
+    "--------------------------------------------" + highlight;
+    // cout << highlight << "hello";
+    for (int i = 0; i < curr_quad; i++) {
+        if (i % 2 == 0)
+            cout << highlight;
+        cout << endl;
+        print_quad(&(quads[i]), i);
+        if (i % 2 == 0)
+            cout << reset;
+    }
+    cout << reset;
+
+
+    cout << "\n-------------------------------------------------------------------------" <<
+    "--------------------------------------------\n";
 }
 
 void expand (void) {

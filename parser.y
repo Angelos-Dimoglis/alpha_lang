@@ -1,6 +1,7 @@
 %{
     #include <stdio.h>
     #include <string.h>
+    #include <string>
     #include <stack>
     #include <assert.h>
 
@@ -141,45 +142,106 @@ stmt: expr ';'
 
 expr: assignexpr {}
     | expr '+' expr {
-        //f(expr1, expr2, operator);
+        $$ = new expr(arith_expr_e);
+        $$->sym = newtemp();
+        emit(add, $1, $3, $$, 0, yylineno);
     }
     | expr '-' expr {
-
+        $$ = new expr(arith_expr_e);
+        $$->sym = newtemp();
+        emit(sub, $1, $3, $$, 0, yylineno);
     }
     | expr '*' expr {
-
+        $$ = new expr(arith_expr_e);
+        $$->sym = newtemp();
+        emit(mul, $1, $3, $$, 0, yylineno);
     }
     | expr '/' expr {
-
+        $$ = new expr(arith_expr_e);
+        $$->sym = newtemp();
+        emit(_div, $1, $3, $$, 0, yylineno);
     }
     | expr '%' expr {
-
+        $$ = new expr(arith_expr_e);
+        $$->sym = newtemp();
+        emit(mod, $1, $3, $$, 0, yylineno);
     }
-    | expr '>' expr
-    | expr '<' expr
-    | expr GREATER_EQUAL expr
-    | expr LESS_EQUAL expr
-    | expr EQUAL_EQUAL expr
-    | expr BANG_EQUAL expr
+    | expr '>' expr {
+        $$ = new expr(bool_expr_e);
+        $$->sym = newtemp();
+        emit(if_greater, $1, $3, $$, 0, yylineno);
+    }
+    | expr '<' expr {
+        $$ = new expr(bool_expr_e);
+        $$->sym = newtemp();
+        emit(if_less, $1, $3, $$, 0, yylineno);
+    }
+    | expr GREATER_EQUAL expr {
+        $$ = new expr(bool_expr_e);
+        $$->sym = newtemp();
+        emit(if_greatereq, $1, $3, $$, 0, yylineno);
+    }
+    | expr LESS_EQUAL expr {
+        $$ = new expr(bool_expr_e);
+        $$->sym = newtemp();
+        emit(if_lesseq, $1, $3, $$, 0, yylineno);
+    }
+    | expr EQUAL_EQUAL expr {
+        $$ = new expr(bool_expr_e);
+        $$->sym = newtemp();
+        emit(if_eq, $1, $3, $$, 0, yylineno);
+    }
+    | expr BANG_EQUAL expr {
+        $$ = new expr(bool_expr_e);
+        $$->sym = newtemp();
+        emit(if_noteq, $1, $3, $$, 0, yylineno);
+    }
     | expr AND expr
     | expr OR expr
     | term
     ;
 
-term: '(' expr ')' {}
-    | '-' expr {} %prec MINUS_UNARY
+term: '(' expr ')' {$$ = $2;}
+    | '-' expr %prec MINUS_UNARY{
+        $$ = new expr(arith_expr_e);
+        emit(uminus, $2, NULL, $$, 0, yylineno);
+    }
     | NOT expr {}
-    | PLUS_PLUS lvalue {check_lvalue($2->sym->name);}
-    | lvalue PLUS_PLUS {check_lvalue($1->sym->name);}
-    | MINUS_MINUS lvalue {check_lvalue($2->sym->name);}
-    | lvalue MINUS_MINUS {check_lvalue($1->sym->name);}
+    | PLUS_PLUS lvalue { // TODO: No clue how to differentiate between ++x and x++
+        check_lvalue($2->sym->name);
+        $$ = new expr(arith_expr_e);
+        expr* temp = new expr((double) 1);
+        emit(add, $2, temp, $2, 0, yylineno);
+        $$ = $2;
+    }
+    | lvalue PLUS_PLUS {
+        check_lvalue($1->sym->name);
+        $$ = new expr(arith_expr_e);
+        expr* temp = new expr((double) 1);
+        emit(add, $1, temp, $1, 0, yylineno);
+        $$ = $1;
+    }
+    | MINUS_MINUS lvalue {
+        check_lvalue($2->sym->name);
+        $$ = new expr(arith_expr_e);
+        expr* temp = new expr((double) 1);
+        emit(sub, $2, temp, $2, 0, yylineno);
+        $$ = $2;
+    }
+    | lvalue MINUS_MINUS {
+        check_lvalue($1->sym->name);
+        $$ = new expr(arith_expr_e);
+        expr* temp = new expr((double) 1);
+        emit(sub, $1, temp, $1, 0, yylineno);
+        $$ = $1;
+    }
     | primary
     ;
 
 assignexpr: lvalue '=' expr 
     {
         check_lvalue($1->sym->name);
-        if ($1->type = table_item_e) {
+        if ($1->type == table_item_e) {
             // lvalue[index] = expr
             emit(table_set_elem, $1, $1->index, $3, 0, yylineno);
             $$ = emit_iftableitem($1); // Will always emit
@@ -290,19 +352,19 @@ const: INTCONST {
         $$ = new expr( (double) $1);
     }
     | REALCONST {
-        $$ = new expr($1);
+        $$ = new expr((double) $1);
     }
     | MY_STRING {
-        $$ = new expr($1);
+        $$ = new expr((std::string) $1);
     }
     | NIL {
         $$ = new expr();
     }
     | TRUE {
-        $$ = new expr($1);
+        $$ = new expr((bool) $1);
     }
     | FALSE {
-        $$ = new expr($1);
+        $$ = new expr((bool) $1);
     };
 
 idlist: IDENTIFIER {add_formal_argument($1);} idlist_alt
