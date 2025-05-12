@@ -104,6 +104,12 @@ struct quad {
 #define CURR_SIZE (total*sizeof(quad))
 #define NEW_SIZE (EXPAND_SIZE*sizeof(quad)+CURR_SIZE)
 
+void check_arith (expr* e, string context);
+
+expr *get_last(expr* exp);
+
+expr* make_call (expr* lv, expr* reversed_elist);
+
 unsigned int nextquadlabel();
 
 void patchlabel (unsigned quadNo, unsigned label);

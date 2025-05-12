@@ -5,6 +5,8 @@
 #include <assert.h>
 #include <ctype.h>
 #include <stack>
+#include <list>
+#include <utility>
 
 #include "parser.hpp"
 

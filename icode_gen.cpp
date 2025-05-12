@@ -12,6 +12,8 @@ extern quad *quads;
 extern unsigned total;
 extern unsigned int curr_quad;
 
+extern void yyerror(const char *msg, int line_number);
+
 unsigned int nextquadlabel() {
     return curr_quad + 1;
 }
@@ -198,6 +200,40 @@ expr *member_item(expr *lvalue, string name) {
     item->sym = lvalue->sym;
     item->index = new expr(name);
     return item;
+}
+
+expr *get_last(expr* exp) {
+    if (exp == nullptr) {
+        return nullptr;
+    }
+    expr* e;
+    for (e = exp; e->next != nullptr; e = e->next){}
+    return e;
+}
+
+expr* make_call (expr* lv, expr* reversed_elist) {
+    expr* func = emit_iftableitem(lv);
+    while (reversed_elist) {
+        emit(param, reversed_elist, NULL, NULL, 0, yylineno);
+        reversed_elist = reversed_elist->next;
+    }
+    emit(call, func, NULL, NULL, 0, yylineno);
+    expr* result = new expr(var_e, newtemp());
+    emit(get_ret_val, NULL, NULL, result, 0, yylineno);
+    return result;
+}
+
+void check_arith (expr* e, string context) {
+    if ( e->type == const_bool_e ||
+        e->type == const_string_e ||
+        e->type == const_nil_e ||
+        e->type == new_table_e ||
+        e->type == program_func_e ||
+        e->type == library_func_e ||
+        e->type == bool_expr_e ) {
+            string msg = "Illegal expr used in \'" + context;
+            yyerror(msg.c_str(), yylineno);
+        }
 }
 
 int tempcounter = 0;

@@ -1,6 +1,7 @@
 *.pdf
 pdfs/
 *.out
+*.o
 lexer.cpp
 parser.cpp
 parser.hpp
