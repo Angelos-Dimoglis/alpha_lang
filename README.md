@@ -35,11 +35,8 @@
 * TODO
 
 * src -> cpp files
-* lib -> h files
+* lib -> h, hpp files
 * obj -> o files
-
-* parser -> parser.*
-* lexer -> lexer.*
 
 * separate main function
 
