@@ -227,12 +227,12 @@ term: '(' expr ')' {$term = $expr;}
     }
     | PLUS_PLUS lvalue {
         check_arith($lvalue, "++lvalue");
+        // TODO: no new expr?
         if ($lvalue->type == table_item_e) {
             $term = emit_iftableitem($lvalue);
             emit(add, $term, new expr((double) 1), $term, 0, yylineno);
             emit(table_set_elem, $lvalue, $lvalue->index, $term, 0, yylineno);
-        }
-        else {
+        } else {
             emit(add, $lvalue, new expr((double) 1), $lvalue, 0, yylineno);
             $term = new expr(arith_expr_e, newtemp());
             emit(assign, $lvalue, NULL, $term, 0, yylineno);
@@ -246,8 +246,7 @@ term: '(' expr ')' {$term = $expr;}
             emit(assign, val, NULL, $term, 0, yylineno);
             emit(add, val, new expr((double) 1), val, 0, yylineno);
             emit(table_set_elem, $lvalue, $lvalue->index, val, 0, yylineno);
-        }
-        else {
+        } else {
             emit(assign, $lvalue, NULL, $term, 0, yylineno);
             emit(add, $lvalue, new expr((double) 1), $lvalue, 0, yylineno);
         }
@@ -258,14 +257,14 @@ term: '(' expr ')' {$term = $expr;}
             $term = emit_iftableitem($lvalue);
             emit(sub, $term, new expr((double) 1), $term, 0, yylineno);
             emit(table_set_elem, $lvalue, $lvalue->index, $term, 0, yylineno);
-        }
-        else {
+        } else {
             emit(sub, $lvalue, new expr((double) 1), $lvalue, 0, yylineno);
             $term = new expr(arith_expr_e, newtemp());
             emit(assign, $lvalue, NULL, $term, 0, yylineno);
         }
     }
     | lvalue MINUS_MINUS {
+        // TODO: did you mean --
         check_arith($lvalue, "lvalue++");
         $term = new expr(var_e, newtemp());
         if ($lvalue->type == table_item_e) {
@@ -273,8 +272,7 @@ term: '(' expr ')' {$term = $expr;}
             emit(assign, val, NULL, $term, 0, yylineno);
             emit(sub, val, new expr((double) 1), val, 0, yylineno);
             emit(table_set_elem, $lvalue, $lvalue->index, val, 0, yylineno);
-        }
-        else {
+        } else {
             emit(assign, $lvalue, NULL, $term, 0, yylineno);
             emit(sub, $lvalue, new expr((double) 1), $lvalue, 0, yylineno);
         }
@@ -284,8 +282,7 @@ term: '(' expr ')' {$term = $expr;}
     }
     ;
 
-assignexpr: lvalue '=' expr 
-    {
+assignexpr: lvalue '=' expr {
         check_lvalue($1->sym->name);
         if ($1->type == table_item_e) {
             // lvalue[index] = expr
