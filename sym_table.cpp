@@ -1,6 +1,6 @@
 #include "sym_table.h"
 
-std::stack<int> scope_space_offset_stack{ std::deque<int>{0} };
+stack<int> scope_space_offset_stack{ deque<int>{0} };
 
 scopespace_t currscopespace() {
     if (scope_space_offset_stack.size() == 1) {

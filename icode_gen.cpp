@@ -66,12 +66,12 @@ string get_tabs(string str) {
     return tabs;
 }
 
-std::string doubleToString(double value) {
-    std::string result = to_string(value);
+string doubleToString(double value) {
+    string result = to_string(value);
     
     // Remove trailing zeros after decimal point
     size_t dot_pos = result.find('.');
-    if (dot_pos != std::string::npos) {
+    if (dot_pos != string::npos) {
         // Trim trailing zeros
         result.erase(result.find_last_not_of('0') + 1);
         // If the decimal point is now the last character, remove it too
@@ -133,8 +133,8 @@ void print_quad (struct quad *q, int index) {
 }
 
 void print_quads () {
-    const std::string highlight = "\033[48;5;240m"; // Gray background
-    const std::string reset = "\033[0m"; // Reset formatting
+    const string highlight = "\033[48;5;240m"; // Gray background
+    const string reset = "\033[0m"; // Reset formatting
 
     cout << "quad#\t\topcode\t\t\tresult\t\t\targ1\t\t\targ2\t\t\tlabel\n" <<
     "-------------------------------------------------------------------------" <<

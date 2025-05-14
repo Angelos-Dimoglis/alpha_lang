@@ -20,7 +20,7 @@
 
     unsigned int scope = 0;
     SymTable sym_table;
-    std::list<Variable*> args;
+    list<Variable*> args;
 
     quad *quads = (quad*) 0;
     unsigned total = 0;
@@ -32,7 +32,7 @@
                 msg, yylineno, yytext);
     }
 
-    std::stack<int> loopcounter;
+    stack<int> loopcounter;
 
     void push_loopcounter() {
         loopcounter.push(0);
@@ -86,8 +86,8 @@
         unsigned char method;
         char* name;
     } callValue;
-    std::list<std::pair<expr*, expr*>>* indexedList;
-    std::pair<expr*, expr*>* indexedPair;
+    list<pair<expr*, expr*>>* indexedList;
+    pair<expr*, expr*>* indexedPair;
 }
 
 %start program
@@ -423,11 +423,11 @@ indexed_alt: ',' indexedelem indexed_alt {
         ($3)->push_front(*($indexedelem));
         $$ = $3;
     }
-    | {$indexed_alt = new std::list<std::pair<expr*, expr*>>();}
+    | {$indexed_alt = new list<pair<expr*, expr*>>();}
     ;
 
 indexedelem: '{' expr ':' expr '}' {
-        $indexedelem = new std::pair<expr*, expr*>($2, $4);
+        $indexedelem = new pair<expr*, expr*>($2, $4);
     }
     ;
 
@@ -463,7 +463,7 @@ const: INTCONST {
         $$ = new expr((double) $1);
     }
     | MY_STRING {
-        $$ = new expr((std::string) $1);
+        $$ = new expr((string) $1);
     }
     | NIL {
         $$ = new expr();

@@ -25,7 +25,9 @@
 using namespace std;
 
 void enterscopespace (void);
+
 void exitscopespace (void);
+
 int getoffset();
 
 enum SymbolType {
