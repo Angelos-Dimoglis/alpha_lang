@@ -148,8 +148,12 @@
 %type <indexedList> indexed indexed_alt
 %type <indexedPair> indexedelem
 %type <exprValue> expr term lvalue primary member assignexpr const elist elist_alt call objectdef
+<<<<<<< HEAD
 %type <intValue> ifprefix elseprefix whilestart whilecond N M forprefix 
 %type <stmtValue> stmt block stmt_series
+=======
+%type <intValue> block ifprefix elseprefix whilestart whilecond 
+>>>>>>> 617d887 (NIG a)
 %type <funcSymValue> funcname funcdef // NOTE: THIS MIGHT HAVE TO BECOME symValue LATER ON lec 10, sl 7
 
 %%
