@@ -36,6 +36,8 @@
 
     stack<int> loopcounter;
 
+    list<unsigned> unfinished_jumps;
+
     void push_loopcounter() {
         loopcounter.push(0);
     }
@@ -145,6 +147,7 @@
 %type <exprValue> expr term lvalue primary member assignexpr const elist elist_alt call objectdef
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 %type <intValue> block M
 =======
 %type <intValue> block ifprefix elseprefix
@@ -152,6 +155,9 @@
 =======
 %type <intValue> block ifprefix elseprefix whilestart whilecond 
 >>>>>>> 617d887 (NIG a)
+=======
+%type <intValue> block ifprefix elseprefix whilestart whilecond N M forprefix 
+>>>>>>> 064e231 (POUTSA)
 %type <funcSymValue> funcname funcdef // NOTE: THIS MIGHT HAVE TO BECOME symValue LATER ON lec 10, sl 7
 %type <opcodeValues> arithop relop
 
@@ -516,12 +522,12 @@ ifprefix: IF '(' expr ')' {
         emit(if_eq, $expr, newexpr_constbool(1), nextquadlabel() + 2);
 
         $ifprefix = nextquadlabel();
-        emit(jump, (unsigned int)0);
+        emit(jump, unsigned int(0));
 }
 
 elseprefix: ELSE {
     $elseprefix = nextquadlabel();
-    emit(jump, (unsigned int)0);
+    emit(jump, unsigned int(0));
 }
 
 loopstart: { increase_loopcounter; }
@@ -530,7 +536,8 @@ loopend: { decrease_loopcounter; }
 whilestmt: whilestart whilecond loopstart stmt {
     emit(jump, (unsigned int)$1);
     patchlabel($2, nextquadlabel());
-    patch
+    patchlist($stmt.BREAK, nextquadlabel());
+    patchlist($stmt.CONTINUE, $1);
     } loopend;
 
 whilestart: WHILE {
@@ -538,12 +545,22 @@ whilestart: WHILE {
 }
 
 whilecond: '(' expr ')' {
-    emit(if_eq, $1, newexpr_constbool(1), nextquadlabel() + 2);
+    emit(if_eq, $2, newexpr_constbool(1), nextquadlabel() + 2);
     $whilecond = nextquadlabel();
     emit(jump, unsigned int(0));
 }
 
 forstmt: FOR '(' elist';' expr';' elist')' loopstart stmt loopend;
+
+N: {$N = nextquadlabel(); emit(jump, unsigned int(0));}
+M: {$M = nextquadlabel();}
+
+forprefix: FOR '(' elist ';' M expr ';' {
+    $forprefix.test = $M;
+    $forprefix.enter = nextquadlabel();
+    emit(if_eq, $expr, newexpr_constbool(1), 0);
+}
+
 returnstmt: RETURN ';' {return_valid();}
     | RETURN  expr ';' {return_valid();}
     ;

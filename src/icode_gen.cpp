@@ -11,6 +11,7 @@
 extern quad *quads;
 extern unsigned total;
 extern unsigned int curr_quad;
+extern list<unsigned> unfinished_jumps;
 
 extern void yyerror(const char *msg, int line_number);
 
@@ -18,7 +19,7 @@ unsigned int nextquadlabel() {
     return curr_quad;
 }
 
-void patchlabel (unsigned quadNo, unsigned label) {
+void patchlabel(unsigned quadNo, unsigned label) {
     assert(quadNo < curr_quad && !quads[quadNo].label);
     quads[quadNo].label = label;
 }
@@ -28,6 +29,12 @@ void merge (list<unsigned> *L1, list<unsigned> *L2) {
 
 void backpatch (list<unsigned> *bool_list, unsigned label) {
     printf("entered backpatch\n");
+}
+
+void patchlist(unsigned quadNo, unsigned label) {
+    assert(quadNo < curr_quad && !quads[quadNo].label);
+    quads[quadNo].label = label;
+    unfinished_jumps.push_back(quadNo);
 }
 
 string opcode_to_string(iopcode opcode) {
