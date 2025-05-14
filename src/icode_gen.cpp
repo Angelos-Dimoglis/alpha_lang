@@ -42,6 +42,7 @@ string opcode_to_string(iopcode opcode) {
         case if_greatereq: return "if_greatereq";
         case if_less: return "if_less";
         case if_greater: return "if_greater";
+        case jump: return "jump";
         case call: return "call";
         case param: return "param";
         case ret: return "ret";
@@ -168,7 +169,7 @@ void expand (void) {
     total += EXPAND_SIZE;
 }
 
-void emit (iopcode op, expr* arg1, expr* arg2, expr* result, unsigned label, unsigned line) {
+void emit (iopcode op, expr* arg1, expr* arg2, expr* result, unsigned label) {
     if (curr_quad == total) 
         expand();
 
@@ -178,7 +179,72 @@ void emit (iopcode op, expr* arg1, expr* arg2, expr* result, unsigned label, uns
     p->arg2 = arg2;
     p->result = result;
     p->label = label;
-    p->line = line;
+    p->line = yylineno;
+}
+
+void emit (iopcode op, expr* arg1, expr* arg2, unsigned label) {
+    if (curr_quad == total) 
+        expand();
+
+    quad* p = quads + curr_quad++;
+    p->op = op;
+    p->arg1 = arg1;
+    p->arg2 = arg2;
+    p->result = NULL;
+    p->label = label;
+    p->line = yylineno;
+}
+
+void emit (iopcode op, expr* arg1, expr* arg2, expr* result) {
+    if (curr_quad == total) 
+        expand();
+
+    quad* p = quads + curr_quad++;
+    p->op = op;
+    p->arg1 = arg1;
+    p->arg2 = arg2;
+    p->result = result;
+    p->label = 0;
+    p->line = yylineno;
+}
+
+void emit (iopcode op, expr* arg1, expr* result) {
+    if (curr_quad == total) 
+        expand();
+
+    quad* p = quads + curr_quad++;
+    p->op = op;
+    p->arg1 = arg1;
+    p->arg2 = NULL;
+    p->result = result;
+    p->label = 0;
+    p->line = yylineno;
+}
+
+void emit (iopcode op, unsigned label) {
+    if (curr_quad == total) 
+        expand();
+
+    quad* p = quads + curr_quad++;
+    p->op = op;
+    p->arg1 = NULL;
+    p->arg2 = NULL;
+    p->result = NULL;
+    p->label = label;
+    p->line = yylineno;
+}
+
+void emit (iopcode op, expr* arg1) {
+    if (curr_quad == total) 
+        expand();
+
+    quad* p = quads + curr_quad++;
+    p->op = op;
+    p->arg1 = arg1;
+    p->arg2 = NULL;
+    p->result = NULL;
+    p->label = 0;
+    p->line = yylineno;
 }
 
 int tmp_var_counter = 0;
@@ -190,7 +256,7 @@ expr* emit_iftableitem(expr* e) {
 
     expr* result = new expr(var_e);
     result->sym = newtemp();
-    emit(table_get_elem, e, e->index, result, 0, yylineno);
+    emit(table_get_elem, e, e->index, result, 0);
     return result;
 }
 
@@ -214,12 +280,12 @@ expr *get_last(expr* exp) {
 expr* make_call (expr* lv, expr* reversed_elist) {
     expr* func = emit_iftableitem(lv);
     while (reversed_elist) {
-        emit(param, reversed_elist, NULL, NULL, 0, yylineno);
+        emit(param, reversed_elist, (expr*) NULL, (expr*) NULL);
         reversed_elist = reversed_elist->next;
     }
-    emit(call, func, NULL, NULL, 0, yylineno);
+    emit(call, func);
     expr* result = new expr(var_e, newtemp());
-    emit(get_ret_val, NULL, NULL, result, 0, yylineno);
+    emit(get_ret_val, NULL, NULL, result);
     return result;
 }
 

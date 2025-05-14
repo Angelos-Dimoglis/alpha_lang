@@ -88,6 +88,11 @@
     } callValue;
     std::list<std::pair<expr*, expr*>>* indexedList;
     std::pair<expr*, expr*>* indexedPair;
+    enum iopcode opcodeValues;
+    struct boolopLists{
+        std::list<int>* falselist;
+        std::list<int>* truelist;
+    } ;
 }
 
 %start program
@@ -131,6 +136,7 @@
 %type <exprValue> expr term lvalue primary member assignexpr const elist elist_alt call objectdef
 %type <intValue> block
 %type <funcSymValue> funcname funcdef // NOTE: THIS MIGHT HAVE TO BECOME symValue LATER ON lec 10, sl 7
+%type <opcodeValues> arithop relop
 
 %%
 
@@ -152,61 +158,31 @@ stmt: expr ';'
     | ';'
     ;
 
+arithop: '+' {$arithop = add;}
+    | '-' {$arithop = sub;}
+    | '*' {$arithop = mul;}
+    | '/' {$arithop = _div;}
+    | '%' {$arithop = mod;}
+
+relop: '>' {$relop = if_greater;}
+    | '<' {$relop = if_less;}
+    | GREATER_EQUAL {$relop = if_greatereq;}
+    | LESS_EQUAL {$relop = if_lesseq;}
+    | EQUAL_EQUAL {$relop = if_eq;}
+    | BANG_EQUAL {$relop = if_noteq;}
+    ;
+
 expr: assignexpr {}
-    | expr '+' expr {
-        $$ = new expr(arith_expr_e);
-        $$->sym = newtemp();
-        emit(add, $1, $3, $$, 0, yylineno);
+    | expr arithop expr {
+        $$ = new expr(arith_expr_e, newtemp());
+        emit($arithop, $1, $3, $$, 0);
     }
-    | expr '-' expr {
-        $$ = new expr(arith_expr_e);
-        $$->sym = newtemp();
-        emit(sub, $1, $3, $$, 0, yylineno);
-    }
-    | expr '*' expr {
-        $$ = new expr(arith_expr_e);
-        $$->sym = newtemp();
-        emit(mul, $1, $3, $$, 0, yylineno);
-    }
-    | expr '/' expr {
-        $$ = new expr(arith_expr_e);
-        $$->sym = newtemp();
-        emit(_div, $1, $3, $$, 0, yylineno);
-    }
-    | expr '%' expr {
-        $$ = new expr(arith_expr_e);
-        $$->sym = newtemp();
-        emit(mod, $1, $3, $$, 0, yylineno);
-    }
-    | expr '>' expr {
-        $$ = new expr(bool_expr_e);
-        $$->sym = newtemp();
-        emit(if_greater, $1, $3, $$, 0, yylineno);
-    }
-    | expr '<' expr {
-        $$ = new expr(bool_expr_e);
-        $$->sym = newtemp();
-        emit(if_less, $1, $3, $$, 0, yylineno);
-    }
-    | expr GREATER_EQUAL expr {
-        $$ = new expr(bool_expr_e);
-        $$->sym = newtemp();
-        emit(if_greatereq, $1, $3, $$, 0, yylineno);
-    }
-    | expr LESS_EQUAL expr {
-        $$ = new expr(bool_expr_e);
-        $$->sym = newtemp();
-        emit(if_lesseq, $1, $3, $$, 0, yylineno);
-    }
-    | expr EQUAL_EQUAL expr {
-        $$ = new expr(bool_expr_e);
-        $$->sym = newtemp();
-        emit(if_eq, $1, $3, $$, 0, yylineno);
-    }
-    | expr BANG_EQUAL expr {
-        $$ = new expr(bool_expr_e);
-        $$->sym = newtemp();
-        emit(if_noteq, $1, $3, $$, 0, yylineno);
+    | expr relop expr {
+        $$ = new expr(bool_expr_e, newtemp());
+        emit($relop, $1 , $3, nextquadlabel() + 3);
+        emit(assign, new expr(false), $$);
+        emit(jump, nextquadlabel() + 2);
+        emit(assign, new expr(true), $$);
     }
     | expr AND expr
     | expr OR expr
@@ -219,23 +195,24 @@ term: '(' expr ')' {$term = $expr;}
     | '-' expr %prec MINUS_UNARY{
         check_arith($expr, "unary minus");
         $term = new expr(arith_expr_e, newtemp());
-        emit(uminus, $expr, NULL, $term, 0, yylineno);
+        emit(uminus, $expr, NULL, $term, 0);
     }
     | NOT expr {
         $term = new expr(bool_expr_e, newtemp());
-        emit(_not , $expr, NULL, $term, 0, yylineno);
+        emit(_not , $expr, NULL, $term, 0);
     }
     | PLUS_PLUS lvalue {
         check_arith($lvalue, "++lvalue");
         // TODO: no new expr?
         if ($lvalue->type == table_item_e) {
             $term = emit_iftableitem($lvalue);
-            emit(add, $term, new expr((double) 1), $term, 0, yylineno);
-            emit(table_set_elem, $lvalue, $lvalue->index, $term, 0, yylineno);
-        } else {
-            emit(add, $lvalue, new expr((double) 1), $lvalue, 0, yylineno);
+            emit(add, $term, new expr((double) 1), $term, 0);
+            emit(table_set_elem, $lvalue, $lvalue->index, $term, 0);
+        }
+        else {
+            emit(add, $lvalue, new expr((double) 1), $lvalue, 0);
             $term = new expr(arith_expr_e, newtemp());
-            emit(assign, $lvalue, NULL, $term, 0, yylineno);
+            emit(assign, $lvalue, NULL, $term, 0);
         }
     }
     | lvalue PLUS_PLUS {
@@ -243,24 +220,26 @@ term: '(' expr ')' {$term = $expr;}
         $term = new expr(var_e, newtemp());
         if ($lvalue->type == table_item_e) {
             expr* val = emit_iftableitem($lvalue);
-            emit(assign, val, NULL, $term, 0, yylineno);
-            emit(add, val, new expr((double) 1), val, 0, yylineno);
-            emit(table_set_elem, $lvalue, $lvalue->index, val, 0, yylineno);
-        } else {
-            emit(assign, $lvalue, NULL, $term, 0, yylineno);
-            emit(add, $lvalue, new expr((double) 1), $lvalue, 0, yylineno);
+            emit(assign, val, NULL, $term, 0);
+            emit(add, val, new expr((double) 1), val, 0);
+            emit(table_set_elem, $lvalue, $lvalue->index, val, 0);
+        }
+        else {
+            emit(assign, $lvalue, NULL, $term, 0);
+            emit(add, $lvalue, new expr((double) 1), $lvalue, 0);
         }
     }
     | MINUS_MINUS lvalue {
         check_arith($lvalue, "++lvalue");
         if ($lvalue->type == table_item_e) {
             $term = emit_iftableitem($lvalue);
-            emit(sub, $term, new expr((double) 1), $term, 0, yylineno);
-            emit(table_set_elem, $lvalue, $lvalue->index, $term, 0, yylineno);
-        } else {
-            emit(sub, $lvalue, new expr((double) 1), $lvalue, 0, yylineno);
+            emit(sub, $term, new expr((double) 1), $term, 0);
+            emit(table_set_elem, $lvalue, $lvalue->index, $term, 0);
+        }
+        else {
+            emit(sub, $lvalue, new expr((double) 1), $lvalue, 0);
             $term = new expr(arith_expr_e, newtemp());
-            emit(assign, $lvalue, NULL, $term, 0, yylineno);
+            emit(assign, $lvalue, NULL, $term, 0);
         }
     }
     | lvalue MINUS_MINUS {
@@ -269,12 +248,13 @@ term: '(' expr ')' {$term = $expr;}
         $term = new expr(var_e, newtemp());
         if ($lvalue->type == table_item_e) {
             expr* val = emit_iftableitem($lvalue);
-            emit(assign, val, NULL, $term, 0, yylineno);
-            emit(sub, val, new expr((double) 1), val, 0, yylineno);
-            emit(table_set_elem, $lvalue, $lvalue->index, val, 0, yylineno);
-        } else {
-            emit(assign, $lvalue, NULL, $term, 0, yylineno);
-            emit(sub, $lvalue, new expr((double) 1), $lvalue, 0, yylineno);
+            emit(assign, val, NULL, $term, 0);
+            emit(sub, val, new expr((double) 1), val, 0);
+            emit(table_set_elem, $lvalue, $lvalue->index, val, 0);
+        }
+        else {
+            emit(assign, $lvalue, NULL, $term, 0);
+            emit(sub, $lvalue, new expr((double) 1), $lvalue, 0);
         }
     }
     | primary {
@@ -286,15 +266,15 @@ assignexpr: lvalue '=' expr {
         check_lvalue($1->sym->name);
         if ($1->type == table_item_e) {
             // lvalue[index] = expr
-            emit(table_set_elem, $1, $1->index, $3, 0, yylineno);
+            emit(table_set_elem, $1, $1->index, $3, 0);
             $$ = emit_iftableitem($1); // Will always emit
             $$->type = assign_expr_e;
         } else {
             // that is: lvalue = expr
-            emit(assign, $3, NULL, $1, 0, yylineno);
+            emit(assign, $3, NULL, $1, 0);
             $$ = new expr(assign_expr_e);
             $$->sym = newtemp();
-            emit(assign, $1, NULL, $$, 0, yylineno);
+            emit(assign, $1, NULL, $$, 0);
         }
     }; 
 
@@ -395,16 +375,16 @@ elist_alt: ',' expr elist_alt {
 
 objectdef: '[' elist ']' {
         expr* t = new expr(new_table_e, newtemp());
-        emit(table_create, t, NULL, NULL, 0, yylineno);
+        emit(table_create, t, NULL, NULL, 0);
         for (int i = 0; $elist; $elist = $elist->next)
-            emit(table_set_elem, t, new expr((double) i++), $elist, 0, yylineno);
+            emit(table_set_elem, t, new expr((double) i++), $elist, 0);
         $objectdef = t;
     }
     | '[' indexed ']' {
         expr* t = new expr(new_table_e, newtemp());
-        emit(table_create, t, NULL, NULL, 0, yylineno);
+        emit(table_create, t, NULL, NULL, 0);
         for (const auto& pair : *($indexed)) {
-            emit(table_set_elem, t, pair.first, pair.second, 0, yylineno);
+            emit(table_set_elem, t, pair.first, pair.second, 0);
         }
         $objectdef = t;
     }
@@ -441,7 +421,7 @@ funcdef: FUNCTION
     funcname {
         $2 -> index_address = nextquadlabel();
         expr* temp = new expr(program_func_e, $2);
-        emit(func_start, temp, NULL, NULL, 0, yylineno);
+        emit(func_start, temp, NULL, NULL, 0);
     }
     formal_arguments
     funcblockstart block {
@@ -450,7 +430,7 @@ funcdef: FUNCTION
     funcblockend {
         $$ = $2;
         expr* temp = new expr(program_func_e, $2);
-        emit(func_end, temp, NULL, NULL, 0, yylineno);
+        emit(func_end, temp, NULL, NULL, 0);
     };
 
 const: INTCONST {
