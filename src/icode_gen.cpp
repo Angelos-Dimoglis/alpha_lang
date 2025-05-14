@@ -15,7 +15,7 @@ extern unsigned int curr_quad;
 extern void yyerror(const char *msg, int line_number);
 
 unsigned int nextquadlabel() {
-    return curr_quad + 1;
+    return curr_quad;
 }
 
 void patchlabel (unsigned quadNo, unsigned label) {
@@ -23,7 +23,10 @@ void patchlabel (unsigned quadNo, unsigned label) {
     quads[quadNo].label = label;
 }
 
-void backpatch (list<int> *bool_list, quad *q) {
+void merge (list<unsigned> *L1, list<unsigned> *L2) {
+}
+
+void backpatch (list<unsigned> *bool_list, unsigned label) {
 
 }
 

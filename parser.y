@@ -102,10 +102,6 @@
     list<pair<expr*, expr*>>* indexedList;
     pair<expr*, expr*>* indexedPair;
     enum iopcode opcodeValues;
-    struct boolopLists{
-        list<int>* falselist;
-        list<int>* truelist;
-    };
 }
 
 %start program
@@ -147,7 +143,7 @@
 %type <indexedList> indexed indexed_alt
 %type <indexedPair> indexedelem
 %type <exprValue> expr term lvalue primary member assignexpr const elist elist_alt call objectdef
-%type <intValue> block
+%type <intValue> block M
 %type <funcSymValue> funcname funcdef // NOTE: THIS MIGHT HAVE TO BECOME symValue LATER ON lec 10, sl 7
 %type <opcodeValues> arithop relop
 
@@ -191,22 +187,45 @@ expr: assignexpr {}
         emit($arithop, $1, $3, $$);
     }
     | expr relop expr {
+        $$->truelist = new list<unsigned int>({nextquadlabel()});
+        $$->falselist = new list<unsigned>({nextquadlabel()});
+        
         $$ = new expr(bool_expr_e, newtemp());
         emit($relop, $1 , $3, nextquadlabel() + 3);
         emit(assign, new expr(false), $$);
         emit(jump, nextquadlabel() + 2);
         emit(assign, new expr(true), $$);
     }
-    | expr AND expr {
+    | expr AND M expr {
+        backpatch($1->truelist, $M);
+        $$->truelist = $4->truelist;
 
+        list<unsigned> *L1 = $1->falselist;
+        list<unsigned> *L2 = $4->falselist;
+
+        L1->splice(L1->end(), *L2);
+        $$->falselist = new list<unsigned>(*L1);
     }
-    | expr OR expr {
+    | expr OR M expr {
+        backpatch($1->falselist, $M);
 
+        list<unsigned> *L1 = $1->truelist;
+        list<unsigned> *L2 = $4->truelist;
+
+        L1->splice(L1->end(), *L2);
+        *($$->truelist) = *L1;
+
+        $$->falselist = $4->falselist;
     }
     | term {
         $$ = $1;
     }
     ;
+
+M: /* empry rule */ {
+    $M = nextquadlabel();
+ }
+ ;
 
 term: '(' expr ')' {$term = $expr;}
     | '-' expr %prec MINUS_UNARY{
@@ -215,6 +234,9 @@ term: '(' expr ')' {$term = $expr;}
         emit(uminus, $expr, NULL, $term, 0);
     }
     | NOT expr {
+        $term->truelist = $expr->falselist;
+        $term->falselist = $expr->truelist;
+
         $term = new expr(bool_expr_e, newtemp());
         emit(_not , $expr, NULL, $term, 0);
     }

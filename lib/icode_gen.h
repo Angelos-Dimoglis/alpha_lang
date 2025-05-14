@@ -37,6 +37,8 @@ struct expr {
     string str_const;
     unsigned char bool_const;
     expr *next;
+    list<unsigned int>* falselist;
+    list<unsigned int>* truelist;
 
     expr () : 
         type(const_nil_e),
@@ -103,6 +105,10 @@ struct quad {
 #define EXPAND_SIZE 1024
 #define CURR_SIZE (total*sizeof(quad))
 #define NEW_SIZE (EXPAND_SIZE*sizeof(quad)+CURR_SIZE)
+
+void merge (list<unsigned> *L1, list<unsigned> *L2);
+
+void backpatch (list<unsigned> *bool_list, unsigned label);
 
 void check_arith (expr* e, string context);
 
