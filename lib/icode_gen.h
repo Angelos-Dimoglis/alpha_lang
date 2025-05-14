@@ -120,6 +120,8 @@ unsigned int nextquadlabel();
 
 void patchlabel (unsigned quadNo, unsigned label);
 
+void patchlist (unsigned quadNo, unsigned label);
+
 void print_quad (struct quad *q);
 
 void print_quads ();

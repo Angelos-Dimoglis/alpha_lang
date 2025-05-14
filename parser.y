@@ -144,10 +144,14 @@
 %type <indexedPair> indexedelem
 %type <exprValue> expr term lvalue primary member assignexpr const elist elist_alt call objectdef
 <<<<<<< HEAD
+<<<<<<< HEAD
 %type <intValue> block M
 =======
 %type <intValue> block ifprefix elseprefix
 >>>>>>> 9cfdd6a (Prefix (gamw ton pano))
+=======
+%type <intValue> block ifprefix elseprefix whilestart whilecond 
+>>>>>>> 617d887 (NIG a)
 %type <funcSymValue> funcname funcdef // NOTE: THIS MIGHT HAVE TO BECOME symValue LATER ON lec 10, sl 7
 %type <opcodeValues> arithop relop
 
@@ -522,7 +526,23 @@ elseprefix: ELSE {
 
 loopstart: { increase_loopcounter; }
 loopend: { decrease_loopcounter; }
-whilestmt: WHILE '(' expr ')' loopstart stmt loopend;
+
+whilestmt: whilestart whilecond loopstart stmt {
+    emit(jump, (unsigned int)$1);
+    patchlabel($2, nextquadlabel());
+    patch
+    } loopend;
+
+whilestart: WHILE {
+    $whilestart = nextquadlabel();
+}
+
+whilecond: '(' expr ')' {
+    emit(if_eq, $1, newexpr_constbool(1), nextquadlabel() + 2);
+    $whilecond = nextquadlabel();
+    emit(jump, unsigned int(0));
+}
+
 forstmt: FOR '(' elist';' expr';' elist')' loopstart stmt loopend;
 returnstmt: RETURN ';' {return_valid();}
     | RETURN  expr ';' {return_valid();}
