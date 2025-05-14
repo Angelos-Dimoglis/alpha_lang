@@ -101,8 +101,9 @@ Variable* add_formal_argument(const string name) {
         return nullptr;
     }
 
-    args.push_back((Variable*)sym_table.Lookup(name, scope, THIS_SCOPE));
-    return (Variable*) sym_table.Lookup(name, scope, THIS_SCOPE);
+    Variable* temp = (Variable*)sym_table.Lookup(name, scope, THIS_SCOPE);
+    args.push_back(temp);
+    return temp;
 }
 
 Variable* check_lvalue(const string name) {
