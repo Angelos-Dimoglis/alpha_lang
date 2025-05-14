@@ -11,6 +11,7 @@
 extern quad *quads;
 extern unsigned total;
 extern unsigned int curr_quad;
+extern list<unsigned> unfinished_jumps;
 
 extern void yyerror(const char *msg, int line_number);
 
@@ -18,7 +19,7 @@ unsigned int nextquadlabel() {
     return curr_quad;
 }
 
-void patchlabel (unsigned quadNo, unsigned label) {
+void patchlabel(unsigned quadNo, unsigned label) {
     assert(quadNo < curr_quad && !quads[quadNo].label);
     quads[quadNo].label = label;
 }

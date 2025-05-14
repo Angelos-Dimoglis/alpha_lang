@@ -36,6 +36,8 @@
 
     stack<int> loopcounter;
 
+    list<unsigned> unfinished_jumps;
+
     void push_loopcounter() {
         loopcounter.push(0);
     }
@@ -148,12 +150,8 @@
 %type <indexedList> indexed indexed_alt
 %type <indexedPair> indexedelem
 %type <exprValue> expr term lvalue primary member assignexpr const elist elist_alt call objectdef
-<<<<<<< HEAD
 %type <intValue> ifprefix elseprefix whilestart whilecond N M forprefix 
 %type <stmtValue> stmt block stmt_series
-=======
-%type <intValue> block ifprefix elseprefix whilestart whilecond 
->>>>>>> 617d887 (NIG a)
 %type <funcSymValue> funcname funcdef // NOTE: THIS MIGHT HAVE TO BECOME symValue LATER ON lec 10, sl 7
 
 %%
@@ -213,20 +211,6 @@ expr: assignexpr {}
     | expr '%' expr {
         $$ = new expr(arith_expr_e, newtemp());
         emit(mod, $1, $3, $$);
-    }
-    | expr '>' expr {
-        $$ = new expr(bool_expr_e, newtemp());
-        emit(if_greater, $1 , $3, nextquadlabel() + 3);
-        emit(assign, new expr(false), $$);
-        emit(jump, nextquadlabel() + 2);
-        emit(assign, new expr(true), $$);
-    }
-    | expr '<' expr {
-        $$ = new expr(bool_expr_e, newtemp());
-        emit(if_less, $1 , $3, nextquadlabel() + 3);
-        emit(assign, new expr(false), $$);
-        emit(jump, nextquadlabel() + 2);
-        emit(assign, new expr(true), $$);
     }
     | expr GREATER_EQUAL expr {
         $$ = new expr(bool_expr_e, newtemp());
@@ -584,7 +568,7 @@ forstmt: forprefix N elist ')' N loopstart stmt N loopend {
     patchlabel($forprefix);
 }
 
-N: {$N = nextquadlabel(); emit(jump, unsigned(0));}
+N: {$N = nextquadlabel(); emit(jump, unsigned int(0));}
 M: {$M = nextquadlabel();}
 
 forprefix: FOR '(' elist ';' M expr ';' {
