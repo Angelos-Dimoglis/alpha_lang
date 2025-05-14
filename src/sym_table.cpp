@@ -1,4 +1,4 @@
-#include "sym_table.h"
+#include "../lib/sym_table.h"
 
 stack<int> scope_space_offset_stack{ deque<int>{0} };
 

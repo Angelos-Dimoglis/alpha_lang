@@ -5,8 +5,8 @@
 #include <cassert>
 #include <string>
 
-#include "sym_table.h"
-#include "icode_gen.h"
+#include "../lib/sym_table.h"
+#include "../lib/icode_gen.h"
 
 extern quad *quads;
 extern unsigned total;

@@ -3,37 +3,39 @@
 
 # compiler related variables
 CC = g++
-CFLAGS = -g
+CFLAGS = -g -Ilib
 
+# target executable
 TARGET = alpha_compiler.out
 
-SRCS = sym_table.cpp parser_functions.cpp icode_gen.cpp parser.cpp lexer.cpp
-OBJS = $(SRCS:.cpp=.o)
+# directory variables
+BIN_DIR = bin
+GEN_SRCS = src/lexer.cpp src/parser.cpp
+SRCS = $(filter-out $(GEN_SRCS), $(wildcard src/*.cpp)) $(GEN_SRCS)
+OBJS = $(patsubst src/%.cpp, $(BIN_DIR)/%.o, $(SRCS))
 
-GEN_SRCS = lexer.cpp parser.cpp
-GEN_HDRS = parser.hpp
-
+# default target
 all: $(TARGET)
 
+# linking step
 $(TARGET): $(OBJS)
 	$(CC) $(CFLAGS) $^ -o $@
 
-%.o: %.cpp
+# compile all .cpp files
+$(BIN_DIR)/%.o: src/%.cpp | $(BIN_DIR)
 	$(CC) $(CFLAGS) -c $< -o $@
 
-parser.cpp: parser.y
-	bison --yacc --defines -tdv $^ -o parser.cpp
+src/lexer.cpp: lexer.l lib/parser.hpp
+	flex -o $@ $<
 
-lexer.cpp: lexer.l
-	flex -o $@ $^
+src/parser.cpp lib/parser.hpp: parser.y
+	bison --yacc --defines=lib/parser.hpp -tdv $^ -o src/parser.cpp
 
-parser.o: parser.cpp
-lexer.o: lexer.cpp
-sym_table.o: sym_table.cpp
-parser_functions.o: parser_functions.cpp parser_functions.h
-icode_gen.o: icode_gen.cpp
+# create the bin directory if it doesn't exist
+$(BIN_DIR):
+	mkdir -p $(BIN_DIR)
 
 clean:
-	rm -f $(TARGET) $(OBJS) $(GEN_SRCS) $(GEN_HDRS) parser.output
+	rm -rf $(TARGET) $(BIN_DIR) src/lexer.cpp src/parser.cpp lib/parser.hpp src/parser.output
 
 .PHONY: all clean

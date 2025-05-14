@@ -7,8 +7,8 @@
     #include <list>
     #include <utility>
 
-    #include "parser_functions.h"
-    #include "icode_gen.h"
+    #include "../lib/parser_functions.h"
+    #include "../lib/icode_gen.h"
 
     extern int yylex (void);
     extern void yyerror(const char *msg, int line_number);

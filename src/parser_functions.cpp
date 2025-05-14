@@ -1,4 +1,4 @@
-#include "parser_functions.h"
+#include "../lib/parser_functions.h"
 #include <cassert>
 
 extern SymTable sym_table;
