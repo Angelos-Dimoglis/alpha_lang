@@ -188,7 +188,7 @@ relop: '>' {$relop = if_greater;}
 expr: assignexpr {}
     | expr arithop expr {
         $$ = new expr(arith_expr_e, newtemp());
-        emit($arithop, $1, $3, $$, 0);
+        emit($arithop, $1, $3, $$);
     }
     | expr relop expr {
         $$ = new expr(bool_expr_e, newtemp());
@@ -216,16 +216,15 @@ term: '(' expr ')' {$term = $expr;}
     }
     | PLUS_PLUS lvalue {
         check_arith($lvalue, "++lvalue");
-        // TODO: no new expr?
         if ($lvalue->type == table_item_e) {
             $term = emit_iftableitem($lvalue);
-            emit(add, $term, new expr((double) 1), $term, 0);
-            emit(table_set_elem, $lvalue, $lvalue->index, $term, 0);
+            emit(add, $term, new expr((double) 1), $term);
+            emit(table_set_elem, $lvalue, $lvalue->index, $term);
         }
         else {
-            emit(add, $lvalue, new expr((double) 1), $lvalue, 0);
+            emit(add, $lvalue, new expr((double) 1), $lvalue);
             $term = new expr(arith_expr_e, newtemp());
-            emit(assign, $lvalue, NULL, $term, 0);
+            emit(assign, $lvalue, NULL, $term);
         }
     }
     | lvalue PLUS_PLUS {
@@ -243,7 +242,7 @@ term: '(' expr ')' {$term = $expr;}
         }
     }
     | MINUS_MINUS lvalue {
-        check_arith($lvalue, "++lvalue");
+        check_arith($lvalue, "--lvalue");
         if ($lvalue->type == table_item_e) {
             $term = emit_iftableitem($lvalue);
             emit(sub, $term, new expr((double) 1), $term, 0);
@@ -256,8 +255,7 @@ term: '(' expr ')' {$term = $expr;}
         }
     }
     | lvalue MINUS_MINUS {
-        // TODO: did you mean --
-        check_arith($lvalue, "lvalue++");
+        check_arith($lvalue, "lvalue--");
         $term = new expr(var_e, newtemp());
         if ($lvalue->type == table_item_e) {
             expr* val = emit_iftableitem($lvalue);
@@ -388,16 +386,16 @@ elist_alt: ',' expr elist_alt {
 
 objectdef: '[' elist ']' {
         expr* t = new expr(new_table_e, newtemp());
-        emit(table_create, t, NULL, NULL, 0);
-        for (int i = 0; $elist; $elist = $elist->next)
-            emit(table_set_elem, t, new expr((double) i++), $elist, 0);
+        emit(table_create, t);
+        for (int i = 0; $elist != NULL; $elist = $elist->next)
+            emit(table_set_elem, t, new expr((double) i++), $elist);
         $objectdef = t;
     }
     | '[' indexed ']' {
         expr* t = new expr(new_table_e, newtemp());
         emit(table_create, t, NULL, NULL, 0);
         for (const auto& pair : *($indexed)) {
-            emit(table_set_elem, t, pair.first, pair.second, 0);
+            emit(table_set_elem, t, pair.first, pair.second);
         }
         $objectdef = t;
     }
