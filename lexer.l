@@ -9,6 +9,7 @@
 #include <utility>
 
 #include "parser.hpp"
+#include "icode_gen.h"
 
 using namespace std;
 

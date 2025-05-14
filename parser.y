@@ -7,6 +7,8 @@
     #include <list>
     #include <utility>
 
+    using namespace std;
+
     #include "../lib/parser_functions.h"
     #include "../lib/icode_gen.h"
 
@@ -70,6 +72,21 @@
 
 %}
 
+%code requires {
+
+    using namespace std;
+
+    #include "sym_table.h"
+    #include "icode_gen.h"
+    #include "parser_functions.h"
+
+    struct call {
+        expr* elist;
+        unsigned char method;
+        char* name;
+    };
+}
+
 %define parse.error detailed
 
 %union {
@@ -81,18 +98,14 @@
     struct expr *exprValue;
     struct Function *funcSymValue;
     struct quad * quadValue;
-    struct call {
-        expr* elist;
-        unsigned char method;
-        char* name;
-    } callValue;
-    std::list<std::pair<expr*, expr*>>* indexedList;
-    std::pair<expr*, expr*>* indexedPair;
+    struct call callValue;
+    list<pair<expr*, expr*>>* indexedList;
+    pair<expr*, expr*>* indexedPair;
     enum iopcode opcodeValues;
     struct boolopLists{
-        std::list<int>* falselist;
-        std::list<int>* truelist;
-    } ;
+        list<int>* falselist;
+        list<int>* truelist;
+    };
 }
 
 %start program
