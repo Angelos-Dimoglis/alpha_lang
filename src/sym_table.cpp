@@ -1,6 +1,6 @@
 #include "../lib/sym_table.h"
 
-stack<int> scope_space_offset_stack{ deque<int>{0} };
+stack<int> scope_space_offset_stack{{0}};
 
 scopespace_t currscopespace() {
     if (scope_space_offset_stack.size() == 1) {
@@ -156,8 +156,9 @@ string spaceToString(scopespace_t space) {
             return "function_local";
         case formal_arg:
             return "formal_arg";
+        default:
+            assert(0);
     }
-    return "";
 }
 
 void SymTable::PrintTable() {
@@ -184,8 +185,7 @@ void SymTable::PrintTable() {
                 cout << "[library function] ";
                 break;
             default:
-                cout << "[unknown] ";
-                break;
+                assert(0);
             }
             cout << "(line " << current->sym->line << ") ";
             cout << "(scope " << current->sym->scope << ") ";
