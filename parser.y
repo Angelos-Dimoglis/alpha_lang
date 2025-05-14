@@ -197,8 +197,12 @@ expr: assignexpr {}
         emit(jump, nextquadlabel() + 2);
         emit(assign, new expr(true), $$);
     }
-    | expr AND expr
-    | expr OR expr
+    | expr AND expr {
+
+    }
+    | expr OR expr {
+
+    }
     | term {
         $$ = $1;
     }

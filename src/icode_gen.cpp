@@ -23,6 +23,10 @@ void patchlabel (unsigned quadNo, unsigned label) {
     quads[quadNo].label = label;
 }
 
+void backpatch (list<int> *bool_list, quad *q) {
+
+}
+
 string opcode_to_string(iopcode opcode) {
 
     switch (opcode) {
