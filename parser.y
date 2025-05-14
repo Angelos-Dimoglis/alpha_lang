@@ -143,7 +143,11 @@
 %type <indexedList> indexed indexed_alt
 %type <indexedPair> indexedelem
 %type <exprValue> expr term lvalue primary member assignexpr const elist elist_alt call objectdef
+<<<<<<< HEAD
 %type <intValue> block M
+=======
+%type <intValue> block ifprefix elseprefix
+>>>>>>> 9cfdd6a (Prefix (gamw ton pano))
 %type <funcSymValue> funcname funcdef // NOTE: THIS MIGHT HAVE TO BECOME symValue LATER ON lec 10, sl 7
 %type <opcodeValues> arithop relop
 
@@ -500,9 +504,21 @@ idlist_alt: ',' IDENTIFIER {add_formal_argument($2);} idlist_alt
     | /* empty */
     ;
 
-ifstmt: IF '(' expr ')' stmt %prec IF
-    | IF '(' expr ')' stmt ELSE stmt
+ifstmt: ifprefix stmt {patchlabel($1, nextquadlabel());} %prec IF
+    | ifprefix stmt elseprefix stmt {patchlabel($1, $3 + 1); patchlabel($3, nextquadlabel());}
     ;
+
+ifprefix: IF '(' expr ')' {
+        emit(if_eq, $expr, newexpr_constbool(1), nextquadlabel() + 2);
+
+        $ifprefix = nextquadlabel();
+        emit(jump, (unsigned int)0);
+}
+
+elseprefix: ELSE {
+    $elseprefix = nextquadlabel();
+    emit(jump, (unsigned int)0);
+}
 
 loopstart: { increase_loopcounter; }
 loopend: { decrease_loopcounter; }

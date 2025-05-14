@@ -19,7 +19,7 @@ unsigned int nextquadlabel() {
 }
 
 void patchlabel (unsigned quadNo, unsigned label) {
-    assert(quadNo < curr_quad);
+    assert(quadNo < curr_quad && !quads[quadNo].label);
     quads[quadNo].label = label;
 }
 
@@ -322,4 +322,10 @@ void resettemp() {
 Symbol *newtemp() {
     string name = newtempname();
     return add_id(name);
+}
+
+expr* newexpr_constbool(unsigned int b) {
+    expr* e = new expr(const_bool_e);
+    e->bool_const = !!b;
+    return e;
 }

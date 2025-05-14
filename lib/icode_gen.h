@@ -143,3 +143,5 @@ Symbol *newtemp();
 expr* emit_iftableitem(expr* e);
 
 expr *member_item(expr *lvalue, string name);
+
+expr* newexpr_constbool(unsigned int b);
