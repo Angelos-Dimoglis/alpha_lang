@@ -10,7 +10,9 @@
 
 #include "parser.hpp"
 
-std::stack<int> comment_stack;
+using namespace std;
+
+stack<int> comment_stack;
 int start_of_string;
 
 typedef struct alpha_token {

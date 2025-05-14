@@ -86,8 +86,8 @@
         unsigned char method;
         char* name;
     } callValue;
-    list<pair<expr*, expr*>>* indexedList;
-    pair<expr*, expr*>* indexedPair;
+    std::list<std::pair<expr*, expr*>>* indexedList;
+    std::pair<expr*, expr*>* indexedPair;
 }
 
 %start program
