@@ -11,7 +11,6 @@
 extern quad *quads;
 extern unsigned total;
 extern unsigned int curr_quad;
-extern list<unsigned> unfinished_jumps;
 
 extern void yyerror(const char *msg, int line_number);
 

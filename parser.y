@@ -36,8 +36,6 @@
 
     stack<int> loopcounter;
 
-    list<unsigned> unfinished_jumps;
-
     void push_loopcounter() {
         loopcounter.push(0);
     }
@@ -177,7 +175,6 @@ stmt: expr ';' {}
             $stmt->breaklist.push_back(curr_quad);
             emit(jump, unsigned(0));
         }
-
     }
     | CONTINUE ';' {
         if (break_continue_valid("continue")); {
@@ -564,11 +561,9 @@ whilecond: '(' expr ')' {
     emit(jump, unsigned(0));
 }
 
-forstmt: forprefix N elist ')' N loopstart stmt N loopend {
-    patchlabel($forprefix);
-}
+forstmt: FOR '(' elist';' expr';' elist')' loopstart stmt loopend;
 
-N: {$N = nextquadlabel(); emit(jump, unsigned int(0));}
+N: {$N = nextquadlabel(); emit(jump, unsigned(0));}
 M: {$M = nextquadlabel();}
 
 forprefix: FOR '(' elist ';' M expr ';' {
