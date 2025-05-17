@@ -93,6 +93,16 @@ struct expr {
 
 };
 
+struct stmt {
+    list<unsigned> breaklist;
+    list<unsigned> contlist;
+};
+
+struct forp {
+    unsigned enter;
+    unsigned test;
+};
+
 struct quad {
     iopcode op;
     expr *arg1;
@@ -120,7 +130,7 @@ unsigned int nextquadlabel();
 
 void patchlabel (unsigned quadNo, unsigned label);
 
-void patchlist (unsigned quadNo, unsigned label);
+void patchlist (list<unsigned> quadBBC, unsigned label);
 
 void print_quad (struct quad *q);
 

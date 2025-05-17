@@ -29,7 +29,7 @@ src/lexer.cpp: lexer.l lib/parser.hpp
 	flex -o $@ $<
 
 src/parser.cpp lib/parser.hpp: parser.y
-	bison --yacc --defines=lib/parser.hpp -tdv $^ -o src/parser.cpp
+	bison --yacc --defines=lib/parser.hpp -Wcounterexamples -tdv $^ -o src/parser.cpp
 
 # create the bin directory if it doesn't exist
 $(BIN_DIR):

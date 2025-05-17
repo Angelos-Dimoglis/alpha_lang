@@ -36,8 +36,6 @@
 
     stack<int> loopcounter;
 
-    list<unsigned> unfinished_jumps;
-
     void push_loopcounter() {
         loopcounter.push(0);
     }
@@ -60,16 +58,20 @@
         loopcounter.push(temp);
     }
 
-    void break_continue_valid(string break_or_continue) {
+    int break_continue_valid(string break_or_continue) {
         if (loopcounter.empty() || loopcounter.top() == 0) {
             yyerror(("Use of \'" + break_or_continue + "\' while not in a loop").c_str());
+            return 0;
         }
+        return 1;
     }
 
-    void return_valid() {
+    int return_valid() {
         if (loopcounter.empty()) {
             yyerror("Use of \'return\' while not in a function");
+            return 0;
         }
+        return 1;
     }
 
 %}
@@ -98,6 +100,7 @@
     char *stringValue;
     void *nilValue;
     struct expr *exprValue;
+    struct stmt *stmtValue;
     struct Function *funcSymValue;
     struct quad * quadValue;
     struct call callValue;
@@ -144,6 +147,7 @@
 %type <callValue> callsuffix normcall methodcall
 %type <indexedList> indexed indexed_alt
 %type <indexedPair> indexedelem
+<<<<<<< HEAD
 %type <exprValue> expr term lvalue primary member assignexpr const elist elist_alt call objectdef
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -158,48 +162,71 @@
 =======
 %type <intValue> block ifprefix elseprefix whilestart whilecond N M forprefix 
 >>>>>>> 064e231 (POUTSA)
+=======
+%type <exprValue> expr lvalue term primary member assignexpr const elist elist_alt call objectdef
+%type <stmtValue> stmt block stmt_series
+%type <intValue> ifprefix elseprefix whilestart whilecond N M forprefix 
+>>>>>>> 2856734 (I LIKE SUCKING DICK!)
 %type <funcSymValue> funcname funcdef // NOTE: THIS MIGHT HAVE TO BECOME symValue LATER ON lec 10, sl 7
-%type <opcodeValues> arithop relop
-
 %%
 
 program: stmt_series;
 
-stmt_series: stmt_series stmt 
-    | /* empty */
+stmt_series: stmt_series stmt  {
+        $1->breaklist.push_back($stmt->breaklist.front());
+        $1->contlist.push_back($stmt->contlist.front());
+        $$ = $1;
+    }
+    | {$stmt_series = new stmt();} /* empty */
     ;
 
-stmt: expr ';'
-    | ifstmt
-    | whilestmt
-    | forstmt
-    | returnstmt
-    | BREAK ';' {break_continue_valid("break");}
-    | CONTINUE ';' {break_continue_valid("continue");}
-    | block
-    | funcdef
-    | ';'
+stmt: expr ';' {}
+    | ifstmt {}
+    | whilestmt {}
+    | forstmt {}
+    | returnstmt {}
+    | BREAK ';' {
+        if (break_continue_valid("break")); {
+            $stmt = new stmt();
+            $stmt->breaklist.push_back(curr_quad);
+            emit(jump, unsigned(0));
+        }
+
+    }
+    | CONTINUE ';' {
+        if (break_continue_valid("continue")); {
+            $stmt = new stmt();
+            $stmt->contlist.push_back(curr_quad);
+            emit(jump, unsigned(0));
+        }
+    }
+    | block {$stmt = $block;}
+    | funcdef {}
+    | ';' {}
     ;
 
-arithop: '+' {$arithop = add;}
-    | '-' {$arithop = sub;}
-    | '*' {$arithop = mul;}
-    | '/' {$arithop = _div;}
-    | '%' {$arithop = mod;}
+    // created conflicts
 
-relop: '>' {$relop = if_greater;}
-    | '<' {$relop = if_less;}
-    | GREATER_EQUAL {$relop = if_greatereq;}
-    | LESS_EQUAL {$relop = if_lesseq;}
-    | EQUAL_EQUAL {$relop = if_eq;}
-    | BANG_EQUAL {$relop = if_noteq;}
-    ;
+// arithop: '+' {$arithop = add;}
+//     | '-' {$arithop = sub;}
+//     | '*' {$arithop = mul;}
+//     | '/' {$arithop = _div;}
+//     | '%' {$arithop = mod;}
+
+// relop: '>' {$relop = if_greater;}
+//     | '<' {$relop = if_less;}
+//     | GREATER_EQUAL {$relop = if_greatereq;}
+//     | LESS_EQUAL {$relop = if_lesseq;}
+//     | EQUAL_EQUAL {$relop = if_eq;}
+//     | BANG_EQUAL {$relop = if_noteq;}
+//     ;
 
 expr: assignexpr {}
-    | expr arithop expr {
+    | expr '+' expr {
         $$ = new expr(arith_expr_e, newtemp());
-        emit($arithop, $1, $3, $$);
+        emit(add, $1, $3, $$);
     }
+<<<<<<< HEAD
     | expr relop expr {
         printf("detected relop\n");
         $$->truelist = new list<unsigned>({nextquadlabel()});
@@ -207,9 +234,68 @@ expr: assignexpr {}
         emit($relop, $1, $3, -1);
         emit(jump, -1);
         
+<<<<<<< HEAD
         /*
         $$ = new expr(bool_expr_e, newtemp());
         emit($relop, $1, $3, nextquadlabel() + 3);
+=======
+=======
+    | expr '-' expr {
+        $$ = new expr(arith_expr_e, newtemp());
+        emit(sub, $1, $3, $$);
+    }
+    | expr '*' expr {
+        $$ = new expr(arith_expr_e, newtemp());
+        emit(mul, $1, $3, $$);
+    }
+    | expr '/' expr {
+        $$ = new expr(arith_expr_e, newtemp());
+        emit(_div, $1, $3, $$);
+    }
+    | expr '%' expr {
+        $$ = new expr(arith_expr_e, newtemp());
+        emit(mod, $1, $3, $$);
+    }
+    | expr '>' expr {
+>>>>>>> 2856734 (I LIKE SUCKING DICK!)
+        $$ = new expr(bool_expr_e, newtemp());
+        emit(if_greater, $1 , $3, nextquadlabel() + 3);
+        emit(assign, new expr(false), $$);
+        emit(jump, nextquadlabel() + 2);
+        emit(assign, new expr(true), $$);
+    }
+    | expr '<' expr {
+        $$ = new expr(bool_expr_e, newtemp());
+        emit(if_less, $1 , $3, nextquadlabel() + 3);
+        emit(assign, new expr(false), $$);
+        emit(jump, nextquadlabel() + 2);
+        emit(assign, new expr(true), $$);
+    }
+    | expr GREATER_EQUAL expr {
+        $$ = new expr(bool_expr_e, newtemp());
+        emit(if_greatereq, $1 , $3, nextquadlabel() + 3);
+        emit(assign, new expr(false), $$);
+        emit(jump, nextquadlabel() + 2);
+        emit(assign, new expr(true), $$);
+    }
+    | expr LESS_EQUAL expr {
+        $$ = new expr(bool_expr_e, newtemp());
+        emit(if_lesseq, $1 , $3, nextquadlabel() + 3);
+        emit(assign, new expr(false), $$);
+        emit(jump, nextquadlabel() + 2);
+        emit(assign, new expr(true), $$);
+    }
+    | expr EQUAL_EQUAL expr {
+        $$ = new expr(bool_expr_e, newtemp());
+        emit(if_eq, $1 , $3, nextquadlabel() + 3);
+        emit(assign, new expr(false), $$);
+        emit(jump, nextquadlabel() + 2);
+        emit(assign, new expr(true), $$);
+    }
+    | expr BANG_EQUAL expr {
+        $$ = new expr(bool_expr_e, newtemp());
+        emit(if_noteq, $1 , $3, nextquadlabel() + 3);
+>>>>>>> 063a25b (I LIKE SUCKING DICK!)
         emit(assign, new expr(false), $$);
         emit(jump, nextquadlabel() + 2);
         emit(assign, new expr(true), $$);
@@ -462,10 +548,10 @@ indexedelem: '{' expr ':' expr '}' {
     }
     ;
 
-block: '{' {scope++;} stmt_series '}' {sym_table.Hide(scope--); $$ = getoffset();};
+block: '{' {scope++;} stmt_series '}' {sym_table.Hide(scope--); $block = $stmt_series;};
 
 funcblockstart: { scope--; enterscopespace(); push_loopcounter(); };
-funcblockend: { exitscopespace(); exitscopespace(); pop_loopcounter(); };
+funcblockend: { exitscopespace(); pop_loopcounter(); };
 formal_arguments: '(' {scope++; enterscopespace();} idlist ')';
 funcname: IDENTIFIER { $$ = add_func($1); }
     | { $$ = add_func("_f"); };
@@ -479,7 +565,7 @@ funcdef: FUNCTION
     }
     formal_arguments
     funcblockstart block {
-        $2 ->num_of_locals = $6;
+        $2 ->num_of_locals = getoffset();
     }
     funcblockend {
         $$ = $2;
@@ -522,22 +608,22 @@ ifprefix: IF '(' expr ')' {
         emit(if_eq, $expr, newexpr_constbool(1), nextquadlabel() + 2);
 
         $ifprefix = nextquadlabel();
-        emit(jump, unsigned int(0));
+        emit(jump, unsigned(0));
 }
 
 elseprefix: ELSE {
     $elseprefix = nextquadlabel();
-    emit(jump, unsigned int(0));
+    emit(jump, unsigned(0));
 }
 
 loopstart: { increase_loopcounter; }
 loopend: { decrease_loopcounter; }
 
 whilestmt: whilestart whilecond loopstart stmt {
-    emit(jump, (unsigned int)$1);
+    emit(jump, unsigned($1));
     patchlabel($2, nextquadlabel());
-    patchlist($stmt.BREAK, nextquadlabel());
-    patchlist($stmt.CONTINUE, $1);
+    patchlist($stmt->breaklist, nextquadlabel());
+    patchlist($stmt->contlist, $1);
     } loopend;
 
 whilestart: WHILE {
@@ -547,12 +633,14 @@ whilestart: WHILE {
 whilecond: '(' expr ')' {
     emit(if_eq, $2, newexpr_constbool(1), nextquadlabel() + 2);
     $whilecond = nextquadlabel();
-    emit(jump, unsigned int(0));
+    emit(jump, unsigned(0));
 }
 
-forstmt: FOR '(' elist';' expr';' elist')' loopstart stmt loopend;
+forstmt: forprefix N elist ')' N loopstart stmt N loopend; {
+    patchlabel($forprefix)
+}
 
-N: {$N = nextquadlabel(); emit(jump, unsigned int(0));}
+N: {$N = nextquadlabel(); emit(jump, unsigned(0));}
 M: {$M = nextquadlabel();}
 
 forprefix: FOR '(' elist ';' M expr ';' {

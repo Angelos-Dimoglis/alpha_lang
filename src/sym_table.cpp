@@ -29,7 +29,8 @@ void enterscopespace (void) {
 
 void exitscopespace (void) {
     assert(scope_space_offset_stack.size() > 1);
-    scope_space_offset_stack.pop(); 
+    scope_space_offset_stack.pop();
+    scope_space_offset_stack.pop();
 }
 
 node* SymTable::scopeNode(unsigned int scope) {
