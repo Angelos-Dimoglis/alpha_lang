@@ -187,16 +187,22 @@ expr: assignexpr {}
         emit($arithop, $1, $3, $$);
     }
     | expr relop expr {
-        $$->truelist = new list<unsigned int>({nextquadlabel()});
-        $$->falselist = new list<unsigned>({nextquadlabel()});
+        printf("detected relop\n");
+        $$->truelist = new list<unsigned>({nextquadlabel()});
+        $$->falselist = new list<unsigned>({nextquadlabel() + 1});
+        emit($relop, $1, $3, -1);
+        emit(jump, -1);
         
+        /*
         $$ = new expr(bool_expr_e, newtemp());
-        emit($relop, $1 , $3, nextquadlabel() + 3);
+        emit($relop, $1, $3, nextquadlabel() + 3);
         emit(assign, new expr(false), $$);
         emit(jump, nextquadlabel() + 2);
         emit(assign, new expr(true), $$);
+        */
     }
     | expr AND M expr {
+        printf("detected and\n");
         backpatch($1->truelist, $M);
         $$->truelist = $4->truelist;
 
@@ -207,6 +213,7 @@ expr: assignexpr {}
         $$->falselist = new list<unsigned>(*L1);
     }
     | expr OR M expr {
+        printf("detected or\n");
         backpatch($1->falselist, $M);
 
         list<unsigned> *L1 = $1->truelist;
@@ -246,8 +253,7 @@ term: '(' expr ')' {$term = $expr;}
             $term = emit_iftableitem($lvalue);
             emit(add, $term, new expr((double) 1), $term);
             emit(table_set_elem, $lvalue, $lvalue->index, $term);
-        }
-        else {
+        } else {
             emit(add, $lvalue, new expr((double) 1), $lvalue);
             $term = new expr(arith_expr_e, newtemp());
             emit(assign, $lvalue, NULL, $term);
@@ -261,8 +267,7 @@ term: '(' expr ')' {$term = $expr;}
             emit(assign, val, NULL, $term, 0);
             emit(add, val, new expr((double) 1), val, 0);
             emit(table_set_elem, $lvalue, $lvalue->index, val, 0);
-        }
-        else {
+        } else {
             emit(assign, $lvalue, NULL, $term, 0);
             emit(add, $lvalue, new expr((double) 1), $lvalue, 0);
         }
@@ -273,8 +278,7 @@ term: '(' expr ')' {$term = $expr;}
             $term = emit_iftableitem($lvalue);
             emit(sub, $term, new expr((double) 1), $term, 0);
             emit(table_set_elem, $lvalue, $lvalue->index, $term, 0);
-        }
-        else {
+        } else {
             emit(sub, $lvalue, new expr((double) 1), $lvalue, 0);
             $term = new expr(arith_expr_e, newtemp());
             emit(assign, $lvalue, NULL, $term, 0);
@@ -288,8 +292,7 @@ term: '(' expr ')' {$term = $expr;}
             emit(assign, val, NULL, $term, 0);
             emit(sub, val, new expr((double) 1), val, 0);
             emit(table_set_elem, $lvalue, $lvalue->index, val, 0);
-        }
-        else {
+        } else {
             emit(assign, $lvalue, NULL, $term, 0);
             emit(sub, $lvalue, new expr((double) 1), $lvalue, 0);
         }

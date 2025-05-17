@@ -27,7 +27,7 @@ void merge (list<unsigned> *L1, list<unsigned> *L2) {
 }
 
 void backpatch (list<unsigned> *bool_list, unsigned label) {
-
+    printf("entered backpatch\n");
 }
 
 string opcode_to_string(iopcode opcode) {
@@ -297,7 +297,7 @@ expr* make_call (expr* lv, expr* reversed_elist) {
 }
 
 void check_arith (expr* e, string context) {
-    if ( e->type == const_bool_e ||
+    if (e->type == const_bool_e ||
         e->type == const_string_e ||
         e->type == const_nil_e ||
         e->type == new_table_e ||
@@ -323,4 +323,3 @@ Symbol *newtemp() {
     string name = newtempname();
     return add_id(name);
 }
-
