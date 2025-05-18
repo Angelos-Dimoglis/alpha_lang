@@ -23,7 +23,18 @@ void patchlabel(unsigned quadNo, unsigned label) {
     quads[quadNo].label = label;
 }
 
-void merge (list<unsigned> *L1, list<unsigned> *L2) {
+list<unsigned> *merge (list<unsigned> *L1, list<unsigned> *L2) {
+    if (L1 == NULL && L2 == NULL)
+        return new list<unsigned>();
+
+    if (L1 == NULL) 
+        return L2;
+
+    if (L2 == NULL)
+        return L1;
+
+    L1->splice(L1->end(), *L2);
+    return L1;
 }
 
 void backpatch (list<unsigned> *bool_list, unsigned label) {

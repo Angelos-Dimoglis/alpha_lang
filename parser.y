@@ -147,27 +147,11 @@
 %type <callValue> callsuffix normcall methodcall
 %type <indexedList> indexed indexed_alt
 %type <indexedPair> indexedelem
-<<<<<<< HEAD
 %type <exprValue> expr term lvalue primary member assignexpr const elist elist_alt call objectdef
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-%type <intValue> block M
-=======
-%type <intValue> block ifprefix elseprefix
->>>>>>> 9cfdd6a (Prefix (gamw ton pano))
-=======
-%type <intValue> block ifprefix elseprefix whilestart whilecond 
->>>>>>> 617d887 (NIG a)
-=======
 %type <intValue> block ifprefix elseprefix whilestart whilecond N M forprefix 
->>>>>>> 064e231 (POUTSA)
-=======
-%type <exprValue> expr lvalue term primary member assignexpr const elist elist_alt call objectdef
 %type <stmtValue> stmt block stmt_series
-%type <intValue> ifprefix elseprefix whilestart whilecond N M forprefix 
->>>>>>> 2856734 (I LIKE SUCKING DICK!)
 %type <funcSymValue> funcname funcdef // NOTE: THIS MIGHT HAVE TO BECOME symValue LATER ON lec 10, sl 7
+
 %%
 
 program: stmt_series;
@@ -205,41 +189,11 @@ stmt: expr ';' {}
     | ';' {}
     ;
 
-    // created conflicts
-
-// arithop: '+' {$arithop = add;}
-//     | '-' {$arithop = sub;}
-//     | '*' {$arithop = mul;}
-//     | '/' {$arithop = _div;}
-//     | '%' {$arithop = mod;}
-
-// relop: '>' {$relop = if_greater;}
-//     | '<' {$relop = if_less;}
-//     | GREATER_EQUAL {$relop = if_greatereq;}
-//     | LESS_EQUAL {$relop = if_lesseq;}
-//     | EQUAL_EQUAL {$relop = if_eq;}
-//     | BANG_EQUAL {$relop = if_noteq;}
-//     ;
-
 expr: assignexpr {}
     | expr '+' expr {
         $$ = new expr(arith_expr_e, newtemp());
         emit(add, $1, $3, $$);
     }
-<<<<<<< HEAD
-    | expr relop expr {
-        printf("detected relop\n");
-        $$->truelist = new list<unsigned>({nextquadlabel()});
-        $$->falselist = new list<unsigned>({nextquadlabel() + 1});
-        emit($relop, $1, $3, -1);
-        emit(jump, -1);
-        
-<<<<<<< HEAD
-        /*
-        $$ = new expr(bool_expr_e, newtemp());
-        emit($relop, $1, $3, nextquadlabel() + 3);
-=======
-=======
     | expr '-' expr {
         $$ = new expr(arith_expr_e, newtemp());
         emit(sub, $1, $3, $$);
@@ -257,7 +211,6 @@ expr: assignexpr {}
         emit(mod, $1, $3, $$);
     }
     | expr '>' expr {
->>>>>>> 2856734 (I LIKE SUCKING DICK!)
         $$ = new expr(bool_expr_e, newtemp());
         emit(if_greater, $1 , $3, nextquadlabel() + 3);
         emit(assign, new expr(false), $$);
@@ -295,33 +248,20 @@ expr: assignexpr {}
     | expr BANG_EQUAL expr {
         $$ = new expr(bool_expr_e, newtemp());
         emit(if_noteq, $1 , $3, nextquadlabel() + 3);
->>>>>>> 063a25b (I LIKE SUCKING DICK!)
         emit(assign, new expr(false), $$);
         emit(jump, nextquadlabel() + 2);
         emit(assign, new expr(true), $$);
-        */
     }
     | expr AND M expr {
         printf("detected and\n");
         backpatch($1->truelist, $M);
         $$->truelist = $4->truelist;
-
-        list<unsigned> *L1 = $1->falselist;
-        list<unsigned> *L2 = $4->falselist;
-
-        L1->splice(L1->end(), *L2);
-        $$->falselist = new list<unsigned>(*L1);
+        $$->falselist = merge($1->falselist, $4->falselist);
     }
     | expr OR M expr {
         printf("detected or\n");
         backpatch($1->falselist, $M);
-
-        list<unsigned> *L1 = $1->truelist;
-        list<unsigned> *L2 = $4->truelist;
-
-        L1->splice(L1->end(), *L2);
-        *($$->truelist) = *L1;
-
+        $$->truelist = merge($1->truelist, $4->truelist);
         $$->falselist = $4->falselist;
     }
     | term {

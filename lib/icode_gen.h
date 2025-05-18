@@ -116,7 +116,7 @@ struct quad {
 #define CURR_SIZE (total*sizeof(quad))
 #define NEW_SIZE (EXPAND_SIZE*sizeof(quad)+CURR_SIZE)
 
-void merge (list<unsigned> *L1, list<unsigned> *L2);
+list<unsigned> *merge (list<unsigned> *L1, list<unsigned> *L2);
 
 void backpatch (list<unsigned> *bool_list, unsigned label);
 
