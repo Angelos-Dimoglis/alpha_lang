@@ -18,7 +18,7 @@ unsigned int nextquadlabel() {
     return curr_quad;
 }
 
-void patchlabel(unsigned quadNo, unsigned label) {
+void patchlabel (unsigned quadNo, unsigned label) {
     assert(quadNo < curr_quad && !quads[quadNo].label);
     quads[quadNo].label = label;
 }
