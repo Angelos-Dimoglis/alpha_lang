@@ -576,16 +576,16 @@ whilecond: '(' expr ')' {
     emit(jump, unsigned(0));
 }
 
-forstmt: forprefix N elist ')' N loopstart stmt N loopend ;{
-    patchlabel($forprefix)
+forstmt: forprefix N elist ')' N loopstart stmt N loopend {
+    patchlabel($forprefix);
 }
 
 N: {$N = nextquadlabel(); emit(jump, unsigned(0));}
 M: {$M = nextquadlabel();}
 
 forprefix: FOR '(' elist ';' M expr ';' {
-    $forprefix.test = $M;
-    $forprefix.enter = nextquadlabel();
+    $forprefix->test = $M;
+    $forprefix->enter = nextquadlabel();
     emit(if_eq, $expr, newexpr_constbool(1), 0);
 }
 

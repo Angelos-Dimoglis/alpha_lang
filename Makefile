@@ -38,4 +38,7 @@ $(BIN_DIR):
 clean:
 	rm -rf $(TARGET) $(BIN_DIR) src/lexer.cpp src/parser.cpp lib/parser.hpp src/parser.output
 
+remake:
+	make clean && clear && make
+
 .PHONY: all clean
