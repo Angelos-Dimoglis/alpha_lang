@@ -101,6 +101,7 @@
     void *nilValue;
     struct expr *exprValue;
     struct stmt *stmtValue;
+    struct forp *forValue;
     struct Function *funcSymValue;
     struct quad * quadValue;
     struct call callValue;
@@ -147,9 +148,10 @@
 %type <callValue> callsuffix normcall methodcall
 %type <indexedList> indexed indexed_alt
 %type <indexedPair> indexedelem
-%type <exprValue> expr term lvalue primary member assignexpr const elist elist_alt call objectdef
-%type <intValue> ifprefix elseprefix whilestart whilecond N M forprefix 
+%type <exprValue> expr lvalue term primary member assignexpr const elist elist_alt call objectdef
 %type <stmtValue> stmt block stmt_series
+%type <forValue> forprefix
+%type <intValue> ifprefix elseprefix whilestart whilecond N M 
 %type <funcSymValue> funcname funcdef // NOTE: THIS MIGHT HAVE TO BECOME symValue LATER ON lec 10, sl 7
 
 %%
@@ -561,7 +563,15 @@ whilecond: '(' expr ')' {
     emit(jump, unsigned(0));
 }
 
-forstmt: FOR '(' elist';' expr';' elist')' loopstart stmt loopend;
+forstmt: forprefix N elist ')' N loopstart stmt N loopend {
+    patchlabel($forprefix->enter, $5 + 1);
+    patchlabel($2, nextquadlabel());
+    patchlabel($5, $forprefix->test);
+    patchlabel($8, $2 + 1);
+
+    patchlist($stmt->breaklist, nextquadlabel());
+    patchlist($stmt->contlist, $2 + 1);
+}
 
 N: {$N = nextquadlabel(); emit(jump, unsigned(0));}
 M: {$M = nextquadlabel();}
@@ -569,7 +579,7 @@ M: {$M = nextquadlabel();}
 forprefix: FOR '(' elist ';' M expr ';' {
     $forprefix->test = $M;
     $forprefix->enter = nextquadlabel();
-    emit(if_eq, $expr, newexpr_constbool(1), 0);
+    emit(if_eq, $expr, newexpr_constbool(1), unsigned(0));
 }
 
 returnstmt: RETURN ';' {return_valid();}
