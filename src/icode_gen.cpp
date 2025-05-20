@@ -321,14 +321,12 @@ void check_arith (expr* e, string context) {
         }
 }
 
-int tempcounter = 0;
-
 string newtempname() {
     return  "_t" + to_string(tmp_var_counter++);
 }
 
 void resettemp() {
-    tempcounter = 0; 
+    tmp_var_counter = 0; 
 }
 
 Symbol *newtemp() {

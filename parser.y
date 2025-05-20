@@ -173,18 +173,23 @@ stmt_series: stmt_series stmt  {
 
 stmt: expr ';' {
         $$ = nullptr;
+        resettemp();
     }
     | ifstmt {
         $$ = nullptr;
+        resettemp();
     }
     | whilestmt {
         $$ = nullptr;
+        resettemp();
     }
     | forstmt {
         $$ = nullptr;
+        resettemp();
     }
     | returnstmt {
         $$ = nullptr;
+        resettemp();
     }
     | BREAK ';' {
         $$ = nullptr;
@@ -193,6 +198,7 @@ stmt: expr ';' {
             $stmt->breaklist.push_back(curr_quad);
             emit(jump, unsigned(0));
         }
+        resettemp();
     }
     | CONTINUE ';' {
         $$ = nullptr;
@@ -201,13 +207,16 @@ stmt: expr ';' {
             $stmt->contlist.push_back(curr_quad);
             emit(jump, unsigned(0));
         }
+        resettemp();
     }
-    | block {$stmt = $block;}
+    | block {$stmt = $block; resettemp();}
     | funcdef {
         $$ = nullptr;
+        resettemp();
     }
     | ';' {
         $$ = nullptr;
+        resettemp();
     }
     ;
 

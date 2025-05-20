@@ -37,7 +37,14 @@ Variable* add_id(const string name) {
 
     if (temp == nullptr) {
         try {
-            sym_table.Insert(name, (scope == 0) ? global : local, yylineno, scope, list<Variable*>());
+            SymbolType st;
+            if (name[0] == '_') {
+                st = hidden;
+            }
+            else {
+                st = (scope == 0) ? global : local;
+            }
+            sym_table.Insert(name, st, yylineno, scope, list<Variable*>());
         } catch(runtime_error &e) {
             cout << e.what() << endl;
             // assert(0);

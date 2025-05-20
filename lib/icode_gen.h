@@ -150,6 +150,8 @@ void emit (iopcode op, unsigned label);
 
 Symbol *newtemp();
 
+void resettemp();
+
 expr* emit_iftableitem(expr* e);
 
 expr *member_item(expr *lvalue, string name);

@@ -185,6 +185,9 @@ void SymTable::PrintTable() {
             case libfunc:
                 cout << "[library function] ";
                 break;
+            case hidden:
+                cout << "[hidden variable] ";
+                break;
             default:
                 assert(0);
             }
