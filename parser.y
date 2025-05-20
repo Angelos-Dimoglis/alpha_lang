@@ -34,7 +34,7 @@
                 msg, yylineno, yytext);
     }
 
-    stack<int> loopcounter;
+    stack<int> loopcounter {std::deque<int> {0}};
 
     void push_loopcounter() {
         loopcounter.push(0);
@@ -101,7 +101,7 @@
     void *nilValue;
     struct expr *exprValue;
     struct stmt *stmtValue;
-    struct forp *forValue;
+    struct forp forValue;
     struct Function *funcSymValue;
     struct quad * quadValue;
     struct call callValue;
@@ -151,7 +151,7 @@
 %type <exprValue> expr lvalue term primary member assignexpr const elist elist_alt call objectdef
 %type <stmtValue> stmt block stmt_series
 %type <forValue> forprefix
-%type <intValue> ifprefix elseprefix whilestart whilecond N M 
+%type <intValue> ifprefix elseprefix whilestart whilecond N M1 M2
 %type <funcSymValue> funcname funcdef // NOTE: THIS MIGHT HAVE TO BECOME symValue LATER ON lec 10, sl 7
 
 %%
@@ -159,35 +159,56 @@
 program: stmt_series;
 
 stmt_series: stmt_series stmt  {
-        $1->breaklist.push_back($stmt->breaklist.front());
-        $1->contlist.push_back($stmt->contlist.front());
+
+        if ($stmt != nullptr && !$stmt->breaklist.empty())
+            $1->breaklist.push_back(*$stmt->breaklist.begin());
+
+        if ($stmt != nullptr && !$stmt->contlist.empty())
+            $1->contlist.push_back($stmt->contlist.front());
+
         $$ = $1;
     }
     | {$stmt_series = new stmt();} /* empty */
     ;
 
-stmt: expr ';' {}
-    | ifstmt {}
-    | whilestmt {}
-    | forstmt {}
-    | returnstmt {}
+stmt: expr ';' {
+        $$ = nullptr;
+    }
+    | ifstmt {
+        $$ = nullptr;
+    }
+    | whilestmt {
+        $$ = nullptr;
+    }
+    | forstmt {
+        $$ = nullptr;
+    }
+    | returnstmt {
+        $$ = nullptr;
+    }
     | BREAK ';' {
-        if (break_continue_valid("break")); {
+        $$ = nullptr;
+        if (break_continue_valid("break")) {
             $stmt = new stmt();
             $stmt->breaklist.push_back(curr_quad);
             emit(jump, unsigned(0));
         }
     }
     | CONTINUE ';' {
-        if (break_continue_valid("continue")); {
+        $$ = nullptr;
+        if (break_continue_valid("continue")) {
             $stmt = new stmt();
             $stmt->contlist.push_back(curr_quad);
             emit(jump, unsigned(0));
         }
     }
     | block {$stmt = $block;}
-    | funcdef {}
-    | ';' {}
+    | funcdef {
+        $$ = nullptr;
+    }
+    | ';' {
+        $$ = nullptr;
+    }
     ;
 
 expr: assignexpr {}
@@ -210,6 +231,20 @@ expr: assignexpr {}
     | expr '%' expr {
         $$ = new expr(arith_expr_e, newtemp());
         emit(mod, $1, $3, $$);
+    }
+    | expr '>' expr {
+        $$ = new expr(bool_expr_e, newtemp());
+        emit(if_greater, $1 , $3, nextquadlabel() + 3);
+        emit(assign, new expr(false), $$);
+        emit(jump, nextquadlabel() + 2);
+        emit(assign, new expr(true), $$);
+    }
+    | expr '<' expr {
+        $$ = new expr(bool_expr_e, newtemp());
+        emit(if_less, $1 , $3, nextquadlabel() + 3);
+        emit(assign, new expr(false), $$);
+        emit(jump, nextquadlabel() + 2);
+        emit(assign, new expr(true), $$);
     }
     | expr GREATER_EQUAL expr {
         $$ = new expr(bool_expr_e, newtemp());
@@ -239,15 +274,15 @@ expr: assignexpr {}
         emit(jump, nextquadlabel() + 2);
         emit(assign, new expr(true), $$);
     }
-    | expr AND M expr {
+    | expr AND M1 expr {
         printf("detected and\n");
-        backpatch($1->truelist, $M);
+        patchlist(*($1->truelist), $M1);
         $$->truelist = $4->truelist;
         $$->falselist = merge($1->falselist, $4->falselist);
     }
-    | expr OR M expr {
+    | expr OR M1 expr {
         printf("detected or\n");
-        backpatch($1->falselist, $M);
+        patchlist(*($1->falselist), $M1);
         $$->truelist = merge($1->truelist, $4->truelist);
         $$->falselist = $4->falselist;
     }
@@ -256,8 +291,8 @@ expr: assignexpr {}
     }
     ;
 
-M: /* empry rule */ {
-    $M = nextquadlabel();
+M1: /* empry rule */ {
+    $M1 = nextquadlabel();
  }
  ;
 
@@ -543,15 +578,18 @@ elseprefix: ELSE {
     emit(jump, unsigned(0));
 }
 
-loopstart: { increase_loopcounter; }
-loopend: { decrease_loopcounter; }
+loopstart: { increase_loopcounter(); }
+loopend: { decrease_loopcounter(); }
 
 whilestmt: whilestart whilecond loopstart stmt {
     emit(jump, unsigned($1));
     patchlabel($2, nextquadlabel());
-    patchlist($stmt->breaklist, nextquadlabel());
-    patchlist($stmt->contlist, $1);
-    } loopend;
+    if ($stmt != nullptr)
+        patchlist($stmt->breaklist, nextquadlabel());
+
+    if ($stmt != nullptr)
+        patchlist($stmt->contlist, $1);
+} loopend;
 
 whilestart: WHILE {
     $whilestart = nextquadlabel();
@@ -564,9 +602,9 @@ whilecond: '(' expr ')' {
 }
 
 forstmt: forprefix N elist ')' N loopstart stmt N loopend {
-    patchlabel($forprefix->enter, $5 + 1);
+    patchlabel($forprefix.enter, $5 + 1);
     patchlabel($2, nextquadlabel());
-    patchlabel($5, $forprefix->test);
+    patchlabel($5, $forprefix.test);
     patchlabel($8, $2 + 1);
 
     patchlist($stmt->breaklist, nextquadlabel());
@@ -574,11 +612,11 @@ forstmt: forprefix N elist ')' N loopstart stmt N loopend {
 }
 
 N: {$N = nextquadlabel(); emit(jump, unsigned(0));}
-M: {$M = nextquadlabel();}
+M2: {$M2 = nextquadlabel();}
 
-forprefix: FOR '(' elist ';' M expr ';' {
-    $forprefix->test = $M;
-    $forprefix->enter = nextquadlabel();
+forprefix: FOR '(' elist ';' M2 expr ';' {
+    $forprefix.test = $M2;
+    $forprefix.enter = nextquadlabel();
     emit(if_eq, $expr, newexpr_constbool(1), unsigned(0));
 }
 
@@ -592,7 +630,7 @@ returnstmt: RETURN ';' {return_valid();}
 int main (int argc, char **argv) {
 
     // uncomment for debug mode
-    // yydebug = 1;
+    //yydebug = 1;
 
     // Uncomment if you want to see the prints from the lexer for the tokens
     //print_lexer_tokens = 1;

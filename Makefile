@@ -41,4 +41,7 @@ clean:
 remake:
 	make clean && clear && make
 
+run_tests:
+	./testing/all_tests_phase3.sh
+
 .PHONY: all clean

@@ -37,14 +37,9 @@ list<unsigned> *merge (list<unsigned> *L1, list<unsigned> *L2) {
     return L1;
 }
 
-void backpatch (list<unsigned> *bool_list, unsigned label) {
-    printf("entered backpatch\n");
-}
-
 void patchlist(list<unsigned> quadBBC, unsigned label) {
-    for (unsigned quadNo : quadBBC) {
+    for (unsigned quadNo : quadBBC)
         patchlabel(quadNo, label);
-    }
 }
 
 string opcode_to_string(iopcode opcode) {

@@ -40,9 +40,5 @@
 
 * separate main function
 
-## phase 3
-
-* typechecking
-* runtime errors
-* expretion evaluation and checking
+* TODO return out of function error
 

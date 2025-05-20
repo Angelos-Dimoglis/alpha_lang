@@ -118,8 +118,6 @@ struct quad {
 
 list<unsigned> *merge (list<unsigned> *L1, list<unsigned> *L2);
 
-void backpatch (list<unsigned> *bool_list, unsigned label);
-
 void check_arith (expr* e, string context);
 
 expr *get_last(expr* exp);
