@@ -38,6 +38,8 @@ list<unsigned> *merge (list<unsigned> *L1, list<unsigned> *L2) {
 }
 
 void patchlist(list<unsigned> quadBBC, unsigned label) {
+    if (quadBBC.empty()) return;
+
     for (unsigned quadNo : quadBBC)
         patchlabel(quadNo, label);
 }
@@ -340,4 +342,44 @@ expr* newexpr_constbool(unsigned int b) {
     expr* e = new expr(const_bool_e);
     e->bool_const = !!b;
     return e;
+}
+
+expr *emit_ifboolexpr(expr *e) {
+    if (e->type != bool_expr_e)
+        return e;
+
+    expr *temp = new expr(const_bool_e, newtemp());
+    emit(assign, new expr(true), temp);
+    emit(jump, curr_quad + 2);
+    emit(assign, new expr(false), temp);
+    return temp;
+}
+
+expr *emit_ifnotrelop(expr *e) {
+    if (
+        e->type == const_bool_e ||
+        e->type == const_num_e ||
+        e->type == const_string_e ||
+        e->type == var_e
+    ) {
+        emit(if_eq, e, new expr(true), (unsigned) 0);
+        emit(jump, (unsigned) 0);
+
+        switch (e->type) {
+            case const_bool_e:
+                e->truelist->push_front(e->bool_const == true ? 1 : 0);
+                break;
+            case const_num_e:
+                e->truelist->push_front(e->num_const == 0.0 ? 0 : 1);
+                break;
+            case const_string_e:
+                e->truelist->push_front(e->str_const.empty() ? 0 : 1);
+                break;
+            case var_e:
+                e->truelist->push_front(e-> ? 0 : 1);
+                break;
+            default: assert(0);
+        }
+    }
+
 }

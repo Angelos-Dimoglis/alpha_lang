@@ -35,7 +35,7 @@ struct expr {
     expr *index;
     double num_const;
     string str_const;
-    unsigned char bool_const;
+    bool bool_const;
     expr *next;
     list<unsigned int>* falselist;
     list<unsigned int>* truelist;
@@ -49,7 +49,6 @@ struct expr {
         bool_const(false),
         next(nullptr) 
     {
-
     };
 
     expr(expr_t type, Symbol* sym = nullptr) : type(type), sym(sym), index(nullptr),
@@ -150,8 +149,12 @@ void emit (iopcode op, unsigned label);
 
 Symbol *newtemp();
 
-expr* emit_iftableitem(expr* e);
+expr *emit_iftableitem(expr* e);
 
 expr *member_item(expr *lvalue, string name);
 
-expr* newexpr_constbool(unsigned int b);
+expr * newexpr_constbool(unsigned int b);
+
+expr *emit_ifboolexpr(expr* e);
+
+expr *emit_ifnotrelop(expr *e);

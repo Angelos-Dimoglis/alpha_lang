@@ -12,6 +12,8 @@
     #include "../lib/parser_functions.h"
     #include "../lib/icode_gen.h"
 
+    #define EMPTY_LABEL ((unsigned) 0)
+
     extern int yylex (void);
     extern void yyerror(const char *msg, int line_number);
 
@@ -161,7 +163,7 @@ program: stmt_series;
 stmt_series: stmt_series stmt  {
 
         if ($stmt != nullptr && !$stmt->breaklist.empty())
-            $1->breaklist.push_back(*$stmt->breaklist.begin());
+            $1->breaklist.push_back($stmt->breaklist.front());
 
         if ($stmt != nullptr && !$stmt->contlist.empty())
             $1->contlist.push_back($stmt->contlist.front());
@@ -234,54 +236,53 @@ expr: assignexpr {}
     }
     | expr '>' expr {
         $$ = new expr(bool_expr_e, newtemp());
-        emit(if_greater, $1 , $3, nextquadlabel() + 3);
-        emit(assign, new expr(false), $$);
-        emit(jump, nextquadlabel() + 2);
-        emit(assign, new expr(true), $$);
+        $$->truelist = new list<unsigned>();
+        $$->falselist = new list<unsigned>();
+        emit(if_greater, $1 , $3, EMPTY_LABEL);
+        emit(jump, EMPTY_LABEL);
     }
     | expr '<' expr {
         $$ = new expr(bool_expr_e, newtemp());
-        emit(if_less, $1 , $3, nextquadlabel() + 3);
-        emit(assign, new expr(false), $$);
-        emit(jump, nextquadlabel() + 2);
-        emit(assign, new expr(true), $$);
+        $$->truelist = new list<unsigned>();
+        $$->falselist = new list<unsigned>();
+        emit(if_less, $1 , $3, EMPTY_LABEL);
+        emit(jump, EMPTY_LABEL);
     }
     | expr GREATER_EQUAL expr {
         $$ = new expr(bool_expr_e, newtemp());
-        emit(if_greatereq, $1 , $3, nextquadlabel() + 3);
-        emit(assign, new expr(false), $$);
-        emit(jump, nextquadlabel() + 2);
-        emit(assign, new expr(true), $$);
+        $$->truelist = new list<unsigned>();
+        $$->falselist = new list<unsigned>();
+        emit(if_greatereq, $1 , $3, EMPTY_LABEL);
+        emit(jump, EMPTY_LABEL);
     }
     | expr LESS_EQUAL expr {
         $$ = new expr(bool_expr_e, newtemp());
-        emit(if_lesseq, $1 , $3, nextquadlabel() + 3);
-        emit(assign, new expr(false), $$);
-        emit(jump, nextquadlabel() + 2);
-        emit(assign, new expr(true), $$);
+        $$->truelist = new list<unsigned>();
+        $$->falselist = new list<unsigned>();
+        emit(if_lesseq, $1 , $3, EMPTY_LABEL);
+        emit(jump, EMPTY_LABEL);
     }
     | expr EQUAL_EQUAL expr {
+        $$->truelist = new list<unsigned>();
+        $$->falselist = new list<unsigned>();
         $$ = new expr(bool_expr_e, newtemp());
-        emit(if_eq, $1 , $3, nextquadlabel() + 3);
-        emit(assign, new expr(false), $$);
-        emit(jump, nextquadlabel() + 2);
-        emit(assign, new expr(true), $$);
+        emit(if_eq, $1 , $3, EMPTY_LABEL);
+        emit(jump, EMPTY_LABEL);
     }
     | expr BANG_EQUAL expr {
         $$ = new expr(bool_expr_e, newtemp());
-        emit(if_noteq, $1 , $3, nextquadlabel() + 3);
-        emit(assign, new expr(false), $$);
-        emit(jump, nextquadlabel() + 2);
-        emit(assign, new expr(true), $$);
+        $$->truelist = new list<unsigned>();
+        $$->falselist = new list<unsigned>();
+        emit(if_noteq, $1 , $3, EMPTY_LABEL);
+        emit(jump, EMPTY_LABEL);
     }
     | expr AND M1 expr {
-        printf("detected and\n");
+        emit_ifnotrelop($1);
         patchlist(*($1->truelist), $M1);
         $$->truelist = $4->truelist;
         $$->falselist = merge($1->falselist, $4->falselist);
     }
     | expr OR M1 expr {
-        printf("detected or\n");
         patchlist(*($1->falselist), $M1);
         $$->truelist = merge($1->truelist, $4->truelist);
         $$->falselist = $4->falselist;
@@ -296,7 +297,10 @@ M1: /* empry rule */ {
  }
  ;
 
-term: '(' expr ')' {$term = $expr;}
+term: '(' expr ')' {
+        emit_ifboolexpr($expr);
+        $term = $expr;
+    }
     | '-' expr %prec MINUS_UNARY{
         check_arith($expr, "unary minus");
         $term = new expr(arith_expr_e, newtemp());
@@ -418,7 +422,9 @@ member: lvalue '.' IDENTIFIER {$$ = member_item($1, $3);}
         $$->index = $3;
     }
     | call '.' IDENTIFIER {}
-    | call '[' expr ']' {}
+    | call '[' expr ']' {
+        emit_ifboolexpr($expr);
+    }
     ;
 
 call: call '(' elist ')' {
@@ -462,6 +468,7 @@ methodcall: DOT_DOT IDENTIFIER '(' elist ')' {
     ;
 
 elist: expr elist_alt {
+        emit_ifboolexpr($expr);
         $expr->next = $elist_alt;
         $elist = $expr;
     }
@@ -469,6 +476,7 @@ elist: expr elist_alt {
     ;
 
 elist_alt: ',' expr elist_alt {
+        emit_ifboolexpr($expr);
         $expr->next = $3;
         $$ = $expr;
     }
@@ -506,6 +514,8 @@ indexed_alt: ',' indexedelem indexed_alt {
     ;
 
 indexedelem: '{' expr ':' expr '}' {
+        emit_ifboolexpr($2);
+        emit_ifboolexpr($4);
         $indexedelem = new pair<expr*, expr*>($2, $4);
     }
     ;
@@ -519,6 +529,7 @@ funcname: IDENTIFIER { $$ = add_func($1); }
     | { $$ = add_func("_f"); };
 
 /* IMPORTANT NOTE: It would seem that blocks of code count as new tokens . here, the token block is $6 */
+// TODO: generate a quad to jump func definitions
 funcdef: FUNCTION
     funcname {
         $2 -> index_address = nextquadlabel();
