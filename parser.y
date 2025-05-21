@@ -486,14 +486,14 @@ elist_alt: ',' expr elist_alt {
 
 objectdef: '[' elist ']' {
         expr* t = new expr(new_table_e, newtemp());
-        emit(table_create, t);
+        emit(table_create, NULL, NULL, t, 0);
         for (int i = 0; $elist != NULL; $elist = $elist->next)
             emit(table_set_elem, t, new expr((double) i++), $elist);
         $objectdef = t;
     }
     | '[' indexed ']' {
         expr* t = new expr(new_table_e, newtemp());
-        emit(table_create, t, NULL, NULL, 0);
+        emit(table_create, NULL, NULL, t, 0);
         for (const auto& pair : *($indexed)) {
             emit(table_set_elem, t, pair.first, pair.second);
         }
@@ -532,7 +532,7 @@ funcdef: FUNCTION
     funcname {
         $2 -> index_address = nextquadlabel();
         expr* temp = new expr(program_func_e, $2);
-        emit(func_start, temp, NULL, NULL, 0);
+        emit(func_start, NULL, NULL, temp, 0);
     }
     formal_arguments
     funcblockstart block {
@@ -541,7 +541,7 @@ funcdef: FUNCTION
     funcblockend {
         $$ = $2;
         expr* temp = new expr(program_func_e, $2);
-        emit(func_end, temp, NULL, NULL, 0);
+        emit(func_end, NULL, NULL, temp, 0);
     };
 
 const: INTCONST {

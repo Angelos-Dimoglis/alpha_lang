@@ -102,9 +102,9 @@ string doubleToString(double value) {
     return result;
 }
 
-void print_expr_content(expr* exp) {
+string print_expr_content(expr* exp) {
     if (!exp) {
-        return;
+        return get_tabs("");
     }
     string str;
     switch (exp->type) {
@@ -126,8 +126,8 @@ void print_expr_content(expr* exp) {
             else
                 str = "";
     }
-    string tabs = get_tabs(str);
     cout << str;
+    return get_tabs(str);
 }
 
 void print_quad (struct quad *q, int index) {
@@ -138,20 +138,23 @@ void print_quad (struct quad *q, int index) {
 
     cout << opcode_to_string(q->op) << tabs;
     
+    tabs = "\t\t\t";
+
     if (q->result) {
-        print_expr_content(q->result);
+        tabs = print_expr_content(q->result);
     }
     cout << tabs;
 
     if (q->arg1) {
-        print_expr_content(q->arg1);
+        tabs = print_expr_content(q->arg1);
     }
     cout << tabs;
 
     if (q->arg2) {
-        print_expr_content(q->arg2);
+        tabs = print_expr_content(q->arg2);
     }
     cout << tabs;
+
     if (q->label != 0) {
         cout << q->label;
     }
@@ -164,21 +167,21 @@ void print_quads () {
 
     cout << "quad#\t\topcode\t\t\tresult\t\t\targ1\t\t\targ2\t\t\tlabel\n" <<
     "-------------------------------------------------------------------------" <<
-    "--------------------------------------------" + highlight;
+    "---------------------------------------------" + highlight;
     // cout << highlight << "hello";
     for (int i = 1; i < curr_quad; i++) {
-        if (i % 2 == 0)
+        if (i % 2 == 1)
             cout << highlight;
         cout << endl;
         print_quad(&(quads[i]), i);
-        if (i % 2 == 0)
+        if (i % 2 == 1)
             cout << reset;
     }
     cout << reset;
 
 
     cout << "\n-------------------------------------------------------------------------" <<
-    "--------------------------------------------\n";
+    "---------------------------------------------\n";
 }
 
 void expand (void) {

@@ -38,13 +38,19 @@ Variable* add_id(const string name) {
     if (temp == nullptr) {
         try {
             SymbolType st;
+            int line;
+            unsigned int tmp_scope;
             if (name[0] == '_') {
                 st = hidden;
+                line = 0;
+                tmp_scope = 0;
             }
             else {
                 st = (scope == 0) ? global : local;
+                line = yylineno;
+                tmp_scope = scope;
             }
-            sym_table.Insert(name, st, yylineno, scope, list<Variable*>());
+            sym_table.Insert(name, st, line, tmp_scope, list<Variable*>());
         } catch(runtime_error &e) {
             cout << e.what() << endl;
             // assert(0);
