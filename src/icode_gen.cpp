@@ -127,7 +127,7 @@ void print_expr_content(expr* exp) {
                 str = "";
     }
     string tabs = get_tabs(str);
-    cout << str << tabs;
+    cout << str;
 }
 
 void print_quad (struct quad *q, int index) {
@@ -141,14 +141,21 @@ void print_quad (struct quad *q, int index) {
     if (q->result) {
         print_expr_content(q->result);
     }
+    cout << tabs;
 
     if (q->arg1) {
         print_expr_content(q->arg1);
     }
+    cout << tabs;
 
     if (q->arg2) {
         print_expr_content(q->arg2);
     }
+    cout << tabs;
+    if (q->label != 0) {
+        cout << q->label;
+    }
+    cout << tabs;
 
 }
 
