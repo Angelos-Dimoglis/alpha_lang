@@ -155,7 +155,6 @@ void print_quad (struct quad *q, int index) {
     if (q->label != 0) {
         cout << q->label;
     }
-    cout << tabs;
 
 }
 
@@ -167,7 +166,7 @@ void print_quads () {
     "-------------------------------------------------------------------------" <<
     "--------------------------------------------" + highlight;
     // cout << highlight << "hello";
-    for (int i = 0; i < curr_quad; i++) {
+    for (int i = 1; i < curr_quad; i++) {
         if (i % 2 == 0)
             cout << highlight;
         cout << endl;
@@ -339,10 +338,4 @@ void resettemp() {
 Symbol *newtemp() {
     string name = newtempname();
     return add_id(name);
-}
-
-expr* newexpr_constbool(unsigned int b) {
-    expr* e = new expr(const_bool_e);
-    e->bool_const = !!b;
-    return e;
 }

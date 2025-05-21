@@ -25,8 +25,8 @@
     list<Variable*> args;
 
     quad *quads = (quad*) 0;
-    unsigned total = 0;
-    unsigned int curr_quad = 0;
+    unsigned total = 1;
+    unsigned int curr_quad = 1;
 
     void yyerror(const char *msg) {
         if (strcmp(msg, "syntax error, unexpected end of file"))
@@ -557,10 +557,10 @@ const: INTCONST {
         $$ = new expr();
     }
     | TRUE {
-        $$ = new expr((bool) $1);
+        $$ = new expr(true);
     }
     | FALSE {
-        $$ = new expr((bool) $1);
+        $$ = new expr(false);
     };
 
 idlist: IDENTIFIER {add_formal_argument($1);} idlist_alt
@@ -576,7 +576,7 @@ ifstmt: ifprefix stmt {patchlabel($1, nextquadlabel());} %prec IF
     ;
 
 ifprefix: IF '(' expr ')' {
-        emit(if_eq, $expr, newexpr_constbool(1), nextquadlabel() + 2);
+        emit(if_eq, $expr, new expr(true), nextquadlabel() + 2);
 
         $ifprefix = nextquadlabel();
         emit(jump, unsigned(0));
@@ -605,7 +605,7 @@ whilestart: WHILE {
 }
 
 whilecond: '(' expr ')' {
-    emit(if_eq, $2, newexpr_constbool(1), nextquadlabel() + 2);
+    emit(if_eq, $2, new expr(true), nextquadlabel() + 2);
     $whilecond = nextquadlabel();
     emit(jump, unsigned(0));
 }
@@ -626,7 +626,7 @@ M2: {$M2 = nextquadlabel();}
 forprefix: FOR '(' elist ';' M2 expr ';' {
     $forprefix.test = $M2;
     $forprefix.enter = nextquadlabel();
-    emit(if_eq, $expr, newexpr_constbool(1), unsigned(0));
+    emit(if_eq, $expr, new expr(true), unsigned(0));
 }
 
 returnstmt: RETURN ';' {return_valid();}
