@@ -377,7 +377,7 @@ expr *emit_ifnotrelop(expr *e) {
                 e->truelist->push_front(e->str_const.empty() ? 0 : 1);
                 break;
             case var_e:
-                e->truelist->push_front(e-> ? 0 : 1);
+                e->truelist->push_front(1);
                 break;
             default: assert(0);
         }
