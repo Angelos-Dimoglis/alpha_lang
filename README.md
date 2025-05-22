@@ -38,7 +38,5 @@
 * lib -> h, hpp files
 * obj -> o files
 
-* separate main function
-
 * TODO return out of function error
 

@@ -44,148 +44,6 @@ void patchlist(list<unsigned> quadBBC, unsigned label) {
         patchlabel(quadNo, label);
 }
 
-string opcode_to_string(iopcode opcode) {
-
-    switch (opcode) {
-        case assign: return "assign";
-        case add: return "add";
-        case sub: return "sub";
-        case mul: return "mul";
-        case _div: return "div";
-        case mod: return "mod";
-        case uminus: return "uminus";
-        case _and: return "and";
-        case _or: return "or";
-        case _not: return "not";
-        case if_eq: return "if_eq";
-        case if_noteq: return "if_noteq";
-        case if_lesseq: return "if_lesseq";
-        case if_greatereq: return "if_greatereq";
-        case if_less: return "if_less";
-        case if_greater: return "if_greater";
-        case jump: return "jump";
-        case call: return "call";
-        case param: return "param";
-        case ret: return "return";
-        case get_ret_val: return "get_ret_val";
-        case func_start: return "func_start";
-        case func_end: return "func_end";
-        case table_create: return "table_create";
-        case table_get_elem: return "table_get_elem";
-        case table_set_elem: return "table_set_elem";
-        default:
-            assert(0);
-    }
-
-    return "";
-}
-
-string get_tabs(string str) {
-    string tabs = "";
-    for (int i = 0; i <= 2 - (str.size() / 8); i++) {
-        tabs += "\t";
-    }
-    return tabs;
-}
-
-string doubleToString(double value) {
-    string result = to_string(value);
-    
-    // Remove trailing zeros after decimal point
-    size_t dot_pos = result.find('.');
-    if (dot_pos != string::npos) {
-        // Trim trailing zeros
-        result.erase(result.find_last_not_of('0') + 1);
-        // If the decimal point is now the last character, remove it too
-        if (result.back() == '.') {
-            result.pop_back();
-        }
-    }
-    return result;
-}
-
-string print_expr_content(expr* exp) {
-    if (!exp) {
-        return get_tabs("");
-    }
-    string str;
-    switch (exp->type) {
-        case const_num_e:
-            str = doubleToString(exp->num_const);
-            break;
-        case const_bool_e:
-            str = (exp->bool_const ? "TRUE" : "FALSE");
-            break;
-        case const_string_e:
-            str = exp->str_const;
-            break;
-        case const_nil_e:
-            str = "NIL";
-            break;
-        default:
-            if (exp->sym)
-                str = exp->sym->name;
-            else
-                str = "";
-    }
-    cout << str;
-    return get_tabs(str);
-}
-
-void print_quad (struct quad *q, int index) {
-
-    cout << index << ": \t\t";
-
-    string tabs = get_tabs(opcode_to_string(q->op));
-
-    cout << opcode_to_string(q->op) << tabs;
-    
-    tabs = "\t\t\t";
-
-    if (q->result) {
-        tabs = print_expr_content(q->result);
-    }
-    cout << tabs;
-
-    if (q->arg1) {
-        tabs = print_expr_content(q->arg1);
-    }
-    cout << tabs;
-
-    if (q->arg2) {
-        tabs = print_expr_content(q->arg2);
-    }
-    cout << tabs;
-
-    if (q->label != 0) {
-        cout << q->label;
-    }
-
-}
-
-void print_quads () {
-    const string highlight = "\033[48;5;240m"; // Gray background
-    const string reset = "\033[0m"; // Reset formatting
-
-    cout << "quad#\t\topcode\t\t\tresult\t\t\targ1\t\t\targ2\t\t\tlabel\n" <<
-    "-------------------------------------------------------------------------" <<
-    "---------------------------------------------" + highlight;
-    // cout << highlight << "hello";
-    for (int i = 1; i < curr_quad; i++) {
-        if (i % 2 == 1)
-            cout << highlight;
-        cout << endl;
-        print_quad(&(quads[i]), i);
-        if (i % 2 == 1)
-            cout << reset;
-    }
-    cout << reset;
-
-
-    cout << "\n-------------------------------------------------------------------------" <<
-    "---------------------------------------------\n";
-}
-
 void expand (void) {
     assert(total == curr_quad);
     quad* p = (quad*) malloc(NEW_SIZE);
@@ -378,9 +236,11 @@ expr *emit_ifnotrelop(expr *e) {
                 break;
             case var_e:
                 e->truelist->push_front(1);
+                e->truelist->push_front(true ? 0 : 1);
                 break;
             default: assert(0);
         }
     }
-    return NULL;
+
+    return nullptr;
 }

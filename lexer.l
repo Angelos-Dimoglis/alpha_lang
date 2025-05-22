@@ -439,34 +439,3 @@ BLOCK_COMMENT_END   ("*/")
     snprintf(str, 100, "Undefined token: %s", yytext);
     yyerror(str, yylineno);
 }
-
-%%
-
-/*
-int main(int argc, char **argv) {
-    if (argc > 1){
-        if (!(yyin = fopen(argv[1], "r"))){
-            fprintf(stderr, "Cannot read file: %s\n", argv[1]);
-            return 1;
-        }
-        if (argc == 3){
-            if (!(yyout = fopen(argv[2], "w"))){
-                fprintf(stderr, "Cannot write file: %s\n", argv[2]);
-                fclose(yyin);
-                return 1;
-            }
-        } else
-            yyout = stdout;
-    } else
-        yyin = stdin;
-
-    stack = initStack();
-    yylex();
-
-    fclose(yyin);
-    fclose(yyout);
-    free_token_list();
-
-    return 0;
-}
-*/

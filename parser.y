@@ -20,7 +20,6 @@
     extern int yylineno;
     extern char *yytext;
     extern FILE *yyin;
-    extern int print_lexer_tokens;
 
     unsigned int scope = 0;
     SymTable sym_table;
@@ -646,42 +645,3 @@ forprefix: FOR '(' elist ';' M expr ';' {
 returnstmt: RETURN ';' {return_valid(); emit(ret, NULL, NULL, NULL, 0);}
     | RETURN  expr ';' {return_valid(); emit(ret, NULL, NULL, $expr, 0);}
     ;
-
-%%
-
-
-int main (int argc, char **argv) {
-
-    // uncomment for debug mode
-    //yydebug = 1;
-
-    // Uncomment if you want to see the prints from the lexer for the tokens
-    //print_lexer_tokens = 1;
-
-    if (argc > 1) {
-        if (!(yyin = fopen(argv[1], "r"))) {
-            fprintf(stderr, "Cannot read file: %s\n", argv[1]);
-            return 1;
-        }
-    } else
-        yyin = stdin;
-
-
-    yyparse();
-
-    /* TODO: needed?
-    fclose(yyin);
-    fclose(yyout);
-    free_token_list();
-    */
-
-    sym_table.PrintTable();
-    sym_table.freeTable();  
-
-    printf("\n\nprinting quads\n\n");
-
-    // TODO: write all quads in a file
-    print_quads();
-
-    return 0;
-}

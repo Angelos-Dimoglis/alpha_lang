@@ -120,19 +120,15 @@ list<unsigned> *merge (list<unsigned> *L1, list<unsigned> *L2);
 
 void check_arith (expr* e, string context);
 
-expr *get_last(expr* exp);
+expr *get_last (expr* exp);
 
 expr* make_call (expr* lv, expr* reversed_elist);
 
-unsigned int nextquadlabel();
+unsigned int nextquadlabel ();
 
 void patchlabel (unsigned quadNo, unsigned label);
 
 void patchlist (list<unsigned> quadBBC, unsigned label);
-
-void print_quad (struct quad *q);
-
-void print_quads ();
 
 void expand (void);
 
@@ -148,16 +144,16 @@ void emit (iopcode op, expr* arg1);
 
 void emit (iopcode op, unsigned label);
 
-Symbol *newtemp();
+Symbol *newtemp ();
 
 void resettemp();
 
 expr *emit_iftableitem(expr* e);
 
-expr *member_item(expr *lvalue, string name);
+expr *member_item (expr *lvalue, string name);
 
-expr * newexpr_constbool(unsigned int b);
+expr *newexpr_constbool (unsigned int b);
 
-expr *emit_ifboolexpr(expr* e);
+expr *emit_ifboolexpr (expr* e);
 
-expr *emit_ifnotrelop(expr *e);
+expr *emit_ifnotrelop (expr *e);

@@ -22,7 +22,7 @@ $(TARGET): $(OBJS)
 	$(CC) $(CFLAGS) $^ -o $@
 
 # compile all .cpp files
-$(BIN_DIR)/%.o: src/%.cpp | $(BIN_DIR)
+$(BIN_DIR)/%.o: src/%.cpp lib/parser.hpp | $(BIN_DIR)
 	$(CC) $(CFLAGS) -c $< -o $@
 
 src/lexer.cpp: lexer.l lib/parser.hpp
@@ -44,4 +44,4 @@ remake:
 run_tests:
 	./testing/all_tests_phase3.sh
 
-.PHONY: all clean
+.PHONY: all clean remake run_tests
