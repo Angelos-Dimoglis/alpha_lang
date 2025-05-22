@@ -151,7 +151,7 @@
 %type <exprValue> expr lvalue term primary member assignexpr const elist elist_alt call objectdef
 %type <stmtValue> stmt block stmt_series
 %type <forValue> forprefix
-%type <intValue> ifprefix elseprefix whilestart whilecond N M1 M2
+%type <intValue> ifprefix elseprefix whilestart whilecond N M
 %type <funcSymValue> funcname funcdef // NOTE: THIS MIGHT HAVE TO BECOME symValue LATER ON lec 10, sl 7
 
 %%
@@ -189,6 +189,9 @@ stmt: expr ';' {
     }
     | returnstmt {
         $$ = nullptr;
+        $stmt = new stmt();
+        $stmt->breaklist.push_back(curr_quad); 
+        emit(jump, unsigned(0));
         resettemp();
     }
     | BREAK ';' {
@@ -283,15 +286,15 @@ expr: assignexpr {}
         emit(jump, nextquadlabel() + 2);
         emit(assign, new expr(true), $$);
     }
-    | expr AND M1 expr {
+    | expr AND M expr {
         printf("detected and\n");
-        patchlist(*($1->truelist), $M1);
+        patchlist(*($1->truelist), $M);
         $$->truelist = $4->truelist;
         $$->falselist = merge($1->falselist, $4->falselist);
     }
-    | expr OR M1 expr {
+    | expr OR M expr {
         printf("detected or\n");
-        patchlist(*($1->falselist), $M1);
+        patchlist(*($1->falselist), $M);
         $$->truelist = merge($1->truelist, $4->truelist);
         $$->falselist = $4->falselist;
     }
@@ -300,10 +303,12 @@ expr: assignexpr {}
     }
     ;
 
-M1: /* empry rule */ {
-    $M1 = nextquadlabel();
+M: /* empry rule */ {
+    $M = nextquadlabel();
  }
  ;
+
+N: {$N = nextquadlabel(); emit(jump, unsigned(0));}
 
 term: '(' expr ')' {$term = $expr;}
     | '-' expr %prec MINUS_UNARY{
@@ -528,20 +533,22 @@ funcname: IDENTIFIER { $$ = add_func($1); }
     | { $$ = add_func("_f"); };
 
 /* IMPORTANT NOTE: It would seem that blocks of code count as new tokens . here, the token block is $6 */
-funcdef: FUNCTION
+funcdef: FUNCTION N
     funcname {
-        $2 -> index_address = nextquadlabel();
-        expr* temp = new expr(program_func_e, $2);
+        $3 -> index_address = nextquadlabel();
+        expr* temp = new expr(program_func_e, $3);
         emit(func_start, NULL, NULL, temp, 0);
     }
     formal_arguments
     funcblockstart block {
-        $2 ->num_of_locals = getoffset();
+        $3 ->num_of_locals = getoffset();
     }
     funcblockend {
-        $$ = $2;
-        expr* temp = new expr(program_func_e, $2);
+        $$ = $3;
+        expr* temp = new expr(program_func_e, $3);
+        patchlist($block->breaklist, nextquadlabel());
         emit(func_end, NULL, NULL, temp, 0);
+        patchlabel($N, nextquadlabel());
     };
 
 const: INTCONST {
@@ -620,17 +627,14 @@ forstmt: forprefix N elist ')' N loopstart stmt N loopend {
     patchlist($stmt->contlist, $2 + 1);
 }
 
-N: {$N = nextquadlabel(); emit(jump, unsigned(0));}
-M2: {$M2 = nextquadlabel();}
-
-forprefix: FOR '(' elist ';' M2 expr ';' {
-    $forprefix.test = $M2;
+forprefix: FOR '(' elist ';' M expr ';' {
+    $forprefix.test = $M;
     $forprefix.enter = nextquadlabel();
     emit(if_eq, $expr, new expr(true), unsigned(0));
 }
 
-returnstmt: RETURN ';' {return_valid();}
-    | RETURN  expr ';' {return_valid();}
+returnstmt: RETURN ';' {return_valid(); emit(ret, NULL, NULL, NULL, 0);}
+    | RETURN  expr ';' {return_valid(); emit(ret, NULL, NULL, $expr, 0);}
     ;
 
 %%

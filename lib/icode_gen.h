@@ -96,6 +96,7 @@ struct expr {
 struct stmt {
     list<unsigned> breaklist;
     list<unsigned> contlist;
+    unsigned jump_label;
 };
 
 struct forp {
