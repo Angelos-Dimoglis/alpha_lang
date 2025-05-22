@@ -13,8 +13,7 @@ extern quad *quads;
 extern unsigned total;
 extern unsigned int curr_quad;
 
-
-std::string execCommand(const char* cmd) {
+std::string exec_command(const char* cmd) {
     std::array<char, 128> buffer;
     std::string result;
     FILE* pipe = popen(cmd, "r");
@@ -160,7 +159,7 @@ void write_quads (FILE *output, const char* filename, bool output_file_set) {
     std::string cmd = "column -t -s '|' < ";
     cmd += tmpname;
 
-    std::string formatted = execCommand(cmd.c_str());
+    std::string formatted = exec_command(cmd.c_str());
 
     // Output the formatted result
     FILE* final_out = output_file_set ? fopen(filename, "w") : stdout;
