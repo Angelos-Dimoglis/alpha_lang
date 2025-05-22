@@ -66,7 +66,7 @@ string opcode_to_string(iopcode opcode) {
         case jump: return "jump";
         case call: return "call";
         case param: return "param";
-        case ret: return "ret";
+        case ret: return "return";
         case get_ret_val: return "get_ret_val";
         case func_start: return "func_start";
         case func_end: return "func_end";
@@ -342,7 +342,7 @@ void resettemp() {
 
 Symbol *newtemp() {
     string name = newtempname();
-    return add_id(name);
+    return add_local_id(name);
 }
 
 expr *emit_ifboolexpr(expr *e) {
@@ -382,5 +382,5 @@ expr *emit_ifnotrelop(expr *e) {
             default: assert(0);
         }
     }
-
+    return NULL;
 }

@@ -332,7 +332,7 @@ term: '(' expr ')' {
         if ($lvalue->type == table_item_e) {
             $term = emit_iftableitem($lvalue);
             emit(add, $term, new expr((double) 1), $term);
-            emit(table_set_elem, $lvalue, $lvalue->index, $term);
+            emit(table_set_elem, $lvalue->index, $lvalue, $term);
         } else {
             emit(add, $lvalue, new expr((double) 1), $lvalue);
             $term = new expr(arith_expr_e, newtemp());
@@ -346,7 +346,7 @@ term: '(' expr ')' {
             expr* val = emit_iftableitem($lvalue);
             emit(assign, val, NULL, $term, 0);
             emit(add, val, new expr((double) 1), val, 0);
-            emit(table_set_elem, $lvalue, $lvalue->index, val, 0);
+            emit(table_set_elem, $lvalue->index, val, $lvalue, 0);
         } else {
             emit(assign, $lvalue, NULL, $term, 0);
             emit(add, $lvalue, new expr((double) 1), $lvalue, 0);
@@ -357,7 +357,7 @@ term: '(' expr ')' {
         if ($lvalue->type == table_item_e) {
             $term = emit_iftableitem($lvalue);
             emit(sub, $term, new expr((double) 1), $term, 0);
-            emit(table_set_elem, $lvalue, $lvalue->index, $term, 0);
+            emit(table_set_elem, $lvalue->index, $term, $lvalue, 0);
         } else {
             emit(sub, $lvalue, new expr((double) 1), $lvalue, 0);
             $term = new expr(arith_expr_e, newtemp());
@@ -371,7 +371,7 @@ term: '(' expr ')' {
             expr* val = emit_iftableitem($lvalue);
             emit(assign, val, NULL, $term, 0);
             emit(sub, val, new expr((double) 1), val, 0);
-            emit(table_set_elem, $lvalue, $lvalue->index, val, 0);
+            emit(table_set_elem, $lvalue->index, val, $lvalue, 0);
         } else {
             emit(assign, $lvalue, NULL, $term, 0);
             emit(sub, $lvalue, new expr((double) 1), $lvalue, 0);
@@ -386,7 +386,7 @@ assignexpr: lvalue '=' expr {
         check_lvalue($1->sym->name);
         if ($1->type == table_item_e) {
             // lvalue[index] = expr
-            emit(table_set_elem, $1, $1->index, $3, 0);
+            emit(table_set_elem, $1->index, $3, $1, 0);
             $$ = emit_iftableitem($1); // Will always emit
             $$->type = assign_expr_e;
         } else {
@@ -501,14 +501,14 @@ objectdef: '[' elist ']' {
         expr* t = new expr(new_table_e, newtemp());
         emit(table_create, NULL, NULL, t, 0);
         for (int i = 0; $elist != NULL; $elist = $elist->next)
-            emit(table_set_elem, t, new expr((double) i++), $elist);
+            emit(table_set_elem, new expr((double) i++), $elist, t);
         $objectdef = t;
     }
     | '[' indexed ']' {
         expr* t = new expr(new_table_e, newtemp());
         emit(table_create, NULL, NULL, t, 0);
         for (const auto& pair : *($indexed)) {
-            emit(table_set_elem, t, pair.first, pair.second);
+            emit(table_set_elem, pair.first, pair.second, t);
         }
         $objectdef = t;
     }

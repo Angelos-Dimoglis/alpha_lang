@@ -13,7 +13,17 @@ Variable* add_local_id(const string name) {
         return (Variable *) sym;
 
     try {
-        sym_table.Insert(name, (scope == 0) ? global : local, yylineno, scope, list<Variable*>());
+        SymbolType st;
+        int line;
+        if (name[0] == '_') {
+            st = hidden;
+            line = 0;
+        }
+        else {
+            st = (scope == 0) ? global : local;
+            line = yylineno;
+        }
+        sym_table.Insert(name, st, line, scope, list<Variable*>());
     } catch(const runtime_error &e) {
         cout << "ERROR: " << e.what() << endl;
         return nullptr;
@@ -37,17 +47,7 @@ Variable* add_id(const string name) {
 
     if (temp == nullptr) {
         try {
-            SymbolType st;
-            int line;
-            if (name[0] == '_') {
-                st = hidden;
-                line = 0;
-            }
-            else {
-                st = (scope == 0) ? global : local;
-                line = yylineno;
-            }
-            sym_table.Insert(name, st, line, scope, list<Variable*>());
+            sym_table.Insert(name, (scope == 0) ? global : local, yylineno, scope, list<Variable*>());
         } catch(runtime_error &e) {
             cout << e.what() << endl;
             // assert(0);
@@ -73,7 +73,7 @@ Variable* add_id(const string name) {
 }
 
 Function* add_func(string name) {
-    static int anon_func_counter = 1;
+    static int anon_func_counter = 0;
     Symbol* temp = sym_table.Lookup(name, scope, THIS_SCOPE);
 
     if (name == "_f")
