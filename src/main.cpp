@@ -126,6 +126,10 @@ void print_quad (struct quad *q, int index, FILE *output) {
         fprintf(output, "%s", print_expr_content(q->arg2).c_str());
     fprintf(output, "|");
 
+    if (q->label)
+        fprintf(output, "%d", q->label);
+    fprintf(output, "|");
+
     fprintf(output, "\n");
 }
 

@@ -409,7 +409,6 @@ primary: lvalue { $$ = emit_iftableitem($1); }
     ;
 
 lvalue: IDENTIFIER {
-        // $$ = $1;
         Variable* sym = add_id($1);
         $$ = new expr(var_e);
         $$ -> sym = sym;
