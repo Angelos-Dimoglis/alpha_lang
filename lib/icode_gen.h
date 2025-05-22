@@ -95,6 +95,7 @@ struct expr {
 struct stmt {
     list<unsigned> breaklist;
     list<unsigned> contlist;
+    unsigned jump_label;
 };
 
 struct forp {
@@ -149,7 +150,13 @@ void emit (iopcode op, unsigned label);
 
 Symbol *newtemp();
 
+<<<<<<< HEAD
 expr *emit_iftableitem(expr* e);
+=======
+void resettemp();
+
+expr* emit_iftableitem(expr* e);
+>>>>>>> quad_numbering
 
 expr *member_item(expr *lvalue, string name);
 

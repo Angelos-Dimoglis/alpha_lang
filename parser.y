@@ -27,8 +27,8 @@
     list<Variable*> args;
 
     quad *quads = (quad*) 0;
-    unsigned total = 0;
-    unsigned int curr_quad = 0;
+    unsigned total = 1;
+    unsigned int curr_quad = 1;
 
     void yyerror(const char *msg) {
         if (strcmp(msg, "syntax error, unexpected end of file"))
@@ -153,7 +153,7 @@
 %type <exprValue> expr lvalue term primary member assignexpr const elist elist_alt call objectdef
 %type <stmtValue> stmt block stmt_series
 %type <forValue> forprefix
-%type <intValue> ifprefix elseprefix whilestart whilecond N M1 M2
+%type <intValue> ifprefix elseprefix whilestart whilecond N M
 %type <funcSymValue> funcname funcdef // NOTE: THIS MIGHT HAVE TO BECOME symValue LATER ON lec 10, sl 7
 
 %%
@@ -175,18 +175,26 @@ stmt_series: stmt_series stmt  {
 
 stmt: expr ';' {
         $$ = nullptr;
+        resettemp();
     }
     | ifstmt {
         $$ = nullptr;
+        resettemp();
     }
     | whilestmt {
         $$ = nullptr;
+        resettemp();
     }
     | forstmt {
         $$ = nullptr;
+        resettemp();
     }
     | returnstmt {
         $$ = nullptr;
+        $stmt = new stmt();
+        $stmt->breaklist.push_back(curr_quad); 
+        emit(jump, unsigned(0));
+        resettemp();
     }
     | BREAK ';' {
         $$ = nullptr;
@@ -195,6 +203,7 @@ stmt: expr ';' {
             $stmt->breaklist.push_back(curr_quad);
             emit(jump, unsigned(0));
         }
+        resettemp();
     }
     | CONTINUE ';' {
         $$ = nullptr;
@@ -203,13 +212,16 @@ stmt: expr ';' {
             $stmt->contlist.push_back(curr_quad);
             emit(jump, unsigned(0));
         }
+        resettemp();
     }
-    | block {$stmt = $block;}
+    | block {$stmt = $block; resettemp();}
     | funcdef {
         $$ = nullptr;
+        resettemp();
     }
     | ';' {
         $$ = nullptr;
+        resettemp();
     }
     ;
 
@@ -276,14 +288,14 @@ expr: assignexpr {}
         emit(if_noteq, $1 , $3, EMPTY_LABEL);
         emit(jump, EMPTY_LABEL);
     }
-    | expr AND M1 expr {
+    | expr AND M expr {
         emit_ifnotrelop($1);
-        patchlist(*($1->truelist), $M1);
+        patchlist(*($1->truelist), $M);
         $$->truelist = $4->truelist;
         $$->falselist = merge($1->falselist, $4->falselist);
     }
-    | expr OR M1 expr {
-        patchlist(*($1->falselist), $M1);
+    | expr OR M expr {
+        patchlist(*($1->falselist), $M);
         $$->truelist = merge($1->truelist, $4->truelist);
         $$->falselist = $4->falselist;
     }
@@ -292,10 +304,12 @@ expr: assignexpr {}
     }
     ;
 
-M1: /* empry rule */ {
-    $M1 = nextquadlabel();
+M: /* empry rule */ {
+    $M = nextquadlabel();
  }
  ;
+
+N: {$N = nextquadlabel(); emit(jump, unsigned(0));}
 
 term: '(' expr ')' {
         emit_ifboolexpr($expr);
@@ -485,14 +499,14 @@ elist_alt: ',' expr elist_alt {
 
 objectdef: '[' elist ']' {
         expr* t = new expr(new_table_e, newtemp());
-        emit(table_create, t);
+        emit(table_create, NULL, NULL, t, 0);
         for (int i = 0; $elist != NULL; $elist = $elist->next)
             emit(table_set_elem, t, new expr((double) i++), $elist);
         $objectdef = t;
     }
     | '[' indexed ']' {
         expr* t = new expr(new_table_e, newtemp());
-        emit(table_create, t, NULL, NULL, 0);
+        emit(table_create, NULL, NULL, t, 0);
         for (const auto& pair : *($indexed)) {
             emit(table_set_elem, t, pair.first, pair.second);
         }
@@ -529,21 +543,22 @@ funcname: IDENTIFIER { $$ = add_func($1); }
     | { $$ = add_func("_f"); };
 
 /* IMPORTANT NOTE: It would seem that blocks of code count as new tokens . here, the token block is $6 */
-// TODO: generate a quad to jump func definitions
-funcdef: FUNCTION
+funcdef: FUNCTION N
     funcname {
-        $2 -> index_address = nextquadlabel();
-        expr* temp = new expr(program_func_e, $2);
-        emit(func_start, temp, NULL, NULL, 0);
+        $3 -> index_address = nextquadlabel();
+        expr* temp = new expr(program_func_e, $3);
+        emit(func_start, NULL, NULL, temp, 0);
     }
     formal_arguments
     funcblockstart block {
-        $2 ->num_of_locals = getoffset();
+        $3 ->num_of_locals = getoffset();
     }
     funcblockend {
-        $$ = $2;
-        expr* temp = new expr(program_func_e, $2);
-        emit(func_end, temp, NULL, NULL, 0);
+        $$ = $3;
+        expr* temp = new expr(program_func_e, $3);
+        patchlist($block->breaklist, nextquadlabel());
+        emit(func_end, NULL, NULL, temp, 0);
+        patchlabel($N, nextquadlabel());
     };
 
 const: INTCONST {
@@ -559,10 +574,10 @@ const: INTCONST {
         $$ = new expr();
     }
     | TRUE {
-        $$ = new expr((bool) $1);
+        $$ = new expr(true);
     }
     | FALSE {
-        $$ = new expr((bool) $1);
+        $$ = new expr(false);
     };
 
 idlist: IDENTIFIER {add_formal_argument($1);} idlist_alt
@@ -578,7 +593,7 @@ ifstmt: ifprefix stmt {patchlabel($1, nextquadlabel());} %prec IF
     ;
 
 ifprefix: IF '(' expr ')' {
-        emit(if_eq, $expr, newexpr_constbool(1), nextquadlabel() + 2);
+        emit(if_eq, $expr, new expr(true), nextquadlabel() + 2);
 
         $ifprefix = nextquadlabel();
         emit(jump, unsigned(0));
@@ -607,7 +622,7 @@ whilestart: WHILE {
 }
 
 whilecond: '(' expr ')' {
-    emit(if_eq, $2, newexpr_constbool(1), nextquadlabel() + 2);
+    emit(if_eq, $2, new expr(true), nextquadlabel() + 2);
     $whilecond = nextquadlabel();
     emit(jump, unsigned(0));
 }
@@ -622,17 +637,14 @@ forstmt: forprefix N elist ')' N loopstart stmt N loopend {
     patchlist($stmt->contlist, $2 + 1);
 }
 
-N: {$N = nextquadlabel(); emit(jump, unsigned(0));}
-M2: {$M2 = nextquadlabel();}
-
-forprefix: FOR '(' elist ';' M2 expr ';' {
-    $forprefix.test = $M2;
+forprefix: FOR '(' elist ';' M expr ';' {
+    $forprefix.test = $M;
     $forprefix.enter = nextquadlabel();
-    emit(if_eq, $expr, newexpr_constbool(1), unsigned(0));
+    emit(if_eq, $expr, new expr(true), unsigned(0));
 }
 
-returnstmt: RETURN ';' {return_valid();}
-    | RETURN  expr ';' {return_valid();}
+returnstmt: RETURN ';' {return_valid(); emit(ret, NULL, NULL, NULL, 0);}
+    | RETURN  expr ';' {return_valid(); emit(ret, NULL, NULL, $expr, 0);}
     ;
 
 %%
