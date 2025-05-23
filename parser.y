@@ -161,6 +161,9 @@ program: stmt_series;
 
 stmt_series: stmt_series stmt  {
 
+        if ($stmt != nullptr && !$stmt->returnlist.empty())
+            $1->returnlist.push_back($stmt->returnlist.front());
+
         if ($stmt != nullptr && !$stmt->breaklist.empty())
             $1->breaklist.push_back($stmt->breaklist.front());
 
@@ -191,7 +194,7 @@ stmt: expr ';' {
     | returnstmt {
         $$ = nullptr;
         $stmt = new stmt();
-        $stmt->breaklist.push_back(curr_quad); 
+        $stmt->returnlist.push_back(curr_quad); 
         emit(jump, unsigned(0));
         resettemp();
     }
@@ -565,7 +568,7 @@ funcdef: FUNCTION N
     funcblockend {
         $$ = $3;
         expr* temp = new expr(program_func_e, $3);
-        patchlist($block->breaklist, nextquadlabel());
+        patchlist($block->returnlist, nextquadlabel());
         emit(func_end, NULL, NULL, temp, 0);
         patchlabel($N, nextquadlabel());
     };

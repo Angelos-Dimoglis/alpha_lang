@@ -93,7 +93,7 @@ struct expr {
 };
 
 struct stmt {
-    /*Returns are also saved in the breaklist*/
+    list<unsigned> returnlist;
     list<unsigned> breaklist;
     list<unsigned> contlist;
 };

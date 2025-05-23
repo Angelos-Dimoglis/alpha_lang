@@ -51,7 +51,7 @@ string opcode_to_string(iopcode opcode) {
         case jump: return "jump";
         case call: return "call";
         case param: return "param";
-        case ret: return "ret";
+        case ret: return "return";
         case get_ret_val: return "get_ret_val";
         case func_start: return "func_start";
         case func_end: return "func_end";
@@ -127,11 +127,7 @@ void print_quad (struct quad *q, int index, FILE *output) {
 
     if (q->label)
         fprintf(output, "%d", q->label);
-    else
-        fprintf(output, "_");
     fprintf(output, "|");
-
-    fprintf(output, "\n");
 }
 
 void write_quads (FILE *output, const char* filename, bool output_file_set) {
@@ -151,10 +147,19 @@ void write_quads (FILE *output, const char* filename, bool output_file_set) {
     }
 
     // write unformatted quads to temp file
-    fprintf(temp, "quad#|opcode|result|arg1|arg2|label\n");
-    for (int i = 1; i < curr_quad; i++)
+    const string highlight = "\033[48;5;240m"; // Gray background
+    const string reset = "\033[0m"; // Reset formatting
+    fprintf(temp, "quad#|opcode|result|arg1|arg2|label");
+    for (int i = 1; i < curr_quad; i++) {
+        fprintf(temp, "\n");
+        if (i % 2 == 1)
+            fprintf(temp, "%s", highlight.c_str());
         print_quad(&(quads[i]), i, temp);
+        if (i % 2 == 1)
+            fprintf(temp, "%s", reset.c_str());
+    }
 
+    fprintf(temp, "%s",reset.c_str());
     fclose(temp);
 
     // call column
