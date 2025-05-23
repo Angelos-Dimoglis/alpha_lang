@@ -28,8 +28,8 @@ make
 
 All options are optional, the default input and output are stdin and stdout.
 
-* -i <input file>
-* -o <output file>
+* -i \<input file\>
+* -o \<output file\>
 * -d (yydebug)
 * -t (lexer tokens)
 * -s (symbol table)
