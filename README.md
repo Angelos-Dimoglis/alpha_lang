@@ -9,11 +9,11 @@
 * Panagiwths Antonakakhs csd5137
 * Aris Patramanis csd5249
 
-## testing
+## Testing
 
 Testing was done at kerasi.
 
-## how to compile
+## How to compile
 
 ```
 make all
@@ -24,7 +24,7 @@ make
 ```
 (all is the default)
 
-## command line options
+## Command line options
 
 All options are optional, the default input and output are stdin and stdout.
 
@@ -43,7 +43,7 @@ All options are optional, the default input and output are stdin and stdout.
 * **Code optimizer**
 * **Target code generator**
 
-## note on the directory structure
+## Note on the directory structure
 
 * bin/
     * all .o files
