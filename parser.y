@@ -176,6 +176,7 @@ stmt_series: stmt_series stmt  {
     ;
 
 stmt: expr ';' {
+        emit_ifboolexpr($expr);
         $$ = nullptr;
         resettemp();
     }
@@ -277,36 +278,18 @@ expr: assignexpr {}
         emit(jump, EMPTY_LABEL);
     }
     | expr EQUAL_EQUAL {$1 = emit_ifboolexpr($1);} expr {
-        // if ($1->type == bool_expr_e) {
-        //     expr_t temp = $4->type;
-        //     $4->type = bool_expr_e;
-        //     $4 = emit_ifboolexpr($4);
-        //     $4->type = temp;
-        // }
         $$ = new expr(bool_expr_e, newtemptemp());
         $$->truelist = new list<unsigned>{curr_quad};
         $$->falselist = new list<unsigned>{curr_quad + 1};
         emit(if_eq, $1 , $4, EMPTY_LABEL);
         emit(jump, EMPTY_LABEL);
-
-        //emit_ifboolexpr($$);
     }
     | expr BANG_EQUAL {$1 = emit_ifboolexpr($1);} expr {
-        // if ($1->type == bool_expr_e) {
-        //     expr_t temp = $4->type;
-        //     $4->type = bool_expr_e;
-        //     $4 = emit_ifboolexpr($4);
-        //     $4->type = temp;
-        // }
         $$ = new expr(bool_expr_e, newtemptemp());
         $$->truelist = new list<unsigned>{curr_quad};
         $$->falselist = new list<unsigned>{curr_quad + 1};
         emit(if_noteq, $1 , $4, EMPTY_LABEL);
         emit(jump, EMPTY_LABEL);
-    
-        emit_ifboolexpr($$);
-
-        // print_lists($$);
     }
     | expr AND {emit_ifnotrelop($1);} M expr {
 
@@ -314,16 +297,9 @@ expr: assignexpr {}
 
         emit_ifnotrelop($5);
 
-        // print_lists($1);
-        // print_lists($5);
-
         patchlist(*($1->truelist), $M);
         $$->truelist = $5->truelist;
         $$->falselist = merge($1->falselist, $5->falselist);
-
-        // print_lists($$);
-
-        // cout << "baba\n\n\n";
     }
     | expr OR {emit_ifnotrelop($1);} M expr {
 
@@ -331,19 +307,11 @@ expr: assignexpr {}
         
         emit_ifnotrelop($5);
 
-        // print_lists($1);
-        // print_lists($5);
-
         patchlist(*($1->falselist), $M);
         $$->truelist = merge($1->truelist, $5->truelist);
         $$->falselist = $5->falselist;
-
-        // print_lists($$);
-
-        // cout << "hello\n\n\n";
     }
     | term {
-        //print_lists($term);
         $$ = $1;
     }
     ;
@@ -428,7 +396,6 @@ assignexpr: lvalue '=' expr {
         check_lvalue($1->sym->name);
         expr *temp = emit_ifboolexpr($expr);
         if ($1->type == table_item_e) {
-            // lvalue[index] = expr
             emit(table_set_elem, $1->index, temp, $1, 0);
             $$ = emit_iftableitem($1); // Will always emit
             $$->type = assign_expr_e;
