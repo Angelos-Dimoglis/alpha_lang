@@ -156,4 +156,6 @@ expr *newexpr_constbool (unsigned int b);
 
 expr *emit_ifboolexpr (expr* e);
 
-expr *emit_ifnotrelop (expr *e);
+void emit_ifnotrelop (expr *e);
+
+void print_lists(expr* e);

@@ -238,14 +238,24 @@ expr *evaluate_to_bool (expr *e) {
     return e;
 }
 
-expr *emit_ifnotrelop(expr *e) {
-    if (e->type != bool_expr_e) {
+void emit_ifnotrelop(expr *e) {
+    if (e->truelist == nullptr || e->falselist == nullptr) {
         e->truelist = new list<unsigned>{curr_quad};
         e->falselist = new list<unsigned>{curr_quad + 1};
 
         emit(if_eq, evaluate_to_bool(e), new expr(true), (unsigned) 0);
         emit(jump, (unsigned) 0);
     }
+}
 
-    return nullptr;
+void print_lists(expr* e) {
+    cout << "\n\n\ntruelist:";
+    for (auto &i : *e->truelist) {
+        printf(" %d", i);
+    }
+    cout << "\n\n\nfalselist:";
+    for (auto &i : *e->falselist) {
+        printf(" %d", i);
+    }
+    cout << "\n\n\n";
 }

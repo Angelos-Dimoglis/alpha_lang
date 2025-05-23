@@ -292,15 +292,33 @@ expr: assignexpr {}
     }
     | expr AND M expr {
         emit_ifnotrelop($1);
+        emit_ifnotrelop($4);
+
+        print_lists($1);
+        print_lists($4);
+
         patchlist(*($1->truelist), $M);
         $$->truelist = $4->truelist;
         $$->falselist = merge($1->falselist, $4->falselist);
+
+        print_lists($$);
+
+        cout << "baba\n\n\n";
     }
     | expr OR M expr {
         emit_ifnotrelop($1);
+        emit_ifnotrelop($4);
+
+        print_lists($1);
+        print_lists($4);
+
         patchlist(*($1->falselist), $M);
         $$->truelist = merge($1->truelist, $4->truelist);
         $$->falselist = $4->falselist;
+
+        print_lists($$);
+
+        cout << "hello\n\n\n";
     }
     | term {
         $$ = $1;
