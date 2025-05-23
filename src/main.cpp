@@ -52,12 +52,12 @@ string opcode_to_string(iopcode opcode) {
         case call: return "call";
         case param: return "param";
         case ret: return "return";
-        case get_ret_val: return "get_ret_val";
-        case func_start: return "func_start";
-        case func_end: return "func_end";
-        case table_create: return "table_create";
-        case table_get_elem: return "table_get_elem";
-        case table_set_elem: return "table_set_elem";
+        case get_ret_val: return "getretval";
+        case func_start: return "funcstart";
+        case func_end: return "funcend";
+        case table_create: return "tablecreate";
+        case table_get_elem: return "tablegetelem";
+        case table_set_elem: return "tablesetelem";
         default:
             assert(0);
     }
