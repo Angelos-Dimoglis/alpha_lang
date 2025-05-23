@@ -251,7 +251,6 @@ expr: assignexpr {}
         $$->falselist = new list<unsigned>{curr_quad + 1};
         emit(if_greater, $1 , $3, EMPTY_LABEL);
         emit(jump, EMPTY_LABEL);
-
     }
     | expr '<' expr {
         $$ = new expr(bool_expr_e, newtemp());
@@ -295,6 +294,7 @@ expr: assignexpr {}
         $$->falselist = merge($1->falselist, $4->falselist);
     }
     | expr OR M expr {
+        emit_ifnotrelop($1);
         patchlist(*($1->falselist), $M);
         $$->truelist = merge($1->truelist, $4->truelist);
         $$->falselist = $4->falselist;

@@ -210,7 +210,7 @@ expr *emit_ifboolexpr(expr *e) {
 
     expr *temp = new expr(bool_expr_e, newtemp());
 
-    unsigned label_false = curr_quad, label_true = curr_quad + 2;
+    unsigned label_true = curr_quad, label_false = curr_quad + 2;
 
     assert(e->truelist && e->falselist);
 
@@ -240,17 +240,12 @@ expr *evaluate_to_bool (expr *e) {
 
 expr *emit_ifnotrelop(expr *e) {
     if (e->type != bool_expr_e) {
-        e->truelist->push_front(curr_quad);
-        e->falselist->push_front(curr_quad + 1);
+        e->truelist = new list<unsigned>{curr_quad};
+        e->falselist = new list<unsigned>{curr_quad + 1};
 
         emit(if_eq, evaluate_to_bool(e), new expr(true), (unsigned) 0);
         emit(jump, (unsigned) 0);
     }
 
     return nullptr;
-}
-
-void print_lists (expr *e) {
-    if (e->truelist)
-        printf("
 }
