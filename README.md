@@ -9,6 +9,21 @@
 * Panagiwths Antonakakhs csd5137
 * Aris Patramanis csd5249
 
+## testing
+
+Testing was done at kerasi.
+
+## how to compile
+
+```
+make all
+```
+or just
+```
+make
+```
+(all is the default)
+
 ## command line options
 
 All options are optional, the default input and output are stdin and stdout.
@@ -30,4 +45,13 @@ All options are optional, the default input and output are stdin and stdout.
 
 ## note on the directory structure
 
-* TODO
+* bin/
+    * all .o files
+* lib/
+    * all .h files and the generated .hpp file
+* src/
+    * all .cpp files (includeing main and the generated lexer, parser and parser.output)
+* lexer.l
+* parser.y
+* Makefile
+* README.md
