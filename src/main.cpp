@@ -127,45 +127,47 @@ void print_quad (struct quad *q, int index, FILE *output) {
 
     if (q->label)
         fprintf(output, "%d", q->label);
+    else
+        fprintf(output, "_");
     fprintf(output, "|");
 
     fprintf(output, "\n");
 }
 
 void write_quads (FILE *output, const char* filename, bool output_file_set) {
-    // Create a temporary file
-    char tmpname[] = "/tmp/quadsXXXXXX";
-    int fd = mkstemp(tmpname);
+    // create a temporary file
+    char temp_name[] = "/tmp/quadsXXXXXX";
+    int fd = mkstemp(temp_name);
     if (fd == -1) {
         perror("mkstemp failed");
         return;
     }
 
-    FILE* tmp = fdopen(fd, "w");
-    if (!tmp) {
+    FILE* temp = fdopen(fd, "w");
+    if (!temp) {
         perror("fdopen failed");
         close(fd);
         return;
     }
 
-    // Write unformatted quads to temp file
-    fprintf(tmp, "quad#|opcode|result|arg1|arg2|label\n");
+    // write unformatted quads to temp file
+    fprintf(temp, "quad#|opcode|result|arg1|arg2|label\n");
     for (int i = 1; i < curr_quad; i++)
-        print_quad(&(quads[i]), i, tmp);
+        print_quad(&(quads[i]), i, temp);
 
-    fclose(tmp);
+    fclose(temp);
 
     // call column
     std::string cmd = "column -t -s '|' < ";
-    cmd += tmpname;
+    cmd += temp_name;
 
     std::string formatted = exec_command(cmd.c_str());
 
-    // Output the formatted result
+    // output the formatted result
     FILE* final_out = output_file_set ? fopen(filename, "w") : stdout;
     if (!final_out) {
         fprintf(stderr, "Cannot open output file: %s\n", filename);
-        unlink(tmpname);
+        unlink(temp_name);
         return;
     }
 
@@ -174,7 +176,7 @@ void write_quads (FILE *output, const char* filename, bool output_file_set) {
     if (output_file_set)
         fclose(final_out);
 
-    unlink(tmpname);
+    unlink(temp_name);
 }
 
 int main (int argc, char **argv) {
@@ -212,7 +214,7 @@ int main (int argc, char **argv) {
                 if (optarg != nullptr)
                     output_file_set = true;
 
-                if (!(yyout = fopen(optarg, "w"))){
+                if (!(yyout = fopen(optarg, "w"))) {
                     fprintf(stderr, "Cannot write file: %s\n", optarg);
                     return 1;
                 }

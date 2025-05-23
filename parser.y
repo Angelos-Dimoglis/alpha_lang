@@ -247,43 +247,44 @@ expr: assignexpr {}
     }
     | expr '>' expr {
         $$ = new expr(bool_expr_e, newtemp());
-        $$->truelist = new list<unsigned>();
-        $$->falselist = new list<unsigned>();
+        $$->truelist = new list<unsigned>{curr_quad};
+        $$->falselist = new list<unsigned>{curr_quad + 1};
         emit(if_greater, $1 , $3, EMPTY_LABEL);
         emit(jump, EMPTY_LABEL);
+
     }
     | expr '<' expr {
         $$ = new expr(bool_expr_e, newtemp());
-        $$->truelist = new list<unsigned>();
-        $$->falselist = new list<unsigned>();
+        $$->truelist = new list<unsigned>{curr_quad};
+        $$->falselist = new list<unsigned>{curr_quad + 1};
         emit(if_less, $1 , $3, EMPTY_LABEL);
         emit(jump, EMPTY_LABEL);
     }
     | expr GREATER_EQUAL expr {
         $$ = new expr(bool_expr_e, newtemp());
-        $$->truelist = new list<unsigned>();
-        $$->falselist = new list<unsigned>();
+        $$->truelist = new list<unsigned>{curr_quad};
+        $$->falselist = new list<unsigned>{curr_quad + 1};
         emit(if_greatereq, $1 , $3, EMPTY_LABEL);
         emit(jump, EMPTY_LABEL);
     }
     | expr LESS_EQUAL expr {
         $$ = new expr(bool_expr_e, newtemp());
-        $$->truelist = new list<unsigned>();
-        $$->falselist = new list<unsigned>();
+        $$->truelist = new list<unsigned>{curr_quad};
+        $$->falselist = new list<unsigned>{curr_quad + 1};
         emit(if_lesseq, $1 , $3, EMPTY_LABEL);
         emit(jump, EMPTY_LABEL);
     }
     | expr EQUAL_EQUAL expr {
-        $$->truelist = new list<unsigned>();
-        $$->falselist = new list<unsigned>();
         $$ = new expr(bool_expr_e, newtemp());
+        $$->truelist = new list<unsigned>{curr_quad};
+        $$->falselist = new list<unsigned>{curr_quad + 1};
         emit(if_eq, $1 , $3, EMPTY_LABEL);
         emit(jump, EMPTY_LABEL);
     }
     | expr BANG_EQUAL expr {
         $$ = new expr(bool_expr_e, newtemp());
-        $$->truelist = new list<unsigned>();
-        $$->falselist = new list<unsigned>();
+        $$->truelist = new list<unsigned>{curr_quad};
+        $$->falselist = new list<unsigned>{curr_quad + 1};
         emit(if_noteq, $1 , $3, EMPTY_LABEL);
         emit(jump, EMPTY_LABEL);
     }
@@ -311,8 +312,7 @@ M: /* empry rule */ {
 N: {$N = nextquadlabel(); emit(jump, unsigned(0));}
 
 term: '(' expr ')' {
-        emit_ifboolexpr($expr);
-        $term = $expr;
+        $term = emit_ifboolexpr($expr);
     }
     | '-' expr %prec MINUS_UNARY{
         check_arith($expr, "unary minus");
@@ -383,14 +383,15 @@ term: '(' expr ')' {
 
 assignexpr: lvalue '=' expr {
         check_lvalue($1->sym->name);
+        expr *temp = emit_ifboolexpr($expr);
         if ($1->type == table_item_e) {
             // lvalue[index] = expr
-            emit(table_set_elem, $1->index, $3, $1, 0);
+            emit(table_set_elem, $1->index, temp, $1, 0);
             $$ = emit_iftableitem($1); // Will always emit
             $$->type = assign_expr_e;
         } else {
             // that is: lvalue = expr
-            emit(assign, $3, NULL, $1, 0);
+            emit(assign, temp, NULL, $1, 0);
             $$ = new expr(assign_expr_e);
             $$->sym = newtemp();
             emit(assign, $1, NULL, $$, 0);
@@ -398,8 +399,13 @@ assignexpr: lvalue '=' expr {
     }; 
 
 primary: lvalue { $$ = emit_iftableitem($1); }
-    | call {}
-    | objectdef {}
+    | call {
+        $primary = $call;
+    }
+    | objectdef {
+        // may not be right
+        $primary = $objectdef;
+    }
     | '('funcdef')' {
         $primary = new expr(program_func_e, $funcdef);
     }
@@ -428,14 +434,19 @@ lvalue: IDENTIFIER {
 
 member: lvalue '.' IDENTIFIER {$$ = member_item($1, $3);}
     | lvalue '[' expr ']' {
+        $expr = emit_ifboolexpr($expr);
         $1 = emit_iftableitem($1);
         $$ = new expr(table_item_e);
-        $$->sym = $1 ->sym;
-        $$->index = $3;
+        $$->sym = $1->sym;
+        $$->index = $expr;
     }
     | call '.' IDENTIFIER {}
     | call '[' expr ']' {
-        emit_ifboolexpr($expr);
+        $expr = emit_ifboolexpr($expr);
+        $1 = emit_iftableitem($1);
+        $$ = new expr(table_item_e);
+        $$->sym = $1->sym;
+        $$->index = $expr;
     }
     ;
 
@@ -480,7 +491,7 @@ methodcall: DOT_DOT IDENTIFIER '(' elist ')' {
     ;
 
 elist: expr elist_alt {
-        emit_ifboolexpr($expr);
+        $expr = emit_ifboolexpr($expr);
         $expr->next = $elist_alt;
         $elist = $expr;
     }
@@ -488,7 +499,7 @@ elist: expr elist_alt {
     ;
 
 elist_alt: ',' expr elist_alt {
-        emit_ifboolexpr($expr);
+        $expr = emit_ifboolexpr($expr);
         $expr->next = $3;
         $$ = $expr;
     }
@@ -526,8 +537,8 @@ indexed_alt: ',' indexedelem indexed_alt {
     ;
 
 indexedelem: '{' expr ':' expr '}' {
-        emit_ifboolexpr($2);
-        emit_ifboolexpr($4);
+        $2 = emit_ifboolexpr($2);
+        $4 = emit_ifboolexpr($4);
         $indexedelem = new pair<expr*, expr*>($2, $4);
     }
     ;

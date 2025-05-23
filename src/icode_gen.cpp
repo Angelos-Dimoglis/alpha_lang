@@ -19,7 +19,8 @@ unsigned int nextquadlabel() {
 }
 
 void patchlabel(unsigned quadNo, unsigned label) {
-    assert(quadNo < curr_quad && !quads[quadNo].label);
+    assert(quadNo < curr_quad);
+    assert(!quads[quadNo].label);
     quads[quadNo].label = label;
 }
 
@@ -207,40 +208,49 @@ expr *emit_ifboolexpr(expr *e) {
     if (e->type != bool_expr_e)
         return e;
 
-    expr *temp = new expr(const_bool_e, newtemp());
+    expr *temp = new expr(bool_expr_e, newtemp());
+
+    unsigned label_false = curr_quad, label_true = curr_quad + 2;
+
+    assert(e->truelist && e->falselist);
+
     emit(assign, new expr(true), temp);
     emit(jump, curr_quad + 2);
     emit(assign, new expr(false), temp);
+
+    patchlist(*(e->truelist), label_true);
+    patchlist(*(e->falselist), label_false);
+
     return temp;
 }
 
-expr *emit_ifnotrelop(expr *e) {
-    if (
-        e->type == const_bool_e ||
-        e->type == const_num_e ||
-        e->type == const_string_e ||
-        e->type == var_e
-    ) {
-        emit(if_eq, e, new expr(true), (unsigned) 0);
-        emit(jump, (unsigned) 0);
+expr *evaluate_to_bool (expr *e) {
 
-        switch (e->type) {
-            case const_bool_e:
-                e->truelist->push_front(e->bool_const == true ? 1 : 0);
-                break;
-            case const_num_e:
-                e->truelist->push_front(e->num_const == 0.0 ? 0 : 1);
-                break;
-            case const_string_e:
-                e->truelist->push_front(e->str_const.empty() ? 0 : 1);
-                break;
-            case var_e:
-                e->truelist->push_front(1);
-                e->truelist->push_front(true ? 0 : 1);
-                break;
-            default: assert(0);
-        }
+    if (e->type == const_num_e)
+        return new expr((bool) e->num_const);
+
+    if (e->type == const_string_e)
+        return new expr(e->str_const.empty());
+
+    if (e->type == const_nil_e)
+        return new expr(false);
+
+    return e;
+}
+
+expr *emit_ifnotrelop(expr *e) {
+    if (e->type != bool_expr_e) {
+        e->truelist->push_front(curr_quad);
+        e->falselist->push_front(curr_quad + 1);
+
+        emit(if_eq, evaluate_to_bool(e), new expr(true), (unsigned) 0);
+        emit(jump, (unsigned) 0);
     }
 
     return nullptr;
+}
+
+void print_lists (expr *e) {
+    if (e->truelist)
+        printf("
 }
