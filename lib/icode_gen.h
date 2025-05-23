@@ -146,6 +146,8 @@ void emit (iopcode op, unsigned label);
 
 Symbol *newtemp ();
 
+Symbol *newtemptemp();
+
 void resettemp();
 
 expr *emit_iftableitem(expr* e);

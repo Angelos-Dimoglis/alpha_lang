@@ -249,76 +249,100 @@ expr: assignexpr {}
         emit(mod, $1, $3, $$);
     }
     | expr '>' expr {
-        $$ = new expr(bool_expr_e, newtemp());
+        $$ = new expr(bool_expr_e, newtemptemp());
         $$->truelist = new list<unsigned>{curr_quad};
         $$->falselist = new list<unsigned>{curr_quad + 1};
         emit(if_greater, $1 , $3, EMPTY_LABEL);
         emit(jump, EMPTY_LABEL);
     }
     | expr '<' expr {
-        $$ = new expr(bool_expr_e, newtemp());
+        $$ = new expr(bool_expr_e, newtemptemp());
         $$->truelist = new list<unsigned>{curr_quad};
         $$->falselist = new list<unsigned>{curr_quad + 1};
         emit(if_less, $1 , $3, EMPTY_LABEL);
         emit(jump, EMPTY_LABEL);
     }
     | expr GREATER_EQUAL expr {
-        $$ = new expr(bool_expr_e, newtemp());
+        $$ = new expr(bool_expr_e, newtemptemp());
         $$->truelist = new list<unsigned>{curr_quad};
         $$->falselist = new list<unsigned>{curr_quad + 1};
         emit(if_greatereq, $1 , $3, EMPTY_LABEL);
         emit(jump, EMPTY_LABEL);
     }
     | expr LESS_EQUAL expr {
-        $$ = new expr(bool_expr_e, newtemp());
+        $$ = new expr(bool_expr_e, newtemptemp());
         $$->truelist = new list<unsigned>{curr_quad};
         $$->falselist = new list<unsigned>{curr_quad + 1};
         emit(if_lesseq, $1 , $3, EMPTY_LABEL);
         emit(jump, EMPTY_LABEL);
     }
-    | expr EQUAL_EQUAL expr {
-        $$ = new expr(bool_expr_e, newtemp());
+    | expr EQUAL_EQUAL {$1 = emit_ifboolexpr($1);} expr {
+        // if ($1->type == bool_expr_e) {
+        //     expr_t temp = $4->type;
+        //     $4->type = bool_expr_e;
+        //     $4 = emit_ifboolexpr($4);
+        //     $4->type = temp;
+        // }
+        $$ = new expr(bool_expr_e, newtemptemp());
         $$->truelist = new list<unsigned>{curr_quad};
         $$->falselist = new list<unsigned>{curr_quad + 1};
-        emit(if_eq, $1 , $3, EMPTY_LABEL);
+        emit(if_eq, $1 , $4, EMPTY_LABEL);
         emit(jump, EMPTY_LABEL);
-    }
-    | expr BANG_EQUAL expr {
-        $$ = new expr(bool_expr_e, newtemp());
-        $$->truelist = new list<unsigned>{curr_quad};
-        $$->falselist = new list<unsigned>{curr_quad + 1};
-        emit(if_noteq, $1 , $3, EMPTY_LABEL);
-        emit(jump, EMPTY_LABEL);
-    }
-    | expr AND M expr {
-        emit_ifnotrelop($1);
-        emit_ifnotrelop($4);
 
-        print_lists($1);
-        print_lists($4);
+        // if ($4->type == bool_expr_e)
+        //     emit_ifboolexpr($$);
+    }
+    | expr BANG_EQUAL {$1 = emit_ifboolexpr($1);} expr {
+        // if ($1->type == bool_expr_e) {
+        //     expr_t temp = $4->type;
+        //     $4->type = bool_expr_e;
+        //     $4 = emit_ifboolexpr($4);
+        //     $4->type = temp;
+        // }
+        $$ = new expr(bool_expr_e, newtemptemp());
+        $$->truelist = new list<unsigned>{curr_quad};
+        $$->falselist = new list<unsigned>{curr_quad + 1};
+        emit(if_noteq, $1 , $4, EMPTY_LABEL);
+        emit(jump, EMPTY_LABEL);
+        
+        // if ($4->type == bool_expr_e)
+        //     emit_ifboolexpr($$);
+
+        // print_lists($$);
+    }
+    | expr AND {emit_ifnotrelop($1);} M expr {
+
+        $$ = new expr(bool_expr_e, newtemptemp());
+
+        emit_ifnotrelop($5);
+
+        // print_lists($1);
+        // print_lists($5);
 
         patchlist(*($1->truelist), $M);
-        $$->truelist = $4->truelist;
-        $$->falselist = merge($1->falselist, $4->falselist);
+        $$->truelist = $5->truelist;
+        $$->falselist = merge($1->falselist, $5->falselist);
 
-        print_lists($$);
+        // print_lists($$);
 
-        cout << "baba\n\n\n";
+        // cout << "baba\n\n\n";
     }
-    | expr OR M expr {
-        emit_ifnotrelop($1);
-        emit_ifnotrelop($4);
+    | expr OR {emit_ifnotrelop($1);} M expr {
 
-        print_lists($1);
-        print_lists($4);
+        $$ = new expr(bool_expr_e, newtemptemp());
+        
+        emit_ifnotrelop($5);
+
+        // print_lists($1);
+        // print_lists($5);
 
         patchlist(*($1->falselist), $M);
-        $$->truelist = merge($1->truelist, $4->truelist);
-        $$->falselist = $4->falselist;
+        $$->truelist = merge($1->truelist, $5->truelist);
+        $$->falselist = $5->falselist;
 
-        print_lists($$);
+        // print_lists($$);
 
-        cout << "hello\n\n\n";
+        // cout << "hello\n\n\n";
     }
     | term {
         $$ = $1;
@@ -341,11 +365,10 @@ term: '(' expr ')' {
         emit(uminus, $expr, NULL, $term, 0);
     }
     | NOT expr {
+        $term = new expr(bool_expr_e, newtemptemp());
+        emit_ifnotrelop($expr);
         $term->truelist = $expr->falselist;
         $term->falselist = $expr->truelist;
-
-        $term = new expr(bool_expr_e, newtemp());
-        emit(_not , $expr, NULL, $term, 0);
     }
     | PLUS_PLUS lvalue {
         check_arith($lvalue, "++lvalue");
@@ -623,6 +646,9 @@ ifstmt: ifprefix stmt {patchlabel($1, nextquadlabel());} %prec IF
     ;
 
 ifprefix: IF '(' expr ')' {
+
+        $expr = emit_ifboolexpr($expr);
+
         emit(if_eq, $expr, new expr(true), nextquadlabel() + 2);
 
         $ifprefix = nextquadlabel();
@@ -652,7 +678,8 @@ whilestart: WHILE {
 }
 
 whilecond: '(' expr ')' {
-    emit(if_eq, $2, new expr(true), nextquadlabel() + 2);
+    $expr = emit_ifboolexpr($expr);
+    emit(if_eq, $expr, new expr(true), nextquadlabel() + 2);
     $whilecond = nextquadlabel();
     emit(jump, unsigned(0));
 }
@@ -668,11 +695,12 @@ forstmt: forprefix N elist ')' N loopstart stmt N loopend {
 }
 
 forprefix: FOR '(' elist ';' M expr ';' {
+    $expr = emit_ifboolexpr($expr);
     $forprefix.test = $M;
     $forprefix.enter = nextquadlabel();
     emit(if_eq, $expr, new expr(true), unsigned(0));
 }
 
 returnstmt: RETURN ';' {return_valid(); emit(ret, NULL, NULL, NULL, 0);}
-    | RETURN  expr ';' {return_valid(); emit(ret, NULL, NULL, $expr, 0);}
+    | RETURN  expr ';' {$expr = emit_ifboolexpr($expr);return_valid(); emit(ret, NULL, NULL, $expr, 0);}
     ;

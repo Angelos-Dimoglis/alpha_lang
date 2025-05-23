@@ -204,9 +204,16 @@ Symbol *newtemp() {
     return add_local_id(name);
 }
 
+Symbol *newtemptemp() {
+    Symbol *temp = newtemp();
+    tmp_var_counter--;
+    return temp;
+}
+
 expr *emit_ifboolexpr(expr *e) {
-    if (e->type != bool_expr_e)
+    if (e->type != bool_expr_e) {
         return e;
+    }
 
     expr *temp = new expr(bool_expr_e, newtemp());
 
