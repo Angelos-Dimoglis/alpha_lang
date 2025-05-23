@@ -152,14 +152,14 @@ void write_quads (FILE *output, const char* filename, bool output_file_set) {
     fprintf(temp, "quad#|opcode|result|arg1|arg2|label");
     for (int i = 1; i < curr_quad; i++) {
         fprintf(temp, "\n");
-        if (i % 2 == 1)
+        if (i % 2 == 1 && output == stdout)
             fprintf(temp, "%s", highlight.c_str());
         print_quad(&(quads[i]), i, temp);
-        if (i % 2 == 1)
+        if (i % 2 == 1 && output == stdout)
             fprintf(temp, "%s", reset.c_str());
     }
-
-    fprintf(temp, "%s",reset.c_str());
+    if (output == stdout)
+        fprintf(temp, "%s",reset.c_str());
     fclose(temp);
 
     // call column
