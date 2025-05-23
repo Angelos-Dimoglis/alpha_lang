@@ -211,7 +211,7 @@ Symbol *newtemptemp() {
 }
 
 expr *emit_ifboolexpr(expr *e) {
-    if (e->type != bool_expr_e) {
+    if (e->type != bool_expr_e || e->truelist == nullptr) {
         return e;
     }
 

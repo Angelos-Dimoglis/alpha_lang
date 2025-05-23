@@ -289,8 +289,7 @@ expr: assignexpr {}
         emit(if_eq, $1 , $4, EMPTY_LABEL);
         emit(jump, EMPTY_LABEL);
 
-        // if ($4->type == bool_expr_e)
-        //     emit_ifboolexpr($$);
+        //emit_ifboolexpr($$);
     }
     | expr BANG_EQUAL {$1 = emit_ifboolexpr($1);} expr {
         // if ($1->type == bool_expr_e) {
@@ -304,9 +303,8 @@ expr: assignexpr {}
         $$->falselist = new list<unsigned>{curr_quad + 1};
         emit(if_noteq, $1 , $4, EMPTY_LABEL);
         emit(jump, EMPTY_LABEL);
-        
-        // if ($4->type == bool_expr_e)
-        //     emit_ifboolexpr($$);
+    
+        emit_ifboolexpr($$);
 
         // print_lists($$);
     }
@@ -345,6 +343,7 @@ expr: assignexpr {}
         // cout << "hello\n\n\n";
     }
     | term {
+        //print_lists($term);
         $$ = $1;
     }
     ;
@@ -357,7 +356,7 @@ M: /* empry rule */ {
 N: {$N = nextquadlabel(); emit(jump, unsigned(0));}
 
 term: '(' expr ')' {
-        $term = emit_ifboolexpr($expr);
+        $$ = emit_ifboolexpr($expr);
     }
     | '-' expr %prec MINUS_UNARY{
         check_arith($expr, "unary minus");
@@ -702,5 +701,5 @@ forprefix: FOR '(' elist ';' M expr ';' {
 }
 
 returnstmt: RETURN ';' {return_valid(); emit(ret, NULL, NULL, NULL, 0);}
-    | RETURN  expr ';' {$expr = emit_ifboolexpr($expr);return_valid(); emit(ret, NULL, NULL, $expr, 0);}
+    | RETURN  expr ';' {$expr = emit_ifboolexpr($expr); return_valid(); emit(ret, NULL, NULL, $expr, 0);}
     ;
