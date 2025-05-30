@@ -1,7 +1,7 @@
 
 # Alpha Language
 
-**Description**: Alpha, a very simple clone of JavaScript
+**Description**: Alpha, a very simple clone of Delta.
 
 ## Authors
 
