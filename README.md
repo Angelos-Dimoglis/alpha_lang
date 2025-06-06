@@ -34,15 +34,6 @@ All options are optional, the default input and output are stdin and stdout.
 * -t (lexer tokens)
 * -s (symbol table)
 
-## Implementation
-
-* **Lexical analyzer**
-* **Sytax analyzer**
-* **Semantic analyzer**
-* **Intermediate code generator**
-* **Code optimizer**
-* **Target code generator**
-
 ## Note on the directory structure
 
 * bin/
