@@ -3,11 +3,7 @@
 #include "../lib/icode_gen.h"
 #include "../lib/tcode_gen.h"
 
-unsigned consts_newstring (char *s);
-unsigned consts_newnumber (double n);
-unsigned libfuncs_newused (char *s);
-
-void make_operand (struct expr *e, struct vmarg *arg) {
+void make_operand (expr *e, vmarg *arg) {
 
     // use a variable for storage
     switch (e->type) {
