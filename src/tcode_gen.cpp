@@ -58,3 +58,38 @@ void make_operand (expr *e, vmarg *arg) {
         default: assert(0);
     }
 }
+
+typedef void (*generator_func_t) (quad*);
+
+generator_func_t generators [] = {
+    generate_ADD,
+    generate_SUB,
+    generate_MUL,
+    generate_DIV,
+    generate_MOD,
+    generate_NEWTABLE,
+    generate_TABLEGETELEM,
+    generate_TABLESETELEM,
+    generate_ASSIGN,
+    generate_NOP,
+    generate_JUMP,
+    generate_IFEQ,
+    generate_IFNOTEQ,
+    generate_IFGREATER,
+    generate_IFGREATEREQ,
+    generate_IFLESS,
+    generate_IFLESSEQ,
+    generate_NOT,
+    generate_OR,
+    generate_PARAM,
+    generate_CALL,
+    generate_GETRETVAL,
+    generate_FUNCSTART,
+    generate_RETURN,
+    generate_FUNCEND
+};
+
+void generate (void) {
+    for (unsigned i = 0; i < total; i++)
+        (*generators[quads[i].op]) (quads + i);
+}
