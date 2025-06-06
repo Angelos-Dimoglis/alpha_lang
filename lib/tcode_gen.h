@@ -11,3 +11,13 @@ struct instruction {
     unsigned srcLine;
 };
 
+struct incomplete_jump {
+    unsigned instrNo;
+    unsigned iadress;
+    incomplete_jump *next;
+};
+
+incomplete_jump *ij_head = 0;
+unsigned ij_total = 0;
+
+void add_incomplete_jump (unsigned instrNo, unsigned iaddress);

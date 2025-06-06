@@ -110,6 +110,7 @@ struct quad {
     expr *result;
     unsigned label;
     unsigned line;
+    unsigned taddress; // NOTE: maybe here
 };
 
 #define EXPAND_SIZE 1024
