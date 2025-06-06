@@ -6,5 +6,3 @@ src/lexer.cpp
 src/parser.cpp
 src/parser.output
 lib/parser.hpp
-test.alpha
-a1
