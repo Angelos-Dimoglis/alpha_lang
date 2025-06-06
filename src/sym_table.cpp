@@ -3,13 +3,13 @@
 stack<int> scope_space_offset_stack{{0}};
 
 scopespace_t currscopespace() {
-    if (scope_space_offset_stack.size() == 1) {
+    if (scope_space_offset_stack.size() == 1)
         return program_var;
-    }else if(scope_space_offset_stack.size() % 2 == 0) {
+
+    if (scope_space_offset_stack.size() % 2 == 0)
         return formal_arg;
-    }else {
-        return function_local;
-    }
+
+    return function_local;
 }
 
 int getoffset() {
