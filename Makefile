@@ -3,7 +3,7 @@
 
 # compiler related variables
 CC = g++
-CFLAGS = -g -Ilib
+CFLAGS = -g -Ilib -std=c++20
 
 # target executable
 TARGET = alpha_compiler.out
