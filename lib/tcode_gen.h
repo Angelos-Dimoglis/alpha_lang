@@ -1,20 +1,44 @@
 #include "../lib/icode_gen.h"
 
 enum vmopcode {
-    assign_v, add_v, sub_v,
-    mul_v, div_v, mod_v,
-    uminus_v, and_v, or_v,
-    not_v, jeq_v, jne_v,
-    jle_v, jge_v, jlt_v,
-    jgt_v, call_v, pusharg_v,
-    funcenter_v, funcexit_v, newtable_v,
-    tablegetelem_v, tablesetelem_v, nop_v
+    assign_v       = 0,
+    add_v          = 1,
+    sub_v          = 2,
+    mul_v          = 3,
+    div_v          = 4,
+    mod_v          = 5,
+    uminus_v       = 6,
+    and_v          = 7,
+    or_v           = 8,
+    not_v          = 9,
+    jeq_v          = 10,
+    jne_v          = 11,
+    jle_v          = 12,
+    jge_v          = 13,
+    jlt_v          = 14,
+    jgt_v          = 15,
+    call_v         = 16,
+    pusharg_v      = 17,
+    funcenter_v    = 18,
+    funcexit_v     = 19,
+    newtable_v     = 20,
+    tablegetelem_v = 21,
+    tablesetelem_v = 22,
+    nop_v          = 23
 };
 
 enum vmarg_t {
-    label_a, global_a, formal_a, local_a,
-    number_a, string_a, bool_a, nil_a,
-    userfunc_a, libfunc_a, retval_a
+    label_a    = 0,
+    global_a   = 1,
+    formal_a   = 2,
+    local_a    = 3,
+    number_a   = 4,
+    string_a   = 5,
+    bool_a     = 6,
+    nil_a      = 7,
+    userfunc_a = 8,
+    libfunc_a  = 9,
+    retval_a   = 10
 };
 
 struct vmarg {
