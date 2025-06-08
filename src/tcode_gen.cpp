@@ -59,6 +59,17 @@ void make_operand (expr *e, vmarg *arg) {
     }
 }
 
+void avm_tableincrefcounter (avm_table* t) {
+    t->refCounter++;
+}
+
+void avm_decrefcounter (avm_table* t) {
+    assert(t->refCounter > 0);
+    if (!--t->refCounter) {
+        delete t;
+    }
+}
+
 typedef void (*generator_func_t) (quad*);
 
 generator_func_t generators [] = {
