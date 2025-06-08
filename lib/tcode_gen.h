@@ -83,6 +83,7 @@ struct avm_memcell {
         return type == other.type && data == other.data;
     }
 };
+
 struct avm_memcell_hash {
     size_t operator()(const avm_memcell& m) const {
         size_t hashValue = hash<int>()(static_cast<int>(m.type));
