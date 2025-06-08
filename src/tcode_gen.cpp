@@ -3,6 +3,9 @@
 #include "../lib/icode_gen.h"
 #include "../lib/tcode_gen.h"
 
+extern quad *quads;
+extern unsigned total;
+
 avm_memcell nil_memcell(nil_m);
 
 void make_operand (expr *e, vmarg *arg) {
@@ -47,7 +50,7 @@ void make_operand (expr *e, vmarg *arg) {
         // functions
         case program_func_e: {
             arg->type = userfunc_a;
-            arg->val = e->sym->taddress;
+            arg->val = ((Function*)e->sym)->taddress;
             break;
         }
 

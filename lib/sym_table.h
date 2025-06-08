@@ -60,6 +60,7 @@ class Function : public Symbol {
         list<Variable*> arguments;
         unsigned int num_of_locals = 0;
         unsigned int index_address = 0;
+        unsigned taddress;
 };
 
 struct node {
