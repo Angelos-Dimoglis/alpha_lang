@@ -3,6 +3,8 @@
 #include "../lib/icode_gen.h"
 #include "../lib/tcode_gen.h"
 
+avm_memcell nil_memcell(nil_m);
+
 void make_operand (expr *e, vmarg *arg) {
 
     // use a variable for storage
@@ -59,14 +61,31 @@ void make_operand (expr *e, vmarg *arg) {
     }
 }
 
-void avm_tableincrefcounter (avm_table* t) {
-    t->refCounter++;
+void avm_table::avm_tableincrefcounter() {
+    refCounter++;
 }
 
-void avm_decrefcounter (avm_table* t) {
-    assert(t->refCounter > 0);
-    if (!--t->refCounter) {
-        delete t;
+void avm_table::avm_decrefcounter() {
+    assert(refCounter > 0);
+    if (!--refCounter) {
+        delete this;
+    }
+}
+
+const avm_memcell avm_table::avm_tablegetelem(const avm_memcell& key) const {
+    auto pair = indexed.find(key);
+    if (pair != indexed.end()) {
+        return pair->second;
+    }
+    return nil_memcell;
+}
+
+void avm_table::avm_tablesetelem(const avm_memcell& key, const avm_memcell& value) {
+    if (value.type == nil_m) {
+        indexed.erase(key);
+    }
+    else {
+        indexed[key] = value;
     }
 }
 

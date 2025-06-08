@@ -1,6 +1,18 @@
 #include "../lib/icode_gen.h"
 #include <unordered_map>
 #include <variant>
+#include <vector>
+
+vector<avm_memcell> stack;
+
+vector<double> numConsts;
+unsigned totalNumConsts;
+vector<string> stringConsts;
+unsigned totalStringConts;
+vector<string> namedLibfuncs;
+unsigned totalNamedLibfuncs;
+vector<struct userfunc> userFuncs;
+unsigned totalUserFuncs;
 
 using namespace std;
 
@@ -69,6 +81,12 @@ struct instruction {
     unsigned srcLine;
 };
 
+struct userfunc {
+    unsigned address;
+    unsigned localSize;
+    string id;
+};
+
 struct incomplete_jump {
     unsigned instrNo;
     unsigned iadress;
@@ -82,6 +100,9 @@ struct avm_memcell {
     bool operator==(const avm_memcell& other) const {
         return type == other.type && data == other.data;
     }
+
+    avm_memcell() : type(undef_m), data(0.0) {}
+    avm_memcell(avm_memcell_t type) : type(type), data(0.0) {}
 };
 
 struct avm_memcell_hash {
@@ -107,16 +128,19 @@ struct avm_memcell_hash {
     }
 };
 
-struct avm_table {
-    unsigned refCounter;
-    unordered_map<avm_memcell, avm_memcell, avm_memcell_hash> indexed;
-    unsigned total;
+class avm_table {
+    private:
+        unsigned refCounter;
+        unordered_map<avm_memcell, avm_memcell, avm_memcell_hash> indexed;
 
-    avm_table() : refCounter(0), total(0) {}
+    public:
+        avm_table() : refCounter(0) {}
+
+        void avm_tableincrefcounter();
+        void avm_decrefcounter();
+        const avm_memcell avm_tablegetelem(const avm_memcell& key) const;
+        void avm_tablesetelem(const avm_memcell& key, const avm_memcell& value);
 };
-
-avm_memcell* avm_tablegetelem(avm_memcell* key);
-void avm_tablesetelem(avm_memcell* key, avm_memcell* value);
 
 incomplete_jump *ij_head = 0;
 unsigned ij_total = 0;
