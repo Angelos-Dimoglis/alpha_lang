@@ -80,14 +80,20 @@ struct incomplete_jump {
     incomplete_jump *next;
 };
 
+// arrays of constant values and functions
+unsigned consts_newstring (string s);
+unsigned consts_newnumber (double n);
+unsigned libfuncs_newused (string s);
+// TODO: missing userfuncs (see lec 14 slide 10)
+
 incomplete_jump *ij_head = 0;
 unsigned ij_total = 0;
 
 void add_incomplete_jump (unsigned instrNo, unsigned iaddress);
 
-unsigned consts_newstring (string s);
-unsigned consts_newnumber (double n);
-unsigned libfuncs_newused (string s);
+void make_numberoperand (vmarg *arg, double val);
+void make_booloperand (vmarg *arg, unsigned val);
+void make_retvaloperand (vmarg *arg);
 
 extern void generate_ADD (quad *);
 extern void generate_SUB (quad *);

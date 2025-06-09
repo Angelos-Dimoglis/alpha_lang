@@ -5,6 +5,7 @@
 extern quad *quads;
 extern unsigned total;
 
+// translate expr to vmarg
 void make_operand (expr *e, vmarg *arg) {
 
     // use a variable for storage
@@ -60,6 +61,39 @@ void make_operand (expr *e, vmarg *arg) {
         default: assert(0);
     }
 }
+
+/* Helper functions to produce common arguments for generated instructions,
+ * like 1, 0, "true", "false" and function return values.
+ */
+void make_numberoperand (vmarg *arg, double val) {
+    arg->val = consts_newnumber(val);
+    arg->type = number_a;
+}
+
+void make_booloperand (vmarg *arg, unsigned val) {
+    arg->val = val;
+    arg->type = bool_a;
+}
+
+void make_retvaloperand (vmarg *arg) {
+    arg->type = retval_a;
+}
+
+// TODO: patch incomplete jumps (pseudo-code at lec 14 slide 15)
+
+// ### generating target code ###
+
+/* generate (op, quad) (arithmetic, tables, assign and nop)
+ * generate_relational (op, quad) (jump and ifs) 
+ * generate_<NOT, OR, AND> (quad)
+ * generate_PARAM (quad)
+ * generate_CALL (quad)
+ * generate_GETRETVAL (quad)
+ * generate_FUNCSTART (quad)
+ * generate_RETURN (quad)
+ * generate_FUNCEND (quad)
+ * we also need a func_stack for the returns
+ */
 
 typedef void (*generator_func_t) (quad*);
 
