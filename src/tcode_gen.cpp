@@ -10,13 +10,13 @@ extern unsigned total;
 
 vector <instruction> tc_instructions;
 vector <incomplete_jump> incomplete_jumps;
-vector<binding *> funcStack;
+vector<Symbol *> func_stack;
 
 vector<double> tc_numConsts;
 vector <string> tc_strConsts;
 vector<bool> tc_boolConsts;
 vector <string> tc_libFuncs;
-vector <userfunc> tc_userFuncs;
+vector <struct userfunc> tc_userFuncs;
 
 // translate expr to vmarg
 void make_operand (expr *e, vmarg *arg) {
@@ -108,7 +108,6 @@ void make_retval_operand (vmarg *arg) {
  * we also need a func_stack for the returns
  */
 
-/*
 typedef void (*generator_func_t) (quad*);
 
 generator_func_t generators [] = {
@@ -139,12 +138,6 @@ generator_func_t generators [] = {
     generate_FUNCEND
 };
 
-void generate (void) {
-    for (unsigned i = 0; i < total; i++)
-        (*generators[quads[i].op]) (quads + i);
-}
-*/
-
 void emit_instr(instruction instr) {
     instruction tc_i;
     tc_i.opcode = instr.opcode;
@@ -159,7 +152,7 @@ unsigned int next_instr_label() {
     return tc_instructions.size();
 }
 
-void generate(vmopcode op, quad *q) {
+static void generate(vmopcode op, quad *q) {
     instruction tc_i;
     tc_i.opcode = op;
     make_operand(q->arg1, &tc_i.arg1);
@@ -169,7 +162,7 @@ void generate(vmopcode op, quad *q) {
     emit_instr(tc_i);
 }
 
-void generate_relational(vmopcode op, quad *q) {
+static void generate_relational(vmopcode op, quad *q) {
     instruction tc_i;
     tc_i.opcode = op;
 
@@ -282,7 +275,7 @@ void generate_IF_LESS_EQ(quad *q) {
     generate_relational(jle_v, q);
 }
 
-void reset_operand(vmarg *arg) {
+static void reset_operand(vmarg *arg) {
     arg->val = -1;
 }
 
@@ -405,10 +398,10 @@ void generate_GETRETVAL(quad *q) {
 }
 
 void generate_FUNCSTART(quad *q) {
-    binding *f = q->result->sym;
-    f->funcVal.taddress = next_instr_label();
+    Function *f = (Function *) q->result->sym;
+    f->taddress = next_instr_label();
     q->taddress = next_instr_label();
-    funcStack.push_back(f);
+    func_stack.push_back(f);
     instruction t;
     t.opcode = funcenter_v;
     make_operand(q->result, &t.result);
@@ -422,10 +415,10 @@ void generate_RETURN(quad *q) {
     make_retval_operand(&t.result);
     make_operand(q->arg1, &t.arg1);
     emit_instr(t);
-    binding *f = funcStack.back();
+    Function *f = func_stack.back();
     //append
     unsigned int instrLabel = next_instr_label();
-    returnList *newnode = f->funcVal.returnList;
+    returnList *newnode = f->returnList;
     if (newnode == nullptr) {
         newnode = new returnList;
         newnode->instrLabel = instrLabel;
@@ -451,8 +444,8 @@ void patchinstr(unsigned int instrind, unsigned int taddress) {
 }
 
 void generate_FUNCEND(quad *q) {
-    binding *f = funcStack.back();
-    returnList *reader = f->funcVal.returnList;
+    Function *f = func_stack.back();
+    returnList *reader = f->returnList;
     while (reader) {
         patchinstr(reader->instrLabel, next_instr_label());
         reader = reader->next;
@@ -462,25 +455,25 @@ void generate_FUNCEND(quad *q) {
     t.opcode = funcexit_v;
     make_operand(q->arg1, &t.result);
     emit_instr(t);
-    //funcStack.pop_back();
+    //func_stack.pop_back();
 }
 
 void patch_incomplete_jumps() {
     for (auto inc_j: incomplete_jumps) {
         // we store the destination instruction's number in the target code instruction's "result" field
-        if (inc_j.iaddress == quads.size()) {
+        if (inc_j.iaddress == total) {
             tc_instructions.at(inc_j.instrNo).result.val = tc_instructions.size();
         } else {
             tc_instructions.at(inc_j.instrNo).result.val =
-                    quads.at(inc_j.iaddress).taddress /*+ 1*/; //+-1 due to indexing from 0
+                    quads[inc_j.iaddress].taddress /*+ 1*/; //+-1 due to indexing from 0
         }
     }
 }
 
 void generate_target_code() {
-    for (unsigned int i = 0; i < quads.size(); ++i) {
+    for (unsigned int i = 0; i < total; ++i) {
         curr_quad = i;
-        (*generators[quads.at(i).op])(&quads.at(i));
+        (*generators[quads[i].op])(&quads[i]);
     }
 
     patch_incomplete_jumps();

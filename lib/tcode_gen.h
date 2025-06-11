@@ -18,7 +18,7 @@ using namespace std;
 
 struct incomplete_jump {
     unsigned instrNo;
-    unsigned iadress;
+    unsigned iaddress;
     incomplete_jump *next;
 };
 
@@ -31,11 +31,15 @@ unsigned libfuncs_newused (string s);
 incomplete_jump *ij_head = 0;
 unsigned ij_total = 0;
 
-void add_incomplete_jump (unsigned instrNo, unsigned iaddress);
-
+void make_operand (expr *e, vmarg *arg);
 void make_number_operand (vmarg *arg, double val);
 void make_bool_operand (vmarg *arg, unsigned val);
 void make_retval_operand (vmarg *arg);
+
+void emit_instr(instruction instr);
+unsigned int next_instr_label();
+
+void add_incomplete_jump (unsigned instrNo, unsigned iaddress);
 
 void generate_ADD (quad *);
 void generate_SUB (quad *);
