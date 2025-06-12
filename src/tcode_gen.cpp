@@ -460,7 +460,7 @@ void print_target_code() {
         if (inst.arg1.type != nil_a) {
             switch (inst.arg1.type) {
                 case bool_a:
-                    arg1_value = "\'" + (tc_boolConsts[inst.arg1.val] ? to_string("TRUE") : to_string("FALSSE")) + "\'";
+                    arg1_value = "\'" + (tc_boolConsts[inst.arg1.val] ? "TRUE" : "FALSSE") + "\'";
                     break;
                 case string_a:
                     arg1_value = "\"" + tc_strConsts.at(inst.arg1.val) + "\"";
