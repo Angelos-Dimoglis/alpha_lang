@@ -5,6 +5,7 @@
 
 #include "../lib/parser.hpp"
 #include "../lib/icode_gen.h"
+#include "../lib/tcode_gen.h"
 
 extern FILE *yyin;
 extern FILE *yyout;
@@ -39,9 +40,6 @@ string opcode_to_string(iopcode opcode) {
         case _div: return "div";
         case mod: return "mod";
         case uminus: return "uminus";
-        case _and: return "and";
-        case _or: return "or";
-        case _not: return "not";
         case if_eq: return "if_eq";
         case if_noteq: return "if_noteq";
         case if_lesseq: return "if_lesseq";
@@ -247,6 +245,10 @@ int main (int argc, char **argv) {
         sym_table.PrintTable();
 
     write_quads(yyout, output_file.c_str(), output_file_set);
+
+    generate_target_code();
+
+    create_binary_file();
 
     // cleanup
     fclose(yyin);

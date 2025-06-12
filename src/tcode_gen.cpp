@@ -1,25 +1,108 @@
 #include <cassert>
 #include <iostream>
 #include <fstream>
+#include <unordered_map>
+#include <variant>
+#include <vector>
 
+#include "../lib/icode_gen.h"
+#include "../lib/avm_instr_set.h"
 #include "../lib/tcode_gen.h"
 
 extern quad *quads;
-extern unsigned int curr_quad;
 extern unsigned total;
+extern unsigned int curr_quad;
+
+using namespace std;
+
+struct incomplete_jump {
+    unsigned tcode_address;
+    unsigned icode_address;
+    incomplete_jump *next;
+};
+
+void make_operand (expr *e, vmarg *arg);
+void make_number_operand (vmarg *arg, double val);
+void make_bool_operand (vmarg *arg, unsigned val);
+void make_retval_operand (vmarg *arg);
+
+void emit_instr(instruction instr);
+unsigned int next_instr_label();
+
+void add_incomplete_jump (unsigned instrNo, unsigned iaddress);
+
+void generate_ASSIGN (quad *);
+void generate_ADD (quad *);
+void generate_SUB (quad *);
+void generate_MUL (quad *);
+void generate_DIV (quad *);
+void generate_MOD (quad *);
+void generate_UMINUS(quad *);
+void generate_IF_EQ (quad *);
+void generate_IF_NOT_EQ (quad *);
+void generate_IF_LESS_EQ (quad *);
+void generate_IF_GREATER_EQ (quad *);
+void generate_IF_LESS (quad *);
+void generate_IF_GREATER (quad *);
+void generate_JUMP (quad *);
+void generate_CALL (quad *);
+void generate_PARAM (quad *);
+void generate_RETURN (quad *);
+void generate_GETRETVAL (quad *);
+void generate_FUNCSTART (quad *);
+void generate_FUNCEND (quad *);
+void generate_NEWTABLE (quad *);
+void generate_TABLEGETELEM (quad *);
+void generate_TABLESETELEM (quad *);
+void generate_NOP (quad *);
 
 vector <instruction> tcode_instructions;
 vector <incomplete_jump> incomplete_jumps;
 vector<Function*> func_stack;
 
-vector<double> tc_numConsts;
-vector <string> tc_strConsts;
-vector<bool> tc_boolConsts;
-vector <string> tc_libFuncs;
-vector <struct userfunc> tc_userFuncs;
+vector<double> all_num_consts;
+vector <string> all_str_consts;
+vector <string> all_lib_funcs = {
+    "print",
+    "input",
+    "objectmemberkeys",
+    "objecttotalmembers",
+    "objectcopy",
+    "totalarguments",
+    "argument",
+    "typeof",
+    "strtonum",
+    "sqrt",
+    "cos",
+    "sin"
+};
+vector <struct userfunc> user_funcs;
+
+unsigned new_string (string s) {
+    all_str_consts.push_back(s);
+    return all_str_consts.size();
+}
+unsigned new_number (double n) {
+    all_num_consts.push_back(n);
+    return all_num_consts.size();
+}
+unsigned new_lib_func (string s) {
+    for (int i = 0; i < all_lib_funcs.size(); i++) {
+        if (all_lib_funcs[i] == s) {
+            return i;
+        }
+    }
+    assert(false);
+}
 
 // translate expr to vmarg
 void make_operand (expr *e, vmarg *arg) {
+
+    if (e == nullptr) {
+        arg->type = nil_a;
+        arg->val = -1;
+        return;
+    }
 
     // use a variable for storage
     switch (e->type) {
@@ -27,6 +110,7 @@ void make_operand (expr *e, vmarg *arg) {
         case table_item_e:
         case arith_expr_e:
         case bool_expr_e:
+        case assign_expr_e:
         case new_table_e: {
             Variable *var = (Variable *) e->sym;
 
@@ -43,20 +127,26 @@ void make_operand (expr *e, vmarg *arg) {
         // constants
         case const_bool_e: {
             arg->val = e->bool_const;
-            arg->type = bool_a; break;
+            arg->type = bool_a;
+            break;
         }
 
         case const_string_e: {
-            arg->val = consts_newstring(e->str_const);
-            arg->type = string_a; break;
+            arg->val = new_string(e->str_const);
+            arg->type = string_a;
+            break;
         }
 
         case const_num_e: {
-            arg->val = consts_newnumber(e->num_const);
-            arg->type = number_a; break;
+            arg->val = new_number(e->num_const);
+            arg->type = number_a;
+            break;
         }
 
-        case const_nil_e: arg->type = nil_a; break;
+        case const_nil_e: {
+            arg->type = nil_a;
+            break;
+        }
 
         // functions
         case program_func_e: {
@@ -67,7 +157,7 @@ void make_operand (expr *e, vmarg *arg) {
 
         case library_func_e: {
             arg->type = libfunc_a;
-            arg->val = libfuncs_newused(e->sym->name);
+            arg->val = new_lib_func(e->sym->name);
             break;
         }
     
@@ -79,7 +169,7 @@ void make_operand (expr *e, vmarg *arg) {
  * like 1, 0, "true", "false" and function return values.
  */
 void make_number_operand (vmarg *arg, double val) {
-    arg->val = consts_newnumber(val);
+    arg->val = new_number(val);
     arg->type = number_a;
 }
 
@@ -111,29 +201,30 @@ void make_retval_operand (vmarg *arg) {
 typedef void (*generator_func_t) (quad*);
 
 generator_func_t generators [] = {
+    generate_ASSIGN,
     generate_ADD,
     generate_SUB,
     generate_MUL,
     generate_DIV,
     generate_MOD,
+    generate_UMINUS,
+    generate_IF_EQ,
+    generate_IF_NOT_EQ,
+    generate_IF_LESS_EQ,
+    generate_IF_GREATER_EQ,
+    generate_IF_LESS,
+    generate_IF_GREATER,
+    generate_JUMP,
+    generate_CALL,
+    generate_PARAM,
+    generate_RETURN,
+    generate_GETRETVAL,
+    generate_FUNCSTART,
+    generate_FUNCEND,
     generate_NEWTABLE,
     generate_TABLEGETELEM,
     generate_TABLESETELEM,
-    generate_ASSIGN,
-    generate_NOP,
-    generate_JUMP,
-    generate_IFEQ,
-    generate_IFNOTEQ,
-    generate_IFGREATER,
-    generate_IFGREATEREQ,
-    generate_IFLESS,
-    generate_IFLESSEQ,
-    generate_PARAM,
-    generate_CALL,
-    generate_GETRETVAL,
-    generate_FUNCSTART,
-    generate_RETURN,
-    generate_FUNCEND
+    generate_NOP
 };
 
 void emit_instr(instruction instr) {
@@ -214,7 +305,7 @@ void generate_UMINUS(quad *q) {
     t.opcode = mul_v;
     make_operand(q->arg1, &t.arg1);
     make_operand(q->arg1, &t.arg2);
-    t.arg2.val = consts_newnumber(-1);
+    t.arg2.val = new_number(-1);
     t.arg2.type = number_a;
     make_operand(q->result, &t.result);
     emit_instr(t);
@@ -252,27 +343,27 @@ void generate_JUMP(quad *q) {
 }
 
 void generate_IF_EQ(quad *q) {
-    generate_relational(jeq_v, q);
+    generate_relational(if_eq_v, q);
 }
 
-void generate_IF_NEQ(quad *q) {
-    generate_relational(jne_v, q);
+void generate_IF_NOT_EQ(quad *q) {
+    generate_relational(if_not_eq_v, q);
 }
 
-void generate_IF_GRTR(quad *q) {
-    generate_relational(jgt_v, q);
+void generate_IF_GREATER(quad *q) {
+    generate_relational(if_greater_v, q);
 }
 
-void generate_IF_GRTR_EQ(quad *q) {
-    generate_relational(jge_v, q);
+void generate_IF_GREATER_EQ(quad *q) {
+    generate_relational(if_greater_eq_v, q);
 }
 
 void generate_IF_LESS(quad *q) {
-    generate_relational(jlt_v, q);
+    generate_relational(if_less_v, q);
 }
 
 void generate_IF_LESS_EQ(quad *q) {
-    generate_relational(jle_v, q);
+    generate_relational(if_less_eq_v, q);
 }
 
 static void reset_operand(vmarg *arg) {
@@ -283,7 +374,7 @@ void generate_PARAM(quad *q) {
     instruction t;
     t.srcLine = q->line;
     q->taddress = next_instr_label();
-    t.opcode = pusharg_v;
+    t.opcode = param_v;
     make_operand(q->arg1, &t.result);
     emit_instr(t);
 }
@@ -316,7 +407,7 @@ void generate_FUNCSTART(quad *q) {
     t.srcLine = q->line;
     q->taddress = next_instr_label();
     func_stack.push_back(f);
-    t.opcode = funcenter_v;
+    t.opcode = funcstart_v;
     make_operand(q->result, &t.result);
     emit_instr(t);
 }
@@ -347,7 +438,7 @@ void generate_FUNCEND(quad *q) {
     instruction t;
     t.srcLine = q->line;
     q->taddress = next_instr_label();
-    t.opcode = funcexit_v;
+    t.opcode = funcend_v;
     make_operand(q->arg1, &t.result);
     emit_instr(t);
     //func_stack.pop_back();
@@ -366,305 +457,97 @@ void patch_incomplete_jumps() {
 }
 
 void generate_target_code() {
-    for (unsigned int i = 0; i < total; ++i) {
+    unsigned int num_of_quads = curr_quad;
+    for (unsigned int i = 1; i < num_of_quads; i++) {
         curr_quad = i;
         (*generators[quads[i].op])(&quads[i]);
     }
 
     patch_incomplete_jumps();
-
 }
 
-void print_const_num_table() {
-    if (tc_numConsts.empty()) {
-        cout << "-=- Empty num consts table -=-" << endl;
-        return;
-    }
-    unsigned int i;
-    cout << "------------ Num consts ------------" << endl;
-    for (i = 0; i < tc_numConsts.size(); i++) {
-        cout << i << ":" << tc_numConsts.at(i) << endl;
-    }
-    cout << "------------------------------------" << endl;
-}
+vector<string> opcode_to_string_arr = {
+    "assign",
+    "add",
+    "sub",
+    "mul",
+    "div",
+    "mod",
+    "uminus",
+    "if_eq",
+    "if_not_eq",
+    "if_less_eq",
+    "if_greater_eq",
+    "if_less",
+    "if_greater",
+    "jump",
+    "call",
+    "param",
+    "return",
+    "getretval",
+    "funcstart",
+    "funcend",
+    "newtable",
+    "tablegetelem",
+    "tablesetelem",
+    "nop"
+};
 
-void print_const_bool_table() {
-    if (tc_boolConsts.empty()) {
-        cout << "-=- Empty bool consts table -=-" << endl;
-        return;
-    }
-    unsigned int i;
-    cout << "------------ Bool consts ------------" << endl;
-    for (i = 0; i < tc_boolConsts.size(); i++) {
-        cout << i << ":" << tc_boolConsts.at(i) << endl;
-    }
-    cout << "-------------------------------------" << endl;
-}
+vector<string> arg_to_string_arr = {
+    "label_a",
+    "global_a",
+    "formal_a",
+    "local_a",
+    "number_a",
+    "string_a",
+    "bool_a",
+    "nil_a",
+    "userfunc_a",
+    "libfunc_a",
+    "retval_a"
+};
 
-void print_const_str_table() {
-    if (tc_strConsts.empty()) {
-        cout << "-=- Empty string consts table -=-" << endl;
-        return;
-    }
-    unsigned int i;
-    cout << "------------ String consts ------------" << endl;
-    for (i = 0; i < tc_strConsts.size(); i++) {
-        cout << i << ":" << tc_strConsts.at(i) << endl;
-    }
-    cout << "---------------------------------------" << endl;
-}
-
-void print_const_libfunc_table() {
-    if (tc_libFuncs.empty()) {
-        cout << "-=- Empty lib func consts table -=-" << endl;
-        return;
-    }
-    unsigned int i;
-    cout << "------------ LibFunc consts ------------" << endl;
-    for (i = 0; i < tc_libFuncs.size(); i++) {
-        cout << i << ":" << tc_libFuncs.at(i) << endl;
-    }
-    cout << "----------------------------------------" << endl;
-}
-
-void print_const_userfunc_table() {
-    if (tc_userFuncs.empty()) {
-        cout << "-=- Empty user func consts table -=-" << endl;
-        return;
-    }
-    unsigned int i;
-    cout << "------------ UsrFunc consts ------------" << endl;
-    for (i = 0; i < tc_userFuncs.size(); i++) {
-        cout << i << ":" << tc_userFuncs.at(i).id << endl;
-    }
-    cout << "----------------------------------------" << endl;
-}
-
-void print_const_tables() {
-    print_const_num_table();
-    print_const_bool_table();
-    print_const_str_table();
-    print_const_userfunc_table();
-    print_const_libfunc_table();
-}
-
-void print_target_code() {
-    unsigned int index = 0;
-    cout << "instr#\t\topcode\t\tresult\t\t\targ1\t\t\targ2" << endl;
-    cout << "-------------------------------------------------------------------------------------------------" << endl;
-    for (instruction inst: tcode_instructions) {
-        string arg1_value = "";
-        string arg2_value = "";
-        /*static int i=0;
-        cout<<i++<<"th inst :"<<inst.opcode<<endl;*/
-        if (inst.arg1.type != nil_a) {
-            switch (inst.arg1.type) {
-                case bool_a:
-                    arg1_value = "\'" + (tc_boolConsts[inst.arg1.val] ? "TRUE" : "FALSSE") + "\'";
-                    break;
-                case string_a:
-                    arg1_value = "\"" + tc_strConsts.at(inst.arg1.val) + "\"";
-                    break;
-                case number_a:
-                    arg1_value = to_string(tc_numConsts.at(inst.arg1.val));
-                    break;
-                case userfunc_a:
-                    arg1_value = tc_userFuncs.at(inst.arg1.val).id;
-                    break;
-                case libfunc_a:
-                    arg1_value = tc_libFuncs.at(inst.arg1.val);
-                    break;
-                case global_a:
-                case formal_a:
-                case local_a:
-                    arg1_value = inst.arg1.var_id;
-                    break;
-                case nil_a:
-                    arg1_value = "nil";
-                    break;
-                case retval_a:
-                    arg1_value = to_string(inst.arg1.val);
-                    break;
-                default:
-                    arg1_value = inst.arg1.var_id;
-                    break;
-            }
-        }
-        if (inst.arg2.type != nil_a) {
-            switch (inst.arg2.type) {
-                case bool_a:
-                    arg2_value = "\'" + BoolToString(tc_boolConsts.at(inst.arg2.val)) + "\'";
-                    break;
-                case string_a:
-                    arg2_value = "\"" + tc_strConsts.at(inst.arg2.val) + "\"";
-                    break;
-                case number_a:
-                    arg2_value = to_string(tc_numConsts.at(inst.arg2.val));
-                    break;
-                case userfunc_a:
-                    arg2_value = tc_userFuncs.at(inst.arg2.val).id;
-                    break;
-                case libfunc_a:
-                    arg2_value = tc_libFuncs.at(inst.arg2.val);
-                    break;
-                case global_a:
-                case formal_a:
-                case local_a:
-                    arg2_value = inst.arg2.var_id;
-                    break;
-                case nil_a:
-                    arg2_value = "nil";
-                    break;
-                case retval_a:
-                    arg2_value = to_string(inst.arg2.val);
-                    break;
-                default:
-                    arg2_value = inst.arg2.var_id;
-                    break;
-            }
-        }
-        string label = "";
-        if (
-            inst.opcode == jeq_v ||
-            inst.opcode == jne_v ||
-            inst.opcode == jle_v ||
-            inst.opcode == jge_v ||
-            inst.opcode == jlt_v ||
-            inst.opcode == jgt_v ||
-            inst.opcode == jump_v
-        ) {
-            label = to_string(inst.srcLine);
-        }
-
-        string result_value = "";
-        if (inst.result.type != nil_a) {
-            switch (inst.result.type) {
-                case global_a:
-                case formal_a:
-                case local_a:
-                    result_value = inst.result.var_id;
-                    break;
-                case libfunc_a:
-                    result_value = tc_libFuncs.at(inst.result.val);
-                    break;
-                case userfunc_a:
-                    result_value = tc_userFuncs.at(inst.result.val).id;
-                    break;
-                case string_a:
-                    result_value = "\"" + tc_strConsts.at(inst.result.val) + "\"";
-                    break;
-                case number_a:
-                    result_value = to_string(tc_numConsts.at(inst.result.val));
-                    break;
-                case bool_a:
-                    result_value = tc_boolConsts.at(inst.result.val) ? "true" : "false";
-                    break;
-                default:
-                    result_value = inst.result.var_id;
-                    break;
-            }
-        }
-        cout << index << ":\t\t" << vmopcodeStrings[inst.opcode] << "\t\t" << inst.result.type << " ("
-             << vmargStrings[inst.result.type] << "), " << inst.result.val;
-
-        if (inst.result.type != label_a) cout << ":" << result_value;
-
-        if (!inst.arg1.is_null) {
-            cout << "\t\t" << inst.arg1.type << " (" << vmargStrings[inst.arg1.type] << "), "
-                 << inst.arg1.val << ":" << arg1_value;
-        } else { cout << "             "; }
-        if (!inst.arg2.is_null)
-            cout << "\t\t" << inst.arg2.type << " ("
-                 << vmargStrings[inst.arg2.type] << "), " << inst.arg2.val << ":"
-                 << arg2_value << endl;
-        else cout << "             " << endl;
-        index++;
-    }
-}
-
-void createbin() {
-    unsigned int magic = 340;
+void create_binary_file() {
     unsigned long int str_len;
-    FILE* bytefile = fopen("output.abc", "w");;
-    size_t i;
+    ofstream file("binary.abc");
 
-    // magic number 
-    fwrite(&magic, sizeof(unsigned int), 1, bytefile);
-    // global offset
-    fwrite(&programVarOffset, sizeof(unsigned int), 1, bytefile);
+    if (file.is_open()) {
+        file << 69420 << " magic number" << endl;
 
-    // numerical consts
-    unsigned int numsSize = tc_numConsts.size();
-    fwrite(&numsSize, sizeof(unsigned int), 1, bytefile);
-    for (i = 0; i < numsSize; i++) {
-        fwrite(&tc_numConsts[i], sizeof(double), 1, bytefile);
-    }
-
-    // string consts
-    unsigned int strSize = tc_strConsts.size();
-    fwrite(&strSize, sizeof(unsigned int), 1, bytefile);
-    for (i = 0; i < strSize; i++) {
-        str_len = tc_strConsts[i].length();
-        fwrite(&str_len, sizeof(unsigned long int), 1, bytefile);
-        fwrite(tc_strConsts[i].c_str(), sizeof(char), str_len + 1, bytefile);
-    }
-
-    // bool consts
-    unsigned int boolsSize = tc_boolConsts.size();
-    fwrite(&boolsSize, sizeof(unsigned int), 1, bytefile);
-    for (i = 0; i < boolsSize; i++) {
-        unsigned int boolAsInt = tc_boolConsts[i] ? 1 : 0;
-        fwrite(&boolAsInt, sizeof(unsigned int), 1, bytefile);
-    }
-
-    // Library functions
-    unsigned int libFuncsSize = tc_libFuncs.size();
-    fwrite(&libFuncsSize, sizeof(unsigned int), 1, bytefile);
-    for (i = 0; i < libFuncsSize; i++) {
-        str_len = tc_libFuncs[i].length();
-        fwrite(&str_len, sizeof(unsigned long int), 1, bytefile);
-        fwrite(tc_libFuncs[i].c_str(), sizeof(char), str_len + 1, bytefile);
-    }
-
-    // User functions
-    unsigned int usrFuncsSize = tc_userFuncs.size();
-    fwrite(&usrFuncsSize, sizeof(unsigned int), 1, bytefile);
-    for (i = 0; i < usrFuncsSize; i++) {
-        fwrite(&tc_userFuncs[i].address, sizeof(unsigned int), 1, bytefile);
-        fwrite(&tc_userFuncs[i].total_locals, sizeof(unsigned int), 1, bytefile);
-
-        str_len = tc_userFuncs[i].id.length();
-        fwrite(&str_len, sizeof(unsigned long int), 1, bytefile);
-        fwrite(tc_userFuncs[i].id.c_str(), sizeof(char), str_len + 1, bytefile);
-    }
-
-    // instructions
-    unsigned int instrSize = tcode_instructions.size();
-    fwrite(&instrSize, sizeof(unsigned int), 1, bytefile);
-    for (i = 0; i < instrSize; i++) {
-        fwrite(&(tcode_instructions[i].opcode), sizeof(vmopcode), 1, bytefile);
-        // result
-        unsigned int isResultNull = 0; // all commands have a res
-        fwrite(&isResultNull,sizeof(unsigned int),1,bytefile);
-        fwrite(&(tcode_instructions[i].result.type), sizeof(vmarg_t), 1, bytefile);
-        fwrite(&(tcode_instructions[i].result.val), sizeof(unsigned int), 1, bytefile);
-
-        unsigned int isArg1Null = tcode_instructions[i].arg1.is_null;
-        fwrite(&isArg1Null, sizeof(unsigned int), 1, bytefile);
-        if (!isArg1Null) {
-            fwrite(&(tcode_instructions[i].arg1.type), sizeof(vmarg_t), 1, bytefile);
-            fwrite(&(tcode_instructions[i].arg1.val), sizeof(unsigned int), 1, bytefile);
+        file << all_str_consts.size() << " number of constant strings" << endl;
+        for (string str : all_str_consts) {
+            file << str << endl;
         }
 
-        unsigned int isArg2Null = tcode_instructions[i].arg2.is_null;
-        fwrite(&isArg2Null, sizeof(unsigned int), 1, bytefile);
-        if (!isArg2Null) {
-            fwrite(&(tcode_instructions[i].arg2.type), sizeof(vmarg_t), 1, bytefile);
-            fwrite(&(tcode_instructions[i].arg2.val), sizeof(unsigned int), 1, bytefile);
+        file << all_num_consts.size() << " number of constant numbers" << endl;
+        for (double s : all_num_consts) {
+            file << s << endl;
         }
 
-        fwrite(&(tcode_instructions[i].srcLine), sizeof(unsigned int), 1, bytefile);
-    }
+        //no user functions since they are just addresses that are already in the target code instructions
 
-    fclose(bytefile);
+        file << all_lib_funcs.size() << " number of library functions" << endl;
+        for (string lib : all_lib_funcs) {
+            file << lib << endl;
+        }
+
+        file << tcode_instructions.size() << " number of targe code instructions" << endl;
+        for (instruction i : tcode_instructions) {
+            file << opcode_to_string_arr[i.opcode] << "\t";
+
+            file << arg_to_string_arr[i.result.type] + " " + to_string(i.result.val) + "\t";
+
+            vmarg_t type = i.arg1.type;
+            file << arg_to_string_arr[type] + " " << ((type != nil_a) ? to_string(i.arg1.val) : string("null")) << "\t";
+
+            type = i.arg2.type;
+            file << arg_to_string_arr[type] + " " << ((type != nil_a) ? to_string(i.arg2.val) : string("null")) << "\t";
+
+            file << endl;
+        }
+
+        file.close();
+    }else {
+        cerr << "Could not open file\n";
+    }
 }

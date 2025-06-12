@@ -5,29 +5,30 @@
 using namespace std;
 
 enum vmopcode {
-    assign_v       = 0,
-    add_v          = 1,
-    sub_v          = 2,
-    mul_v          = 3,
-    div_v          = 4,
-    mod_v          = 5,
-    uminus_v       = 6,
-    jump_v         = 10,
-    jeq_v          = 11,
-    jne_v          = 12,
-    jle_v          = 13,
-    jge_v          = 14,
-    jlt_v          = 15,
-    jgt_v          = 16,
-    call_v         = 17,
-    pusharg_v      = 18,
-    funcenter_v    = 19,
-    funcexit_v     = 20,
-    newtable_v     = 21,
-    tablegetelem_v = 22,
-    tablesetelem_v = 23,
-    nop_v          = 24,
-    ERROR_v        = 25
+    assign_v = 0,
+    add_v,
+    sub_v,
+    mul_v,
+    div_v,
+    mod_v,
+    uminus_v,
+    if_eq_v,
+    if_not_eq_v,
+    if_less_eq_v,
+    if_greater_eq_v,
+    if_less_v,
+    if_greater_v,
+    jump_v,
+    call_v,
+    param_v,
+    return_v,
+    getretval_v,
+    funcstart_v,
+    funcend_v,
+    newtable_v,
+    tablegetelem_v,
+    tablesetelem_v,
+    nop_v
 };
 
 enum vmarg_t {
@@ -57,7 +58,7 @@ struct instruction {
     unsigned srcLine;
 
     instruction() {
-        opcode = ERROR_v;
+        opcode = nop_v;
         arg1.type = nil_a;
         arg2.type = nil_a;
         result.type = nil_a;

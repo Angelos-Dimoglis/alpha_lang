@@ -15,7 +15,6 @@ extern SymTable sym_table;
 
 enum iopcode {
     assign = 0, add, sub, mul, _div, mod, uminus,
-    _and, _or, _not,
     if_eq, if_noteq, if_lesseq, if_greatereq, if_less, if_greater, jump,
     call, param, ret, get_ret_val, func_start, func_end,
     table_create, table_get_elem, table_set_elem

@@ -1,0 +1,26 @@
+69420 magic number
+0 number of constant strings
+0 number of constant numbers
+12 number of library functions
+print
+input
+objectmemberkeys
+objecttotalmembers
+objectcopy
+totalarguments
+argument
+typeof
+strtonum
+sqrt
+cos
+sin
+9 number of targe code instructions
+if_eq	label_a 1	bool_a 0	bool_a 1	
+jump	label_a 5	nil_a null	nil_a null	
+if_eq	label_a 5	bool_a 1	bool_a 1	
+jump	label_a 3	nil_a null	nil_a null	
+assign	bool_a 0	bool_a 1	nil_a null	
+jump	label_a 6	nil_a null	nil_a null	
+assign	bool_a 0	bool_a 0	nil_a null	
+assign	bool_a 0	bool_a 0	nil_a null	
+assign	bool_a 0	bool_a 0	nil_a null	
