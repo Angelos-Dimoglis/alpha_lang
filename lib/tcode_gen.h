@@ -17,8 +17,8 @@ unsigned totalUserFuncs;
 using namespace std;
 
 struct incomplete_jump {
-    unsigned instrNo;
-    unsigned iaddress;
+    unsigned tcode_address;
+    unsigned icode_address;
     incomplete_jump *next;
 };
 
@@ -58,9 +58,6 @@ void generate_IFGREATER (quad *);
 void generate_IFGREATEREQ (quad *);
 void generate_IFLESS (quad *);
 void generate_IFLESSEQ (quad *);
-void generate_NOT (quad *);
-void generate_OR (quad *);
-void generate_AND (quad *);
 void generate_PARAM (quad *);
 void generate_CALL (quad *);
 void generate_GETRETVAL (quad *);

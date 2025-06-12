@@ -8,9 +8,9 @@ extern quad *quads;
 extern unsigned int curr_quad;
 extern unsigned total;
 
-vector <instruction> tc_instructions;
+vector <instruction> tcode_instructions;
 vector <incomplete_jump> incomplete_jumps;
-vector<Symbol *> func_stack;
+vector<Function*> func_stack;
 
 vector<double> tc_numConsts;
 vector <string> tc_strConsts;
@@ -128,8 +128,6 @@ generator_func_t generators [] = {
     generate_IFGREATEREQ,
     generate_IFLESS,
     generate_IFLESSEQ,
-    generate_NOT,
-    generate_OR,
     generate_PARAM,
     generate_CALL,
     generate_GETRETVAL,
@@ -139,51 +137,53 @@ generator_func_t generators [] = {
 };
 
 void emit_instr(instruction instr) {
-    instruction tc_i;
-    tc_i.opcode = instr.opcode;
-    tc_i.arg1 = instr.arg1;
-    tc_i.arg2 = instr.arg2;
-    tc_i.result = instr.result;
-    tc_i.srcLine = instr.srcLine;
-    tc_instructions.push_back(tc_i);
+    instruction tcode_instruction;
+    tcode_instruction.opcode = instr.opcode;
+    tcode_instruction.arg1 = instr.arg1;
+    tcode_instruction.arg2 = instr.arg2;
+    tcode_instruction.result = instr.result;
+    tcode_instruction.srcLine = instr.srcLine;
+    tcode_instructions.push_back(tcode_instruction);
 }
 
 unsigned int next_instr_label() {
-    return tc_instructions.size();
+    return tcode_instructions.size();
 }
 
 static void generate(vmopcode op, quad *q) {
-    instruction tc_i;
-    tc_i.opcode = op;
-    make_operand(q->arg1, &tc_i.arg1);
-    make_operand(q->arg2, &tc_i.arg2);
-    make_operand(q->result, &tc_i.result);
+    instruction tcode_instruction;
+    tcode_instruction.opcode = op;
+    make_operand(q->arg1, &tcode_instruction.arg1);
+    make_operand(q->arg2, &tcode_instruction.arg2);
+    make_operand(q->result, &tcode_instruction.result);
+    tcode_instruction.srcLine = q->line;
     q->taddress = next_instr_label();
-    emit_instr(tc_i);
+    emit_instr(tcode_instruction);
 }
 
 static void generate_relational(vmopcode op, quad *q) {
-    instruction tc_i;
-    tc_i.opcode = op;
+    instruction tcode_instruction;
+    tcode_instruction.opcode = op;
 
-    make_operand(q->arg1, &tc_i.arg1);
-    make_operand(q->arg2, &tc_i.arg2);
+    make_operand(q->arg1, &tcode_instruction.arg1);
+    make_operand(q->arg2, &tcode_instruction.arg2);
 
-    tc_i.result.type = label_a;
+    tcode_instruction.result.type = label_a;
     if (q->label < curr_quad) {
-        tc_i.result.val = quads[q->label - 1].taddress; //+-1 due to indexing from 0
+        tcode_instruction.result.val = quads[q->label - 1].taddress; //+-1 due to indexing from 0
     } else {
         add_incomplete_jump(next_instr_label(), q->label - 1);
     }
+    tcode_instruction.srcLine = q->line;
     q->taddress = next_instr_label();
-    emit_instr(tc_i);
+    emit_instr(tcode_instruction);
 }
 
-void add_incomplete_jump(unsigned int i_label, unsigned int quad_label) {
-    incomplete_jump inc_jump;
-    inc_jump.instrNo = i_label;
-    inc_jump.iaddress = quad_label;
-    incomplete_jumps.push_back(inc_jump);
+void add_incomplete_jump(unsigned int tcode_address, unsigned int icode_address) {
+    incomplete_jump incomplete_jump;
+    incomplete_jump.tcode_address = tcode_address;
+    incomplete_jump.icode_address = icode_address;
+    incomplete_jumps.push_back(incomplete_jump);
 }
 
 // arithmetic expressions
@@ -208,15 +208,15 @@ void generate_MOD(quad *q) {
 }
 
 void generate_UMINUS(quad *q) {
-    q->taddress = next_instr_label();
     instruction t;
+    t.srcLine = q->line;
+    q->taddress = next_instr_label();
     t.opcode = mul_v;
     make_operand(q->arg1, &t.arg1);
     make_operand(q->arg1, &t.arg2);
     t.arg2.val = consts_newnumber(-1);
     t.arg2.type = number_a;
     make_operand(q->result, &t.result);
-    t.srcLine = q->line;
     emit_instr(t);
 }
 
@@ -240,10 +240,10 @@ void generate_ASSIGN(quad *q) {
 }
 
 void generate_NOP(quad *q) {
-    instruction tc_i;
-    tc_i.opcode = nop_v;
-    tc_i.srcLine = next_instr_label();
-    emit_instr(tc_i);
+    instruction tcode_instruction;
+    tcode_instruction.opcode = nop_v;
+    tcode_instruction.srcLine = q->line;
+    emit_instr(tcode_instruction);
 }
 
 // relational expressions
@@ -279,179 +279,74 @@ static void reset_operand(vmarg *arg) {
     arg->val = -1;
 }
 
-void generate_NOT(quad *q) {
-    q->taddress = next_instr_label();
-    instruction t;
-    t.opcode = jeq_v;
-    make_operand(q->arg1, &t.arg1);
-    make_bool_operand(&t.arg2, false);
-    t.result.type = label_a;
-    t.result.val = next_instr_label() + 3;
-    emit_instr(t);
-
-    t.opcode = assign_v;
-    make_bool_operand(&t.arg1, false);
-    reset_operand(&t.arg2);
-    make_operand(q->result, &t.result);
-    emit_instr(t);
-
-    t.opcode = jump_v;
-    reset_operand(&t.arg1);
-    reset_operand(&t.arg2);
-    t.result.type = label_a;
-    t.result.val = next_instr_label() + 2;
-    emit_instr(t);
-
-    t.opcode = assign_v;
-    make_bool_operand(&t.arg1, true);
-    reset_operand(&t.arg2);
-    make_operand(q->result, &t.result);
-    emit_instr(t);
-
-}
-
-void generate_OR(quad *q) {
-    q->taddress = next_instr_label();
-    instruction t;
-    t.opcode = jeq_v;
-    make_operand(q->arg1, &t.arg1);
-    make_bool_operand(&t.arg2, true);
-    t.result.type = label_a;
-    t.result.val = next_instr_label() + 4;
-    emit_instr(t);
-    make_operand(q->arg2, &t.arg1);
-    t.result.val = next_instr_label() + 3;
-    emit_instr(t);
-    t.opcode = assign_v;
-    make_bool_operand(&t.arg1, false);
-    reset_operand(&t.arg2);
-    make_operand(q->result, &t.result);
-    emit_instr(t);
-    t.opcode = jump_v;
-    reset_operand(&t.arg1);
-    reset_operand(&t.arg2);
-    t.result.type = label_a;
-    t.result.val = next_instr_label() + 2;
-    emit_instr(t);
-    t.opcode = assign_v;
-    make_bool_operand(&t.arg1, true);
-    reset_operand(&t.arg2);
-    make_operand(q->result, &t.result);
-    emit_instr(t);
-}
-
-void generate_AND(quad *q) {
-    q->taddress = next_instr_label();
-    instruction t;
-    t.opcode = jeq_v;
-    make_operand(q->arg1, &t.arg1);
-    make_bool_operand(&t.arg2, false);
-    t.result.type = label_a;
-    t.result.val = next_instr_label() + 4;
-    emit_instr(t);
-    make_operand(q->arg2, &t.arg1);
-    t.result.val = next_instr_label() + 3;
-    emit_instr(t);
-    t.opcode = assign_v;
-    make_bool_operand(&t.arg1, true);
-    reset_operand(&t.arg2);
-    make_operand(q->result, &t.result);
-    emit_instr(t);
-    t.opcode = jump_v;
-    reset_operand(&t.arg1);
-    reset_operand(&t.arg2);
-    t.result.type = label_a;
-    t.result.val = next_instr_label() + 2;
-    emit_instr(t);
-    t.opcode = assign_v;
-    make_bool_operand(&t.arg1, false);
-    reset_operand(&t.arg2);
-    make_operand(q->result, &t.result);
-    emit_instr(t);
-}
-
 void generate_PARAM(quad *q) {
-    q->taddress = next_instr_label();
     instruction t;
+    t.srcLine = q->line;
+    q->taddress = next_instr_label();
     t.opcode = pusharg_v;
     make_operand(q->arg1, &t.result);
     emit_instr(t);
 }
 
 void generate_CALL(quad *q) {
-    q->taddress = next_instr_label();
     instruction t;
+    t.srcLine = q->line;
+    q->taddress = next_instr_label();
     t.opcode = call_v;
-    t.srcLine = next_instr_label();
+    t.srcLine = q->line;
     make_operand(q->result, &t.result);
     emit_instr(t);
 }
 
 void generate_GETRETVAL(quad *q) {
-    q->taddress = next_instr_label();
     instruction t;
+    t.srcLine = q->line;
+    q->taddress = next_instr_label();
     t.opcode = assign_v;
-    t.srcLine = next_instr_label();
+    t.srcLine = q->line;
     make_operand(q->result, &t.result);
     make_retval_operand(&t.arg1);
     emit_instr(t);
 }
 
 void generate_FUNCSTART(quad *q) {
+    instruction t;
     Function *f = (Function *) q->result->sym;
     f->taddress = next_instr_label();
+    t.srcLine = q->line;
     q->taddress = next_instr_label();
     func_stack.push_back(f);
-    instruction t;
     t.opcode = funcenter_v;
     make_operand(q->result, &t.result);
     emit_instr(t);
 }
 
 void generate_RETURN(quad *q) {
-    q->taddress = next_instr_label();
     instruction t;
+    t.srcLine = q->line;
+    q->taddress = next_instr_label();
     t.opcode = assign_v;
     make_retval_operand(&t.result);
     make_operand(q->arg1, &t.arg1);
     emit_instr(t);
-    Function *f = func_stack.back();
-    //append
-    unsigned int instrLabel = next_instr_label();
-    returnList *newnode = f->returnList;
-    if (newnode == nullptr) {
-        newnode = new returnList;
-        newnode->instrLabel = instrLabel;
-        newnode->next = NULL;
-        f->funcVal.returnList = newnode;
-    } else {
-        returnList *tmp = new returnList;
-        tmp->instrLabel = instrLabel;
-        tmp->next = NULL;
-        returnList *reader = newnode;
-        while (reader->next != NULL) { reader = reader->next; }
-        reader->next = tmp;
-    }
-    //append
-    assert(f->funcVal.returnList);
-    t.srcLine = next_instr_label();
 
 }
 
 void patchinstr(unsigned int instrind, unsigned int taddress) {
-    if (instrind >= tc_instructions.size()) cerr << "ERROR AT PATCHINSTR" << endl;
-    tc_instructions.at(instrind).result.val = taddress;
+    if (instrind >= tcode_instructions.size()) cerr << "ERROR AT PATCHINSTR" << endl;
+    tcode_instructions.at(instrind).result.val = taddress;
 }
 
 void generate_FUNCEND(quad *q) {
-    Function *f = func_stack.back();
+    /* Function *f = func_stack.back();
     returnList *reader = f->returnList;
     while (reader) {
         patchinstr(reader->instrLabel, next_instr_label());
         reader = reader->next;
-    }
-    q->taddress = next_instr_label();
+    } */
     instruction t;
+    t.srcLine = q->line;
+    q->taddress = next_instr_label();
     t.opcode = funcexit_v;
     make_operand(q->arg1, &t.result);
     emit_instr(t);
@@ -459,13 +354,13 @@ void generate_FUNCEND(quad *q) {
 }
 
 void patch_incomplete_jumps() {
-    for (auto inc_j: incomplete_jumps) {
+    for (auto incomplete_jump: incomplete_jumps) {
         // we store the destination instruction's number in the target code instruction's "result" field
-        if (inc_j.iaddress == total) {
-            tc_instructions.at(inc_j.instrNo).result.val = tc_instructions.size();
+        if (incomplete_jump.icode_address == total) {
+            tcode_instructions.at(incomplete_jump.tcode_address).result.val = tcode_instructions.size();
         } else {
-            tc_instructions.at(inc_j.instrNo).result.val =
-                    quads[inc_j.iaddress].taddress /*+ 1*/; //+-1 due to indexing from 0
+            tcode_instructions.at(incomplete_jump.tcode_address).result.val =
+                    quads[incomplete_jump.icode_address].taddress /*+ 1*/; //+-1 due to indexing from 0
         }
     }
 }
@@ -557,15 +452,15 @@ void print_target_code() {
     unsigned int index = 0;
     cout << "instr#\t\topcode\t\tresult\t\t\targ1\t\t\targ2" << endl;
     cout << "-------------------------------------------------------------------------------------------------" << endl;
-    for (instruction inst: tc_instructions) {
+    for (instruction inst: tcode_instructions) {
         string arg1_value = "";
         string arg2_value = "";
         /*static int i=0;
         cout<<i++<<"th inst :"<<inst.opcode<<endl;*/
-        if (!inst.arg1.is_null) {
+        if (inst.arg1.type != nil_a) {
             switch (inst.arg1.type) {
                 case bool_a:
-                    arg1_value = "\'" + BoolToString(tc_boolConsts.at(inst.arg1.val)) + "\'";
+                    arg1_value = "\'" + (tc_boolConsts[inst.arg1.val] ? to_string("TRUE") : to_string("FALSSE")) + "\'";
                     break;
                 case string_a:
                     arg1_value = "\"" + tc_strConsts.at(inst.arg1.val) + "\"";
@@ -595,7 +490,7 @@ void print_target_code() {
                     break;
             }
         }
-        if (!inst.arg2.is_null) {
+        if (inst.arg2.type != nil_a) {
             switch (inst.arg2.type) {
                 case bool_a:
                     arg2_value = "\'" + BoolToString(tc_boolConsts.at(inst.arg2.val)) + "\'";
@@ -642,7 +537,7 @@ void print_target_code() {
         }
 
         string result_value = "";
-        if (!inst.result.is_null) {
+        if (inst.result.type != nil_a) {
             switch (inst.result.type) {
                 case global_a:
                 case formal_a:
@@ -744,31 +639,31 @@ void createbin() {
     }
 
     // instructions
-    unsigned int instrSize = tc_instructions.size();
+    unsigned int instrSize = tcode_instructions.size();
     fwrite(&instrSize, sizeof(unsigned int), 1, bytefile);
     for (i = 0; i < instrSize; i++) {
-        fwrite(&(tc_instructions[i].opcode), sizeof(vmopcode), 1, bytefile);
+        fwrite(&(tcode_instructions[i].opcode), sizeof(vmopcode), 1, bytefile);
         // result
         unsigned int isResultNull = 0; // all commands have a res
         fwrite(&isResultNull,sizeof(unsigned int),1,bytefile);
-        fwrite(&(tc_instructions[i].result.type), sizeof(vmarg_t), 1, bytefile);
-        fwrite(&(tc_instructions[i].result.val), sizeof(unsigned int), 1, bytefile);
+        fwrite(&(tcode_instructions[i].result.type), sizeof(vmarg_t), 1, bytefile);
+        fwrite(&(tcode_instructions[i].result.val), sizeof(unsigned int), 1, bytefile);
 
-        unsigned int isArg1Null = tc_instructions[i].arg1.is_null;
+        unsigned int isArg1Null = tcode_instructions[i].arg1.is_null;
         fwrite(&isArg1Null, sizeof(unsigned int), 1, bytefile);
         if (!isArg1Null) {
-            fwrite(&(tc_instructions[i].arg1.type), sizeof(vmarg_t), 1, bytefile);
-            fwrite(&(tc_instructions[i].arg1.val), sizeof(unsigned int), 1, bytefile);
+            fwrite(&(tcode_instructions[i].arg1.type), sizeof(vmarg_t), 1, bytefile);
+            fwrite(&(tcode_instructions[i].arg1.val), sizeof(unsigned int), 1, bytefile);
         }
 
-        unsigned int isArg2Null = tc_instructions[i].arg2.is_null;
+        unsigned int isArg2Null = tcode_instructions[i].arg2.is_null;
         fwrite(&isArg2Null, sizeof(unsigned int), 1, bytefile);
         if (!isArg2Null) {
-            fwrite(&(tc_instructions[i].arg2.type), sizeof(vmarg_t), 1, bytefile);
-            fwrite(&(tc_instructions[i].arg2.val), sizeof(unsigned int), 1, bytefile);
+            fwrite(&(tcode_instructions[i].arg2.type), sizeof(vmarg_t), 1, bytefile);
+            fwrite(&(tcode_instructions[i].arg2.val), sizeof(unsigned int), 1, bytefile);
         }
 
-        fwrite(&(tc_instructions[i].srcLine), sizeof(unsigned int), 1, bytefile);
+        fwrite(&(tcode_instructions[i].srcLine), sizeof(unsigned int), 1, bytefile);
     }
 
     fclose(bytefile);

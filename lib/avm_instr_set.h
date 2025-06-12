@@ -12,9 +12,6 @@ enum vmopcode {
     div_v          = 4,
     mod_v          = 5,
     uminus_v       = 6,
-    and_v          = 7,
-    or_v           = 8,
-    not_v          = 9,
     jump_v         = 10,
     jeq_v          = 11,
     jne_v          = 12,
@@ -29,7 +26,8 @@ enum vmopcode {
     newtable_v     = 21,
     tablegetelem_v = 22,
     tablesetelem_v = 23,
-    nop_v          = 24
+    nop_v          = 24,
+    ERROR_v        = 25
 };
 
 enum vmarg_t {
@@ -57,6 +55,14 @@ struct instruction {
     vmarg arg1;
     vmarg arg2;
     unsigned srcLine;
+
+    instruction() {
+        opcode = ERROR_v;
+        arg1.type = nil_a;
+        arg2.type = nil_a;
+        result.type = nil_a;
+        srcLine = -1;
+    }
 };
 
 struct userfunc {
