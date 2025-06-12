@@ -1,6 +1,14 @@
 69420 magic number
 0 number of constant strings
-0 number of constant numbers
+8 number of constant numbers
+9
+0
+10
+0
+11
+0
+3
+4
 12 number of library functions
 print
 input
@@ -14,13 +22,36 @@ strtonum
 sqrt
 cos
 sin
-9 number of targe code instructions
-if_eq	label_a 1	bool_a 0	bool_a 1	
-jump	label_a 5	nil_a null	nil_a null	
-if_eq	label_a 5	bool_a 1	bool_a 1	
-jump	label_a 3	nil_a null	nil_a null	
-assign	bool_a 0	bool_a 1	nil_a null	
-jump	label_a 6	nil_a null	nil_a null	
-assign	bool_a 0	bool_a 0	nil_a null	
-assign	bool_a 0	bool_a 0	nil_a null	
-assign	bool_a 0	bool_a 0	nil_a null	
+32 number of targe code instructions
+jump	label_a 7	
+funcstart	userfunc_a 1	
+add	local_a 0	formal_a 0	formal_a 1	
+assign	retval_a 0	
+jump	label_a 6	
+sub	local_a 0	number_a 0	number_a 1	
+funcend	userfunc_a 1	
+jump	label_a 10	
+funcstart	userfunc_a 8	
+funcend	userfunc_a 8	
+jump	label_a 17	
+funcstart	userfunc_a 11	
+sub	local_a 0	number_a 2	number_a 3	
+assign	retval_a 0	
+jump	label_a 16	
+sub	local_a 0	number_a 4	number_a 5	
+funcend	userfunc_a 11	
+assign	global_a 0	userfunc_a 11	
+assign	global_a 1	global_a 0	
+jump	label_a 22	
+funcstart	userfunc_a 20	
+funcend	userfunc_a 20	
+jump	label_a 32	
+funcstart	userfunc_a 23	
+jump	label_a 31	
+funcstart	userfunc_a 25	
+param	number_a 6	
+param	number_a 7	
+call	userfunc_a 1	
+assign	local_a 0	retval_a 0	
+funcend	userfunc_a 25	
+funcend	userfunc_a 23	

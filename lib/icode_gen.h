@@ -56,6 +56,19 @@ struct expr {
         //assert(type == )
     };
 
+    expr(Symbol* sym) : sym(sym), index(nullptr),
+        num_const(0), str_const(""),
+        bool_const(false), next(nullptr) {
+        
+            if (sym->type == userfunc) {
+                type = program_func_e;
+            }else if (sym->type == libfunc) {
+                type = library_func_e;
+            }else {
+                type = var_e;
+            }
+    };
+
     expr(double num_const) :
         type(const_num_e),
         sym(nullptr),

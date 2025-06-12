@@ -123,15 +123,15 @@ void emit (iopcode op, unsigned label) {
     p->line = yylineno;
 }
 
-void emit (iopcode op, expr* arg1) {
+void emit (iopcode op, expr* result) {
     if (curr_quad == total) 
         expand();
 
     quad* p = quads + curr_quad++;
     p->op = op;
-    p->arg1 = arg1;
+    p->arg1 = NULL;
     p->arg2 = NULL;
-    p->result = NULL;
+    p->result = result;
     p->label = 0;
     p->line = yylineno;
 }
@@ -169,7 +169,7 @@ expr *get_last(expr* exp) {
 expr* make_call (expr* lv, expr* reversed_elist) {
     expr* func = emit_iftableitem(lv);
     while (reversed_elist) {
-        emit(param, reversed_elist, (expr*) NULL, (expr*) NULL);
+        emit(param, reversed_elist);
         reversed_elist = reversed_elist->next;
     }
     emit(call, func);

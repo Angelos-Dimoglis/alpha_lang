@@ -426,18 +426,15 @@ primary: lvalue { $$ = emit_iftableitem($1); }
 
 lvalue: IDENTIFIER {
         Variable* sym = add_id($1);
-        $$ = new expr(var_e);
-        $$ -> sym = sym;
+        $$ = new expr(sym);
     }
     | LOCAL IDENTIFIER {
         Variable* sym = add_local_id($2);
-        $$ = new expr(var_e);
-        $$ -> sym = sym;
+        $$ = new expr(sym);
     }
     | COLON_COLON IDENTIFIER {
         Symbol* sym = lookup_global_id($2);
-        $$ = new expr(var_e);
-        $$ -> sym = sym;
+        $$ = new expr(sym);
     }
     | member {}
     ;

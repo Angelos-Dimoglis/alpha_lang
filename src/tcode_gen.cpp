@@ -22,8 +22,6 @@ struct incomplete_jump {
 };
 
 void make_operand (expr *e, vmarg *arg);
-void make_number_operand (vmarg *arg, double val);
-void make_bool_operand (vmarg *arg, unsigned val);
 void make_retval_operand (vmarg *arg);
 
 void emit_instr(instruction instr);
@@ -80,11 +78,11 @@ vector <struct userfunc> user_funcs;
 
 unsigned new_string (string s) {
     all_str_consts.push_back(s);
-    return all_str_consts.size();
+    return all_str_consts.size() - 1;
 }
 unsigned new_number (double n) {
     all_num_consts.push_back(n);
-    return all_num_consts.size();
+    return all_num_consts.size() - 1;
 }
 unsigned new_lib_func (string s) {
     for (int i = 0; i < all_lib_funcs.size(); i++) {
@@ -122,6 +120,7 @@ void make_operand (expr *e, vmarg *arg) {
                 case formal_arg: arg->type = formal_a; break;
                 default: assert(0);
             }
+            break;
         }
 
         // constants
@@ -165,21 +164,9 @@ void make_operand (expr *e, vmarg *arg) {
     }
 }
 
-/* Helper functions to produce common arguments for generated instructions,
- * like 1, 0, "true", "false" and function return values.
- */
-void make_number_operand (vmarg *arg, double val) {
-    arg->val = new_number(val);
-    arg->type = number_a;
-}
-
-void make_bool_operand (vmarg *arg, unsigned val) {
-    arg->val = val;
-    arg->type = bool_a;
-}
-
 void make_retval_operand (vmarg *arg) {
     arg->type = retval_a;
+    arg->val = 0;
 }
 
 // TODO: patch incomplete jumps (pseudo-code at lec 14 slide 15)
@@ -263,7 +250,7 @@ static void generate_relational(vmopcode op, quad *q) {
     if (q->label < curr_quad) {
         tcode_instruction.result.val = quads[q->label - 1].taddress; //+-1 due to indexing from 0
     } else {
-        add_incomplete_jump(next_instr_label(), q->label - 1);
+        add_incomplete_jump(next_instr_label(), q->label);
     }
     tcode_instruction.srcLine = q->line;
     q->taddress = next_instr_label();
@@ -375,7 +362,7 @@ void generate_PARAM(quad *q) {
     t.srcLine = q->line;
     q->taddress = next_instr_label();
     t.opcode = param_v;
-    make_operand(q->arg1, &t.result);
+    make_operand(q->result, &t.result);
     emit_instr(t);
 }
 
@@ -417,16 +404,12 @@ void generate_RETURN(quad *q) {
     t.srcLine = q->line;
     q->taddress = next_instr_label();
     t.opcode = assign_v;
-    make_retval_operand(&t.result);
     make_operand(q->arg1, &t.arg1);
+    make_retval_operand(&t.result);
     emit_instr(t);
 
 }
 
-void patchinstr(unsigned int instrind, unsigned int taddress) {
-    if (instrind >= tcode_instructions.size()) cerr << "ERROR AT PATCHINSTR" << endl;
-    tcode_instructions.at(instrind).result.val = taddress;
-}
 
 void generate_FUNCEND(quad *q) {
     /* Function *f = func_stack.back();
@@ -439,7 +422,7 @@ void generate_FUNCEND(quad *q) {
     t.srcLine = q->line;
     q->taddress = next_instr_label();
     t.opcode = funcend_v;
-    make_operand(q->arg1, &t.result);
+    make_operand(q->result, &t.result);
     emit_instr(t);
     //func_stack.pop_back();
 }
@@ -447,11 +430,11 @@ void generate_FUNCEND(quad *q) {
 void patch_incomplete_jumps() {
     for (auto incomplete_jump: incomplete_jumps) {
         // we store the destination instruction's number in the target code instruction's "result" field
-        if (incomplete_jump.icode_address == total) {
-            tcode_instructions.at(incomplete_jump.tcode_address).result.val = tcode_instructions.size();
+        if (incomplete_jump.icode_address == curr_quad + 1) {
+            tcode_instructions[incomplete_jump.tcode_address].result.val = tcode_instructions.size();
         } else {
-            tcode_instructions.at(incomplete_jump.tcode_address).result.val =
-                    quads[incomplete_jump.icode_address].taddress /*+ 1*/; //+-1 due to indexing from 0
+            tcode_instructions[incomplete_jump.tcode_address].result.val =
+                    quads[incomplete_jump.icode_address].taddress;
         }
     }
 }
@@ -538,10 +521,14 @@ void create_binary_file() {
             file << arg_to_string_arr[i.result.type] + " " + to_string(i.result.val) + "\t";
 
             vmarg_t type = i.arg1.type;
-            file << arg_to_string_arr[type] + " " << ((type != nil_a) ? to_string(i.arg1.val) : string("null")) << "\t";
+            if (type != nil_a) {
+                file << arg_to_string_arr[type] + " " << ((type != nil_a) ? to_string(i.arg1.val) : string("null")) << "\t";
+            }
 
             type = i.arg2.type;
-            file << arg_to_string_arr[type] + " " << ((type != nil_a) ? to_string(i.arg2.val) : string("null")) << "\t";
+            if (type != nil_a) {
+                file << arg_to_string_arr[type] + " " << ((type != nil_a) ? to_string(i.arg2.val) : string("null")) << "\t";
+            }
 
             file << endl;
         }
