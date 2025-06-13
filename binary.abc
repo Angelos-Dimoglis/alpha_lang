@@ -1,12 +1,10 @@
 69420 magic number
 0 number of constant strings
-7 number of constant numbers
+5 number of constant numbers
 3
 6
 9
 54
--1
--1
 -1
 12 number of library functions
 print
@@ -40,8 +38,8 @@ add	global_a 1	global_a 3	global_a 4
 mul	global_a 5	global_a 1	number_a 4	
 sub	global_a 6	global_a 0	global_a 2	
 mul	global_a 7	global_a 5	global_a 6	
-mul	global_a 8	global_a 7	number_a 5	
-mul	global_a 9	global_a 2	number_a 6	
+mul	global_a 8	global_a 7	number_a 4	
+mul	global_a 9	global_a 2	number_a 4	
 mod	global_a 10	global_a 8	global_a 9	
 assign	global_a 2	global_a 10	
 assign	global_a 11	global_a 2	

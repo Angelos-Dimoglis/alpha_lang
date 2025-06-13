@@ -78,11 +78,21 @@ vector <string> all_lib_funcs = {
 vector <struct userfunc> user_funcs;
 
 unsigned new_string (string s) {
+    for (int i = 0; i < all_str_consts.size(); i++) {
+        if (all_str_consts[i] == s) {
+            return i;
+        }
+    }
     all_str_consts.push_back(s);
     return all_str_consts.size() - 1;
 }
 
 unsigned new_number (double n) {
+    for (int i = 0; i < all_num_consts.size(); i++) {
+        if (all_num_consts[i] == n) {
+            return i;
+        }
+    }
     all_num_consts.push_back(n);
     return all_num_consts.size() - 1;
 }
