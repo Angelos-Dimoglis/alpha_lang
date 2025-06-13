@@ -74,16 +74,19 @@ vector <string> all_lib_funcs = {
     "cos",
     "sin"
 };
+
 vector <struct userfunc> user_funcs;
 
 unsigned new_string (string s) {
     all_str_consts.push_back(s);
     return all_str_consts.size() - 1;
 }
+
 unsigned new_number (double n) {
     all_num_consts.push_back(n);
     return all_num_consts.size() - 1;
 }
+
 unsigned new_lib_func (string s) {
     for (int i = 0; i < all_lib_funcs.size(); i++) {
         if (all_lib_funcs[i] == s) {
@@ -172,18 +175,6 @@ void make_retval_operand (vmarg *arg) {
 // TODO: patch incomplete jumps (pseudo-code at lec 14 slide 15)
 
 // ### generating target code ###
-
-/* generate (op, quad) (arithmetic, tables, assign and nop)
- * generate_relational (op, quad) (jump and ifs) 
- * generate_<NOT, OR, AND> (quad)
- * generate_PARAM (quad)
- * generate_CALL (quad)
- * generate_GETRETVAL (quad)
- * generate_FUNCSTART (quad)
- * generate_RETURN (quad)
- * generate_FUNCEND (quad)
- * we also need a func_stack for the returns
- */
 
 typedef void (*generator_func_t) (quad*);
 
@@ -431,10 +422,11 @@ void patch_incomplete_jumps() {
     for (auto incomplete_jump: incomplete_jumps) {
         // we store the destination instruction's number in the target code instruction's "result" field
         if (incomplete_jump.icode_address == curr_quad + 1) {
-            tcode_instructions[incomplete_jump.tcode_address].result.val = tcode_instructions.size();
+            tcode_instructions[incomplete_jump.tcode_address].result.val =
+                tcode_instructions.size();
         } else {
             tcode_instructions[incomplete_jump.tcode_address].result.val =
-                    quads[incomplete_jump.icode_address].taddress;
+                quads[incomplete_jump.icode_address].taddress;
         }
     }
 }
