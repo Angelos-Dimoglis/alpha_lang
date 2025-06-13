@@ -492,9 +492,9 @@ vector<string> arg_to_string_arr = {
     "retval_a"
 };
 
-void create_binary_file() {
+void create_binary_file(string name) {
     unsigned long int str_len;
-    ofstream file("binary.abc");
+    ofstream file(name);
 
     if (file.is_open()) {
         file << 69420 << " magic number" << endl;

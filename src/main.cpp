@@ -185,12 +185,14 @@ void write_quads (FILE *output, const char* filename, bool output_file_set) {
 int main (int argc, char **argv) {
     bool print_symtable_flag = false,
          input_file_set = false,
-         output_file_set = false;
+         output_file_set = false,
+         binary_file_set = false;
 
     string output_file = "/dev/stdout";
+    string binary_file = "binary.asc";
 
     char c;
-    while ((c = getopt(argc, argv, "dsti:o:")) != -1) {
+    while ((c = getopt(argc, argv, "dsti:o:b:")) != -1) {
         switch (c) {
             case 'd': // debug
                 yydebug = 1;
@@ -225,6 +227,12 @@ int main (int argc, char **argv) {
                 output_file = std::string(optarg);
                 
                 break;
+
+            case 'b':
+                if (optarg != nullptr) {
+                    binary_file = optarg;
+                }
+                break;
             default:
                 fprintf(stderr, "Unknown option: %s\n", optarg);
                 assert(0);
@@ -248,7 +256,7 @@ int main (int argc, char **argv) {
 
     generate_target_code();
 
-    create_binary_file();
+    create_binary_file(binary_file);
 
     // cleanup
     fclose(yyin);
