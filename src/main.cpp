@@ -189,7 +189,7 @@ int main (int argc, char **argv) {
          binary_file_set = false;
 
     string output_file = "/dev/stdout";
-    string binary_file = "binary.asc";
+    string binary_file = "binary.abc";
 
     char c;
     while ((c = getopt(argc, argv, "dsti:o:b:")) != -1) {
