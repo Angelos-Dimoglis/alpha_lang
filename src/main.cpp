@@ -182,6 +182,8 @@ void write_quads (FILE *output, const char* filename, bool output_file_set) {
     unlink(temp_name);
 }
 
+bool has_errors = false;
+
 int main (int argc, char **argv) {
     bool print_symtable_flag = false,
          input_file_set = false,
@@ -254,9 +256,13 @@ int main (int argc, char **argv) {
 
     write_quads(yyout, output_file.c_str(), output_file_set);
 
-    generate_target_code();
-
-    create_binary_file(binary_file);
+    if (!has_errors) {
+        generate_target_code();
+    
+        create_binary_file(binary_file);
+    }else {
+        cout << "Stopped target code creation because source code has errors\n";
+    }
 
     // cleanup
     fclose(yyin);

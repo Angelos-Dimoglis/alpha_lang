@@ -56,7 +56,6 @@ void generate_NOP (quad *);
 
 vector <instruction> tcode_instructions;
 vector <incomplete_jump> incomplete_jumps;
-vector<Function*> func_stack;
 
 vector<double> all_num_consts;
 vector <string> all_str_consts;
@@ -75,7 +74,7 @@ vector <string> all_lib_funcs = {
     "sin"
 };
 
-vector <struct userfunc> user_funcs;
+vector <struct user_func> user_funcs;
 
 unsigned new_string (string s) {
     for (int i = 0; i < all_str_consts.size(); i++) {
@@ -394,7 +393,7 @@ void generate_FUNCSTART(quad *q) {
     f->taddress = next_instr_label();
     t.srcLine = q->line;
     q->taddress = next_instr_label();
-    func_stack.push_back(f);
+    user_funcs.push_back(user_func(f->taddress, f->num_of_locals, f->name));
     t.opcode = funcstart_v;
     make_operand(q->result, &t.result);
     emit_instr(t);
@@ -458,7 +457,6 @@ vector<string> opcode_to_string_arr = {
     "mul",
     "div",
     "mod",
-    "uminus",
     "if_eq",
     "if_not_eq",
     "if_less_eq",
@@ -468,8 +466,6 @@ vector<string> opcode_to_string_arr = {
     "jump",
     "call",
     "param",
-    "return",
-    "getretval",
     "funcstart",
     "funcend",
     "newtable",
@@ -499,19 +495,22 @@ void create_binary_file(string name) {
     if (file.is_open()) {
         file << 69420 << " magic_number" << endl;
 
-        file << all_str_consts.size() << " constant strings" << endl;
+        file << all_str_consts.size() << " constant_strings" << endl;
         for (string str : all_str_consts) {
             file << "\t" + str << endl;
         }
 
-        file << all_num_consts.size() << " constant numbers:" << endl;
+        file << all_num_consts.size() << " constant_numbers" << endl;
         for (double s : all_num_consts) {
             file << "\t" + to_string(s) << endl;
         }
 
-        //no user functions since they are just addresses that are already in the target code instructions
+        file << user_funcs.size() << " user_functions" << endl;
+        for (struct user_func &u : user_funcs) {
+            file << "\t" + u.id + " " + to_string(u.address) + " " + to_string(u.localSize) << endl;
+        }
 
-        file << all_lib_funcs.size() << " library functions:" << endl;
+        file << all_lib_funcs.size() << " library_functions" << endl;
         for (string lib : all_lib_funcs) {
             file << "\t" + lib << endl;
         }

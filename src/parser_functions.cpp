@@ -6,6 +6,8 @@ extern int yylineno;
 extern unsigned int scope;
 extern list<Variable*> args;
 
+extern bool has_errors;
+
 Variable* add_local_id(const string name) {
     Symbol* sym = sym_table.Lookup(name, scope, THIS_SCOPE);
 
@@ -26,6 +28,7 @@ Variable* add_local_id(const string name) {
         sym_table.Insert(name, st, line, scope, list<Variable*>());
     } catch(const runtime_error &e) {
         cout << "ERROR: " << e.what() << endl;
+        has_errors = true;
         return nullptr;
     }
     return (Variable *) sym_table.Lookup(name, scope, THIS_SCOPE);
@@ -37,6 +40,7 @@ Symbol* lookup_global_id(const string name) {
     if (sym == nullptr) {
         cout << "ERROR: Unable to locate global symbol: \"" <<
             name << "\"" << endl;
+            has_errors = true;
     }
     return sym;
 }
@@ -50,7 +54,7 @@ Variable* add_id(const string name) {
             sym_table.Insert(name, (scope == 0) ? global : local, yylineno, scope, list<Variable*>());
         } catch(runtime_error &e) {
             cout << e.what() << endl;
-            // assert(0);
+            has_errors = true;
             return nullptr;
         }
 
@@ -66,6 +70,7 @@ Variable* add_id(const string name) {
                 cout << "ERROR: Symbol \"" << name <<
                     "\" isn't accesible in function \"" << p->sym->name <<
                     "\"." <<endl;
+                    has_errors = true;
             }
         }
     }
@@ -83,6 +88,7 @@ Function* add_func(string name) {
         try {
             sym_table.Insert(name, userfunc, yylineno, scope, args);
         } catch(const runtime_error &e) {
+            has_errors = true;
             cout << "ERROR: " << e.what() << endl;
         }
         args.clear();
@@ -91,6 +97,7 @@ Function* add_func(string name) {
         cout << "ERROR: Symbol name \"" << name <<
             "\" already exists in current scope (defined in line: " <<
             temp->line << ")" << endl;
+            has_errors = true;
     }
     return (Function*) temp;
 }
@@ -101,6 +108,7 @@ Variable* add_formal_argument(const string name) {
     if (sym != nullptr) {
         cout << "ERROR: formal argument \"" << name <<
             "\" already exists in current scope." << endl;
+            has_errors = true;
         return (Variable*) sym;
     }
 
@@ -108,6 +116,7 @@ Variable* add_formal_argument(const string name) {
         sym_table.Insert(name, formal, yylineno, scope, list<Variable*>());
     } catch(const runtime_error &e) {
         cout << "ERROR: " << e.what() << endl;
+        has_errors = true;
         return nullptr;
     }
 
@@ -122,5 +131,6 @@ Variable* check_lvalue(const string name) {
     if (temp != nullptr && (temp->type == userfunc || temp->type == libfunc))
         cout << "ERROR: Cannot use function \"" << name << 
             "\" as an lvalue." << endl;
+            has_errors = true;
     return (Variable*) temp;
 }

@@ -66,8 +66,10 @@ struct instruction {
     }
 };
 
-struct userfunc {
+struct user_func {
     unsigned address;
     unsigned localSize;
     string id;
+
+    user_func(unsigned address, unsigned localSize, string id) : address(address), localSize(localSize), id(id) {} 
 };

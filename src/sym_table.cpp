@@ -70,6 +70,8 @@ bool SymTable::libfunc_check(const string& name) {
     return false;
 }
 
+extern bool has_errors;
+
 void SymTable::Insert(
     const string& name,
     enum SymbolType type,
@@ -79,6 +81,7 @@ void SymTable::Insert(
 ) {
 
     if (libfunc_check(name) && (type != libfunc)) {
+        has_errors = true;
         throw runtime_error("Name \"" + name + "\" clashes with a library function.");
     }
     Symbol* newSymbol = createSymbol(type);

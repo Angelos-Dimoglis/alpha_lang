@@ -29,10 +29,14 @@
     unsigned total = 1;
     unsigned int curr_quad = 1;
 
+    extern bool has_errors;
+
     void yyerror(const char *msg) {
-        if (strcmp(msg, "syntax error, unexpected end of file"))
+        if (strcmp(msg, "syntax error, unexpected end of file")) {
             fprintf(stderr, "%s at line %d before token: %s\n",
                 msg, yylineno, yytext);
+                has_errors = true;
+        }
     }
 
     stack<int> loopcounter {std::deque<int> {0}};
