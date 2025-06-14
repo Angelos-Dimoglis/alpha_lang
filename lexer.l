@@ -132,12 +132,16 @@ char* toUpperCase(const char *str) {
     return capital_str;
 }
 
+extern bool has_errors;
+
 void yyerror(const char *msg, int line_number) {
 
     if (yyout != stdout)
         fprintf(yyout, "Error at #%d: %s\n", line_number, msg);
         
     fprintf(stderr, "\033[0;31mError at #%d: \033[0m%s\n", line_number, msg);
+
+    has_errors = true;
 
     free_token_list();
     exit(1);

@@ -128,9 +128,11 @@ Variable* add_formal_argument(const string name) {
 Variable* check_lvalue(const string name) {
     Symbol* temp = sym_table.Lookup(name, scope, ALL_SCOPES);
 
-    if (temp != nullptr && (temp->type == userfunc || temp->type == libfunc))
+    if (temp != nullptr && (temp->type == userfunc || temp->type == libfunc)) {
         cout << "ERROR: Cannot use function \"" << name << 
             "\" as an lvalue." << endl;
             has_errors = true;
+    }
+
     return (Variable*) temp;
 }

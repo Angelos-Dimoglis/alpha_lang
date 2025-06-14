@@ -138,11 +138,12 @@
 %right '='
 %left OR
 %left AND
+%right NOT
 %nonassoc EQUAL_EQUAL BANG_EQUAL
 %nonassoc '>' GREATER_EQUAL '<' LESS_EQUAL
 %left '+' '-'
 %left '*' '/' '%'
-%right NOT PLUS_PLUS MINUS_MINUS MINUS_UNARY
+%right PLUS_PLUS MINUS_MINUS MINUS_UNARY
 %left '.' DOT_DOT
 %left '[' ']'
 %left '(' ')'
