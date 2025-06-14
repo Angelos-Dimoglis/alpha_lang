@@ -7,4 +7,3 @@ src/parser.cpp
 src/parser.output
 lib/parser.hpp
 *.txt
-*.abc
