@@ -33,6 +33,7 @@ All options are optional, the default input and output are stdin and stdout.
 * -d (yydebug)
 * -t (lexer tokens)
 * -s (symbol table)
+* -b \<binary filename\> (if not given the default is binary.abc)
 
 ## Note on the directory structure
 
