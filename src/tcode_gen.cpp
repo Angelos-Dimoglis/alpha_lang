@@ -497,40 +497,38 @@ void create_binary_file(string name) {
     ofstream file(name);
 
     if (file.is_open()) {
-        file << 69420 << " magic number" << endl;
+        file << 69420 << " magic_number" << endl;
 
-        file << all_str_consts.size() << " number of constant strings" << endl;
+        file << all_str_consts.size() << " constant strings" << endl;
         for (string str : all_str_consts) {
-            file << str << endl;
+            file << "\t" + str << endl;
         }
 
-        file << all_num_consts.size() << " number of constant numbers" << endl;
+        file << all_num_consts.size() << " constant numbers:" << endl;
         for (double s : all_num_consts) {
-            file << s << endl;
+            file << "\t" + to_string(s) << endl;
         }
 
         //no user functions since they are just addresses that are already in the target code instructions
 
-        file << all_lib_funcs.size() << " number of library functions" << endl;
+        file << all_lib_funcs.size() << " library functions:" << endl;
         for (string lib : all_lib_funcs) {
-            file << lib << endl;
+            file << "\t" + lib << endl;
         }
 
-        file << tcode_instructions.size() << " number of targe code instructions" << endl;
+        file << tcode_instructions.size() << " instructions" << endl;
         for (instruction i : tcode_instructions) {
-            file << opcode_to_string_arr[i.opcode] << "\t";
+            file << "\t" + opcode_to_string_arr[i.opcode] << "\t";
 
             file << arg_to_string_arr[i.result.type] + " " + to_string(i.result.val) + "\t";
 
             vmarg_t type = i.arg1.type;
-            if (type != nil_a) {
-                file << arg_to_string_arr[type] + " " << ((type != nil_a) ? to_string(i.arg1.val) : string("null")) << "\t";
-            }
+            file << arg_to_string_arr[type] + " " << ((type != nil_a) ? to_string(i.arg1.val) : string("0")) << "\t";
+            
 
             type = i.arg2.type;
-            if (type != nil_a) {
-                file << arg_to_string_arr[type] + " " << ((type != nil_a) ? to_string(i.arg2.val) : string("null")) << "\t";
-            }
+            file << arg_to_string_arr[type] + " " << ((type != nil_a) ? to_string(i.arg2.val) : string("0")) << "\t";
+            
 
             file << endl;
         }
