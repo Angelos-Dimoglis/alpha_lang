@@ -181,8 +181,6 @@ void make_retval_operand (vmarg *arg) {
     arg->val = 0;
 }
 
-// TODO: patch incomplete jumps (pseudo-code at lec 14 slide 15)
-
 // ### generating target code ###
 
 typedef void (*generator_func_t) (quad*);
@@ -248,7 +246,7 @@ static void generate_relational(vmopcode op, quad *q) {
 
     tcode_instruction.result.type = label_a;
     if (q->label < curr_quad) {
-        tcode_instruction.result.val = quads[q->label - 1].taddress; //+-1 due to indexing from 0
+        tcode_instruction.result.val = quads[q->label - 1].taddress;
     } else {
         add_incomplete_jump(next_instr_label(), q->label);
     }
@@ -412,19 +410,12 @@ void generate_RETURN(quad *q) {
 
 
 void generate_FUNCEND(quad *q) {
-    /* Function *f = func_stack.back();
-    returnList *reader = f->returnList;
-    while (reader) {
-        patchinstr(reader->instrLabel, next_instr_label());
-        reader = reader->next;
-    } */
     instruction t;
     t.srcLine = q->line;
     q->taddress = next_instr_label();
     t.opcode = funcend_v;
     make_operand(q->result, &t.result);
     emit_instr(t);
-    //func_stack.pop_back();
 }
 
 void patch_incomplete_jumps() {
