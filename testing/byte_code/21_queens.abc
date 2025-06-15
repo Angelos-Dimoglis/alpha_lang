@@ -1,16 +1,19 @@
 69420 magic_number
-3 constant strings
+3 constant_strings
 	" Q"
 	" ."
 	"
 "
-5 constant numbers:
+5 constant_numbers
 	8.000000
 	0.000000
 	1.000000
 	7.000000
 	2.000000
-12 library functions:
+2 user_functions
+	print_board 15 13
+	try 67 20
+12 library_functions
 	print
 	input
 	objectmemberkeys

@@ -1,5 +1,5 @@
 69420 magic_number
-20 constant strings
+20 constant_strings
 	"print libFunc"
 	"typeof libFunc"
 	"f userFunc"
@@ -23,10 +23,13 @@
 	"Functor"
 	"LALA
 "
-2 constant numbers:
+2 constant_numbers
 	0.000000
 	3.000000
-12 library functions:
+2 user_functions
+	f 1 0
+	_f0 67 2
+12 library_functions
 	print
 	input
 	objectmemberkeys
