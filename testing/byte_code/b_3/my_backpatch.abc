@@ -15,6 +15,7 @@
 	sqrt
 	cos
 	sin
+12 num_of_globals
 11 instructions
 	if_less	label_a 6	global_a 1	global_a 2	
 	jump	label_a 2	nil_a 0	nil_a 0	

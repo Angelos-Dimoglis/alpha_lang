@@ -88,6 +88,7 @@
 	sqrt
 	cos
 	sin
+54 num_of_globals
 821 instructions
 	assign	global_a 0	string_a 0	nil_a 0	
 	assign	global_a 1	global_a 0	nil_a 0	

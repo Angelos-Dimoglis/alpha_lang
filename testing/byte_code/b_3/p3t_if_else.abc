@@ -22,6 +22,7 @@
 	sqrt
 	cos
 	sin
+46 num_of_globals
 58 instructions
 	if_eq	label_a 2	bool_a 1	bool_a 1	
 	jump	label_a 4	nil_a 0	nil_a 0	

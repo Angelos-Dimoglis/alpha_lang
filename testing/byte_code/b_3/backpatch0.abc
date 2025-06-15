@@ -15,6 +15,7 @@
 	sqrt
 	cos
 	sin
+7 num_of_globals
 9 instructions
 	if_eq	label_a 2	global_a 1	bool_a 1	
 	jump	label_a 6	nil_a 0	nil_a 0	

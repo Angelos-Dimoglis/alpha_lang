@@ -13,6 +13,8 @@ extern quad *quads;
 extern unsigned total;
 extern unsigned int curr_quad;
 
+unsigned int num_of_globals = 0;
+
 using namespace std;
 
 struct incomplete_jump {
@@ -127,7 +129,7 @@ void make_operand (expr *e, vmarg *arg) {
             arg->val = var->offset;
 
             switch (var->space) {
-                case program_var: arg->type = global_a; break;
+                case program_var: arg->type = global_a; num_of_globals++; break;
                 case function_local: arg->type = local_a; break;
                 case formal_arg: arg->type = formal_a; break;
                 default: assert(0);
@@ -505,6 +507,8 @@ void create_binary_file(string name) {
         for (string lib : all_lib_funcs) {
             file << "\t" + lib << endl;
         }
+
+        file << num_of_globals << " num_of_globals" << endl;
 
         file << tcode_instructions.size() << " instructions" << endl;
         for (instruction i : tcode_instructions) {

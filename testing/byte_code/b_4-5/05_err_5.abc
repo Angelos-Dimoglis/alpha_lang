@@ -23,6 +23,7 @@
 	sqrt
 	cos
 	sin
+1 num_of_globals
 38 instructions
 	jump	label_a 35	nil_a 0	nil_a 0	
 	funcstart	userfunc_a 1	nil_a 0	nil_a 0	

@@ -96,6 +96,7 @@ Should print "fother loo called.": "
 	sqrt
 	cos
 	sin
+112 num_of_globals
 580 instructions
 	assign	global_a 0	bool_a 0	nil_a 0	
 	assign	global_a 1	global_a 0	nil_a 0	
@@ -549,7 +550,7 @@ Should print "fother loo called.": "
 	funcend	userfunc_a 444	nil_a 0	nil_a 0	
 	tablesetelem	global_a 5	string_a 39	userfunc_a 444	
 	tablegetelem	global_a 1	global_a 5	string_a 39	
-	param	nil_a 2328659456	nil_a 0	nil_a 0	
+	param	nil_a 1156645376	nil_a 0	nil_a 0	
 	call	userfunc_a 416	nil_a 0	nil_a 0	
 	assign	global_a 1	retval_a 0	nil_a 0	
 	assign	global_a 7	global_a 1	nil_a 0	
@@ -563,7 +564,7 @@ Should print "fother loo called.": "
 	funcend	userfunc_a 458	nil_a 0	nil_a 0	
 	tablesetelem	global_a 7	string_a 39	userfunc_a 458	
 	tablegetelem	global_a 1	global_a 7	string_a 39	
-	param	nil_a 2328659456	nil_a 0	nil_a 0	
+	param	nil_a 1156645376	nil_a 0	nil_a 0	
 	call	userfunc_a 416	nil_a 0	nil_a 0	
 	assign	global_a 1	retval_a 0	nil_a 0	
 	assign	global_a 8	global_a 1	nil_a 0	
@@ -577,7 +578,7 @@ Should print "fother loo called.": "
 	funcend	userfunc_a 472	nil_a 0	nil_a 0	
 	tablesetelem	global_a 8	string_a 42	userfunc_a 472	
 	tablegetelem	global_a 1	global_a 8	string_a 42	
-	param	nil_a 2328659456	nil_a 0	nil_a 0	
+	param	nil_a 1156645376	nil_a 0	nil_a 0	
 	call	userfunc_a 416	nil_a 0	nil_a 0	
 	assign	global_a 1	retval_a 0	nil_a 0	
 	assign	global_a 9	global_a 1	nil_a 0	
@@ -591,7 +592,7 @@ Should print "fother loo called.": "
 	funcend	userfunc_a 486	nil_a 0	nil_a 0	
 	tablesetelem	global_a 9	string_a 42	userfunc_a 486	
 	tablegetelem	global_a 1	global_a 9	string_a 42	
-	param	nil_a 2328659456	nil_a 0	nil_a 0	
+	param	nil_a 1156645376	nil_a 0	nil_a 0	
 	call	userfunc_a 416	nil_a 0	nil_a 0	
 	assign	global_a 1	retval_a 0	nil_a 0	
 	assign	global_a 10	global_a 1	nil_a 0	
