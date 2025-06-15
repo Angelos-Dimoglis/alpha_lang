@@ -155,7 +155,7 @@
 %type <indexedList> indexed indexed_alt
 %type <indexedPair> indexedelem
 %type <exprValue> expr lvalue term primary member assignexpr const elist elist_alt call objectdef
-%type <stmtValue> stmt block stmt_series
+%type <stmtValue> stmt block stmt_series ifstmt whilestmt forstmt returnstmt
 %type <forValue> forprefix
 %type <intValue> ifprefix elseprefix whilestart whilecond N M
 %type <funcSymValue> funcname funcdef // NOTE: THIS MIGHT HAVE TO BECOME symValue LATER ON lec 10, sl 7
@@ -167,13 +167,13 @@ program: stmt_series;
 stmt_series: stmt_series stmt  {
 
         if ($stmt != nullptr && !$stmt->returnlist.empty())
-            $1->returnlist.push_back($stmt->returnlist.front());
+            $1->returnlist.splice($1->returnlist.end(), $stmt->returnlist);
 
         if ($stmt != nullptr && !$stmt->breaklist.empty())
-            $1->breaklist.push_back($stmt->breaklist.front());
+            $1->breaklist.splice($1->breaklist.end(), $stmt->returnlist);
 
         if ($stmt != nullptr && !$stmt->contlist.empty())
-            $1->contlist.push_back($stmt->contlist.front());
+            $1->contlist.splice($1->contlist.end(), $stmt->contlist);
 
         $$ = $1;
     }
@@ -182,25 +182,24 @@ stmt_series: stmt_series stmt  {
 
 stmt: expr ';' {
         emit_ifboolexpr($expr);
-        $$ = nullptr;
+        $$ = new stmt();
         resettemp();
     }
     | ifstmt {
-        $$ = nullptr;
+        $$ = $ifstmt;
         resettemp();
     }
     | whilestmt {
-        $$ = nullptr;
+        $$ = $whilestmt;
         resettemp();
     }
     | forstmt {
-        $$ = nullptr;
+        $$ = $forstmt;
         resettemp();
     }
     | returnstmt {
-        $$ = nullptr;
-        $stmt = new stmt();
-        $stmt->returnlist.push_back(curr_quad); 
+        $stmt = $returnstmt;
+        $stmt->returnlist.push_front(curr_quad); 
         emit(jump, unsigned(0));
         resettemp();
     }
@@ -222,7 +221,10 @@ stmt: expr ';' {
         }
         resettemp();
     }
-    | block {$stmt = $block; resettemp();}
+    | block {
+        $stmt = $block;
+        resettemp();
+    }
     | funcdef {
         $$ = nullptr;
         resettemp();
@@ -609,8 +611,27 @@ idlist_alt: ',' IDENTIFIER {add_formal_argument($2);} idlist_alt
     | /* empty */
     ;
 
-ifstmt: ifprefix stmt {patchlabel($1, nextquadlabel());} %prec IF
-    | ifprefix stmt elseprefix stmt {patchlabel($1, $3 + 1); patchlabel($3, nextquadlabel());}
+ifstmt: ifprefix stmt {
+        patchlabel($1, nextquadlabel());
+        $$ = $stmt;
+    }
+    %prec IF
+    | ifprefix stmt elseprefix stmt {
+        patchlabel($1, $3 + 1);
+        patchlabel($3, nextquadlabel());
+        if ($2) {
+            cout << "\n\n\n" << yylineno << "\n\n\n";
+            if (!$2->returnlist.empty() && !$4->returnlist.empty())
+                $2->returnlist.splice($2->returnlist.end(), $4->returnlist);
+            if (!$2->breaklist.empty() && !$4->breaklist.empty())
+                $2->breaklist.splice($2->breaklist.end(), $4->breaklist);
+            if (!$2->contlist.empty() && !$4->contlist.empty())
+                $2->contlist.splice($2->contlist.end(), $4->contlist);
+        }else {
+            $2 = new stmt();
+        }
+        $$ = $2;
+    }
     ;
 
 ifprefix: IF '(' expr ')' {
@@ -632,14 +653,17 @@ loopstart: { increase_loopcounter(); }
 loopend: { decrease_loopcounter(); }
 
 whilestmt: whilestart whilecond loopstart stmt {
-    emit(jump, unsigned($1));
-    patchlabel($2, nextquadlabel());
-    if ($stmt != nullptr)
-        patchlist($stmt->breaklist, nextquadlabel());
+        emit(jump, unsigned($1));
+        patchlabel($2, nextquadlabel());
+        if ($stmt != nullptr)
+            patchlist($stmt->breaklist, nextquadlabel());
 
-    if ($stmt != nullptr)
-        patchlist($stmt->contlist, $1);
-} loopend;
+        if ($stmt != nullptr)
+            patchlist($stmt->contlist, $1);
+
+    } loopend {
+        $$ = $stmt;
+    };
 
 whilestart: WHILE {
     $whilestart = nextquadlabel();
@@ -660,6 +684,8 @@ forstmt: forprefix N elist ')' N loopstart stmt N loopend {
 
     patchlist($stmt->breaklist, nextquadlabel());
     patchlist($stmt->contlist, $2 + 1);
+
+    $forstmt = $stmt;
 }
 
 forprefix: FOR '(' elist ';' M expr ';' {
@@ -669,6 +695,15 @@ forprefix: FOR '(' elist ';' M expr ';' {
     emit(if_eq, $expr, new expr(true), unsigned(0));
 }
 
-returnstmt: RETURN ';' {return_valid(); emit(ret, NULL, NULL, NULL, 0);}
-    | RETURN  expr ';' {$expr = emit_ifboolexpr($expr); return_valid(); emit(ret, NULL, NULL, $expr, 0);}
+returnstmt: RETURN ';' {
+        return_valid();
+        emit(ret, NULL, NULL, NULL, 0);
+        $returnstmt = new stmt();
+    }
+    | RETURN  expr ';' {
+        $expr = emit_ifboolexpr($expr);
+        return_valid();
+        emit(ret, NULL, NULL, $expr, 0);
+        $returnstmt = new stmt();
+    }
     ;

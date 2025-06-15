@@ -108,6 +108,12 @@ struct stmt {
     list<unsigned> returnlist;
     list<unsigned> breaklist;
     list<unsigned> contlist;
+
+    stmt() {
+        returnlist = list<unsigned>();
+        breaklist = list<unsigned>();
+        contlist = list<unsigned>();
+    }
 };
 
 struct forp {
