@@ -199,12 +199,12 @@ stmt: expr ';' {
     }
     | returnstmt {
         $stmt = $returnstmt;
-        $stmt->returnlist.push_front(curr_quad); 
+        $stmt->returnlist.push_back(curr_quad); 
         emit(jump, unsigned(0));
         resettemp();
     }
     | BREAK ';' {
-        $$ = nullptr;
+        $$ = new stmt();
         if (break_continue_valid("break")) {
             $stmt = new stmt();
             $stmt->breaklist.push_back(curr_quad);
@@ -213,7 +213,7 @@ stmt: expr ';' {
         resettemp();
     }
     | CONTINUE ';' {
-        $$ = nullptr;
+        $$ = new stmt();
         if (break_continue_valid("continue")) {
             $stmt = new stmt();
             $stmt->contlist.push_back(curr_quad);
@@ -226,11 +226,11 @@ stmt: expr ';' {
         resettemp();
     }
     | funcdef {
-        $$ = nullptr;
+        $$ = new stmt();
         resettemp();
     }
     | ';' {
-        $$ = nullptr;
+        $$ = new stmt();
         resettemp();
     }
     ;

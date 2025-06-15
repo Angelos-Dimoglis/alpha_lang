@@ -1,0 +1,114 @@
+quad#  opcode      result  arg1   arg2  label  
+1:     assign      f       1                   
+2:     assign      _t0     f                   
+3:     assign      e       _t0                 
+4:     assign      _t1     e                   
+5:     assign      d       _t1                 
+6:     assign      _t2     d                   
+7:     assign      c       _t2                 
+8:     assign      _t3     c                   
+9:     assign      b       _t3                 
+10:    assign      _t4     b                   
+11:    assign      a       _t4                 
+12:    assign      _t5     a                   
+13:    if_less             a      b     19     
+14:    jump                             15     
+15:    if_greater          c      d     17     
+16:    jump                             21     
+17:    if_less             e      f     19     
+18:    jump                             21     
+19:    assign      _t0     TRUE                
+20:    jump                             22     
+21:    assign      _t0     FALSE               
+22:    assign      x       _t0                 
+23:    assign      _t1     x                   
+24:    if_eq               x      TRUE  28     
+25:    jump                             26     
+26:    if_eq               x      TRUE  30     
+27:    jump                             28     
+28:    if_eq               a      TRUE  30     
+29:    jump                             32     
+30:    assign      _t0     TRUE                
+31:    jump                             33     
+32:    assign      _t0     FALSE               
+33:    assign      y       _t0                 
+34:    assign      _t1     y                   
+35:    if_eq               x      TRUE  37     
+36:    jump                             47     
+37:    jump                             42     
+38:    funcstart   _f0                         
+39:    return      FALSE                       
+40:    jump                             41     
+41:    funcend     _f0                         
+42:    param       2                           
+43:    call        _f0                         
+44:    getretval   _t0                         
+45:    if_eq               _t0    TRUE  54     
+46:    jump                             47     
+47:    jump                             52     
+48:    funcstart   _f1                         
+49:    return      TRUE                        
+50:    jump                             51     
+51:    funcend     _f1                         
+52:    if_eq               _f1    TRUE  54     
+53:    jump                             56     
+54:    assign      _t0     TRUE                
+55:    jump                             57     
+56:    assign      _t0     FALSE               
+57:    assign      x       _t0                 
+58:    assign      _t1     x                   
+59:    if_eq               a      TRUE  67     
+60:    jump                             61     
+61:    if_eq               b      TRUE  67     
+62:    jump                             63     
+63:    assign      y       x                   
+64:    assign      _t0     y                   
+65:    if_eq               _t0    TRUE  67     
+66:    jump                             69     
+67:    assign      _t1     TRUE                
+68:    jump                             70     
+69:    assign      _t1     FALSE               
+70:    if_eq               _t1    TRUE  72     
+71:    jump                             97     
+72:    assign      i       0                   
+73:    assign      _t2     i                   
+74:    if_less             i      5     76     
+75:    jump                             80     
+76:    if_eq               a      TRUE  78     
+77:    jump                             80     
+78:    assign      _t3     TRUE                
+79:    jump                             81     
+80:    assign      _t3     FALSE               
+81:    if_eq               _t3    TRUE  86     
+82:    jump                             93     
+83:    add         i       i      1            
+84:    assign      _t4     i                   
+85:    jump                             74     
+86:    param       i                           
+87:    call        print                       
+88:    getretval   _t5                         
+89:    jump                             83     
+90:    add         i       i      1            
+91:    assign      _t0     i                   
+92:    jump                             83     
+93:    param       y                           
+94:    call        print                       
+95:    getretval   _t0                         
+96:    jump                             114    
+97:    if_eq               y      TRUE  101    
+98:    jump                             99     
+99:    assign      _t0     TRUE                
+100:   jump                             102    
+101:   assign      _t0     FALSE               
+102:   if_eq               _t0    TRUE  104    
+103:   jump                             114    
+104:   if_eq               y      TRUE  108    
+105:   jump                             106    
+106:   assign      _t1     TRUE                
+107:   jump                             109    
+108:   assign      _t1     FALSE               
+109:   param       _t1                         
+110:   call        print                       
+111:   getretval   _t2                         
+112:   jump                                    
+113:   jump                             97     
