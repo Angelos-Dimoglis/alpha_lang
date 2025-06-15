@@ -419,7 +419,7 @@ void generate_FUNCEND(quad *q) {
 }
 
 void patch_incomplete_jumps() {
-    for (auto incomplete_jump: incomplete_jumps) {
+    for (auto incomplete_jump : incomplete_jumps) {
         // we store the destination instruction's number in the target code instruction's "result" field
         if (incomplete_jump.icode_address == curr_quad + 1) {
             tcode_instructions[incomplete_jump.tcode_address].result.val =

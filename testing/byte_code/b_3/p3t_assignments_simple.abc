@@ -1,0 +1,30 @@
+69420 magic_number
+0 constant_strings
+2 constant_numbers
+	4.000000
+	5.000000
+0 user_functions
+12 library_functions
+	print
+	input
+	objectmemberkeys
+	objecttotalmembers
+	objectcopy
+	totalarguments
+	argument
+	typeof
+	strtonum
+	sqrt
+	cos
+	sin
+10 instructions
+	assign	global_a 0	number_a 0	nil_a 0	
+	assign	global_a 1	global_a 0	nil_a 0	
+	add	global_a 1	global_a 0	number_a 1	
+	assign	global_a 0	global_a 1	nil_a 0	
+	assign	global_a 2	global_a 0	nil_a 0	
+	assign	global_a 3	global_a 0	nil_a 0	
+	assign	global_a 1	global_a 3	nil_a 0	
+	add	global_a 1	global_a 0	global_a 3	
+	assign	global_a 0	global_a 1	nil_a 0	
+	assign	global_a 2	global_a 0	nil_a 0	

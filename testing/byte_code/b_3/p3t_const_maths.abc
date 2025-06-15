@@ -1,0 +1,31 @@
+69420 magic_number
+0 constant_strings
+8 constant_numbers
+	4.000000
+	5.000000
+	6.000000
+	8.000000
+	9.000000
+	3.000000
+	1.000000
+	0.000000
+0 user_functions
+12 library_functions
+	print
+	input
+	objectmemberkeys
+	objecttotalmembers
+	objectcopy
+	totalarguments
+	argument
+	typeof
+	strtonum
+	sqrt
+	cos
+	sin
+5 instructions
+	add	global_a 0	number_a 0	number_a 1	
+	mul	global_a 0	number_a 2	number_a 3	
+	sub	global_a 0	number_a 0	number_a 4	
+	div	global_a 0	number_a 5	number_a 6	
+	mod	global_a 0	number_a 7	number_a 5	

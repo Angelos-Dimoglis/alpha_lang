@@ -1,0 +1,34 @@
+69420 magic_number
+1 constant_strings
+	"..."
+0 constant_numbers
+0 user_functions
+12 library_functions
+	print
+	input
+	objectmemberkeys
+	objecttotalmembers
+	objectcopy
+	totalarguments
+	argument
+	typeof
+	strtonum
+	sqrt
+	cos
+	sin
+15 instructions
+	if_eq	label_a 6	global_a 0	bool_a 1	
+	jump	label_a 2	nil_a 0	nil_a 0	
+	if_eq	label_a 4	global_a 1	bool_a 1	
+	jump	label_a 8	nil_a 0	nil_a 0	
+	if_eq	label_a 6	global_a 2	bool_a 1	
+	jump	label_a 8	nil_a 0	nil_a 0	
+	assign	global_a 3	bool_a 1	nil_a 0	
+	jump	label_a 9	nil_a 0	nil_a 0	
+	assign	global_a 3	bool_a 0	nil_a 0	
+	if_eq	label_a 11	global_a 3	bool_a 1	
+	jump	label_a 15	nil_a 0	nil_a 0	
+	param	string_a 0	nil_a 0	nil_a 0	
+	call	libfunc_a 0	nil_a 0	nil_a 0	
+	assign	global_a 4	retval_a 0	nil_a 0	
+	jump	label_a 0	nil_a 0	nil_a 0	
