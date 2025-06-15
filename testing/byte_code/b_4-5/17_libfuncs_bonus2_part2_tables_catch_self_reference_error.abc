@@ -256,7 +256,7 @@
 	add	local_a 3	local_a 3	number_a 0	
 	assign	local_a 8	local_a 3	nil_a 0	
 	jump	label_a 177	nil_a 0	nil_a 0	
-	assign	retval_a 0	nil_a 0	nil_a 0	
+	assign	retval_a 0	local_a 3	nil_a 0	
 	jump	label_a 198	nil_a 0	nil_a 0	
 	funcend	userfunc_a 139	nil_a 0	nil_a 0	
 	jump	label_a 258	nil_a 0	nil_a 0	

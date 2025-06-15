@@ -91,7 +91,7 @@
 	param	string_a 2	nil_a 0	nil_a 0	
 	call	libfunc_a 0	nil_a 0	nil_a 0	
 	assign	local_a 1	retval_a 0	nil_a 0	
-	assign	retval_a 0	nil_a 0	nil_a 0	
+	assign	retval_a 0	number_a 1	nil_a 0	
 	jump	label_a 65	nil_a 0	nil_a 0	
 	funcend	userfunc_a 15	nil_a 0	nil_a 0	
 	jump	label_a 148	nil_a 0	nil_a 0	

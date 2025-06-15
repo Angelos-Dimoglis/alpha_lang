@@ -61,7 +61,7 @@
 	jump	label_a 46	nil_a 0	nil_a 0	
 	jump	label_a 41	nil_a 0	nil_a 0	
 	funcstart	userfunc_a 37	nil_a 0	nil_a 0	
-	assign	retval_a 0	nil_a 0	nil_a 0	
+	assign	retval_a 0	bool_a 0	nil_a 0	
 	jump	label_a 40	nil_a 0	nil_a 0	
 	funcend	userfunc_a 37	nil_a 0	nil_a 0	
 	param	number_a 1	nil_a 0	nil_a 0	
@@ -71,7 +71,7 @@
 	jump	label_a 46	nil_a 0	nil_a 0	
 	jump	label_a 51	nil_a 0	nil_a 0	
 	funcstart	userfunc_a 47	nil_a 0	nil_a 0	
-	assign	retval_a 0	nil_a 0	nil_a 0	
+	assign	retval_a 0	bool_a 1	nil_a 0	
 	jump	label_a 50	nil_a 0	nil_a 0	
 	funcend	userfunc_a 47	nil_a 0	nil_a 0	
 	if_eq	label_a 53	userfunc_a 47	bool_a 1	

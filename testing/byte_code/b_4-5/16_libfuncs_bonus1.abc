@@ -147,7 +147,7 @@
 	call	userfunc_a 32	nil_a 0	nil_a 0	
 	assign	local_a 0	retval_a 0	nil_a 0	
 	funcend	userfunc_a 30	nil_a 0	nil_a 0	
-	assign	retval_a 0	nil_a 0	nil_a 0	
+	assign	retval_a 0	userfunc_a 30	nil_a 0	
 	jump	label_a 60	nil_a 0	nil_a 0	
 	funcend	userfunc_a 28	nil_a 0	nil_a 0	
 	call	userfunc_a 28	nil_a 0	nil_a 0	

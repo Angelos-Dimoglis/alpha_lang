@@ -221,7 +221,7 @@ Should print "fother loo called.": "
 	assign	local_a 3	bool_a 1	nil_a 0	
 	jump	label_a 123	nil_a 0	nil_a 0	
 	assign	local_a 3	bool_a 0	nil_a 0	
-	assign	retval_a 0	nil_a 0	nil_a 0	
+	assign	retval_a 0	local_a 3	nil_a 0	
 	jump	label_a 125	nil_a 0	nil_a 0	
 	funcend	userfunc_a 91	nil_a 0	nil_a 0	
 	param	formal_a 0	nil_a 0	nil_a 0	
@@ -234,7 +234,7 @@ Should print "fother loo called.": "
 	call	global_a 3	nil_a 0	nil_a 0	
 	assign	local_a 1	retval_a 0	nil_a 0	
 	tablegetelem	local_a 1	local_a 0	string_a 3	
-	assign	retval_a 0	nil_a 0	nil_a 0	
+	assign	retval_a 0	local_a 1	nil_a 0	
 	jump	label_a 138	nil_a 0	nil_a 0	
 	funcend	userfunc_a 84	nil_a 0	nil_a 0	
 	jump	label_a 173	nil_a 0	nil_a 0	
@@ -259,7 +259,7 @@ Should print "fother loo called.": "
 	assign	local_a 3	bool_a 1	nil_a 0	
 	jump	label_a 161	nil_a 0	nil_a 0	
 	assign	local_a 3	bool_a 0	nil_a 0	
-	assign	retval_a 0	nil_a 0	nil_a 0	
+	assign	retval_a 0	local_a 3	nil_a 0	
 	jump	label_a 163	nil_a 0	nil_a 0	
 	funcend	userfunc_a 147	nil_a 0	nil_a 0	
 	param	formal_a 0	nil_a 0	nil_a 0	
@@ -268,7 +268,7 @@ Should print "fother loo called.": "
 	call	userfunc_a 43	nil_a 0	nil_a 0	
 	assign	local_a 1	retval_a 0	nil_a 0	
 	tablegetelem	local_a 1	local_a 0	string_a 13	
-	assign	retval_a 0	nil_a 0	nil_a 0	
+	assign	retval_a 0	local_a 1	nil_a 0	
 	jump	label_a 172	nil_a 0	nil_a 0	
 	funcend	userfunc_a 140	nil_a 0	nil_a 0	
 	jump	label_a 209	nil_a 0	nil_a 0	
@@ -295,7 +295,7 @@ Should print "fother loo called.": "
 	tablegetelem	local_a 4	formal_a 0	string_a 18	
 	assign	local_a 0	bool_a 0	nil_a 0	
 	assign	local_a 5	local_a 0	nil_a 0	
-	assign	retval_a 0	nil_a 0	nil_a 0	
+	assign	retval_a 0	local_a 0	nil_a 0	
 	jump	label_a 199	nil_a 0	nil_a 0	
 	funcend	userfunc_a 181	nil_a 0	nil_a 0	
 	param	formal_a 0	nil_a 0	nil_a 0	
@@ -304,7 +304,7 @@ Should print "fother loo called.": "
 	call	userfunc_a 43	nil_a 0	nil_a 0	
 	assign	local_a 1	retval_a 0	nil_a 0	
 	tablegetelem	local_a 1	local_a 0	string_a 18	
-	assign	retval_a 0	nil_a 0	nil_a 0	
+	assign	retval_a 0	local_a 1	nil_a 0	
 	jump	label_a 208	nil_a 0	nil_a 0	
 	funcend	userfunc_a 174	nil_a 0	nil_a 0	
 	jump	label_a 224	nil_a 0	nil_a 0	
@@ -319,7 +319,7 @@ Should print "fother loo called.": "
 	assign	local_a 1	bool_a 1	nil_a 0	
 	jump	label_a 221	nil_a 0	nil_a 0	
 	assign	local_a 1	bool_a 0	nil_a 0	
-	assign	retval_a 0	nil_a 0	nil_a 0	
+	assign	retval_a 0	local_a 1	nil_a 0	
 	jump	label_a 223	nil_a 0	nil_a 0	
 	funcend	userfunc_a 210	nil_a 0	nil_a 0	
 	jump	label_a 234	nil_a 0	nil_a 0	
@@ -349,7 +349,7 @@ Should print "fother loo called.": "
 	param	formal_a 2	nil_a 0	nil_a 0	
 	call	local_a 1	nil_a 0	nil_a 0	
 	assign	local_a 2	retval_a 0	nil_a 0	
-	assign	retval_a 0	nil_a 0	nil_a 0	
+	assign	retval_a 0	local_a 2	nil_a 0	
 	jump	label_a 253	nil_a 0	nil_a 0	
 	funcend	userfunc_a 243	nil_a 0	nil_a 0	
 	param	local_a 1	nil_a 0	nil_a 0	
@@ -366,7 +366,7 @@ Should print "fother loo called.": "
 	param	formal_a 2	nil_a 0	nil_a 0	
 	call	userfunc_a 174	nil_a 0	nil_a 0	
 	assign	local_a 1	retval_a 0	nil_a 0	
-	assign	retval_a 0	nil_a 0	nil_a 0	
+	assign	retval_a 0	local_a 1	nil_a 0	
 	jump	label_a 270	nil_a 0	nil_a 0	
 	funcend	userfunc_a 261	nil_a 0	nil_a 0	
 	jump	label_a 282	nil_a 0	nil_a 0	
@@ -377,7 +377,7 @@ Should print "fother loo called.": "
 	param	formal_a 2	nil_a 0	nil_a 0	
 	call	userfunc_a 210	nil_a 0	nil_a 0	
 	assign	local_a 1	retval_a 0	nil_a 0	
-	assign	retval_a 0	nil_a 0	nil_a 0	
+	assign	retval_a 0	local_a 1	nil_a 0	
 	jump	label_a 281	nil_a 0	nil_a 0	
 	funcend	userfunc_a 272	nil_a 0	nil_a 0	
 	jump	label_a 295	nil_a 0	nil_a 0	
@@ -390,7 +390,7 @@ Should print "fother loo called.": "
 	tablesetelem	local_a 1	string_a 26	userfunc_a 272	
 	tablesetelem	local_a 1	string_a 19	number_a 0	
 	tablesetelem	local_a 1	string_a 20	local_a 0	
-	assign	retval_a 0	nil_a 0	nil_a 0	
+	assign	retval_a 0	local_a 1	nil_a 0	
 	jump	label_a 294	nil_a 0	nil_a 0	
 	funcend	userfunc_a 283	nil_a 0	nil_a 0	
 	jump	label_a 335	nil_a 0	nil_a 0	
@@ -416,7 +416,7 @@ Should print "fother loo called.": "
 	param	formal_a 2	nil_a 0	nil_a 0	
 	call	local_a 1	nil_a 0	nil_a 0	
 	assign	local_a 2	retval_a 0	nil_a 0	
-	assign	retval_a 0	nil_a 0	nil_a 0	
+	assign	retval_a 0	local_a 2	nil_a 0	
 	jump	label_a 320	nil_a 0	nil_a 0	
 	funcend	userfunc_a 311	nil_a 0	nil_a 0	
 	newtable	local_a 1	nil_a 0	nil_a 0	
@@ -430,7 +430,7 @@ Should print "fother loo called.": "
 	assign	local_a 4	retval_a 0	nil_a 0	
 	assign	local_a 0	local_a 4	nil_a 0	
 	assign	local_a 5	local_a 0	nil_a 0	
-	assign	retval_a 0	nil_a 0	nil_a 0	
+	assign	retval_a 0	local_a 0	nil_a 0	
 	jump	label_a 334	nil_a 0	nil_a 0	
 	funcend	userfunc_a 296	nil_a 0	nil_a 0	
 	jump	label_a 388	nil_a 0	nil_a 0	
@@ -459,7 +459,7 @@ Should print "fother loo called.": "
 	param	formal_a 2	nil_a 0	nil_a 0	
 	call	local_a 1	nil_a 0	nil_a 0	
 	assign	local_a 2	retval_a 0	nil_a 0	
-	assign	retval_a 0	nil_a 0	nil_a 0	
+	assign	retval_a 0	local_a 2	nil_a 0	
 	jump	label_a 363	nil_a 0	nil_a 0	
 	funcend	userfunc_a 354	nil_a 0	nil_a 0	
 	newtable	local_a 6	nil_a 0	nil_a 0	
@@ -483,7 +483,7 @@ Should print "fother loo called.": "
 	assign	local_a 7	retval_a 0	nil_a 0	
 	assign	local_a 0	local_a 7	nil_a 0	
 	assign	local_a 8	local_a 0	nil_a 0	
-	assign	retval_a 0	nil_a 0	nil_a 0	
+	assign	retval_a 0	local_a 0	nil_a 0	
 	jump	label_a 387	nil_a 0	nil_a 0	
 	funcend	userfunc_a 336	nil_a 0	nil_a 0	
 	jump	label_a 409	nil_a 0	nil_a 0	
@@ -504,7 +504,7 @@ Should print "fother loo called.": "
 	tablesetelem	local_a 0	string_a 35	userfunc_a 336	
 	tablesetelem	local_a 0	string_a 36	userfunc_a 393	
 	tablesetelem	local_a 0	string_a 37	userfunc_a 296	
-	assign	retval_a 0	nil_a 0	nil_a 0	
+	assign	retval_a 0	local_a 0	nil_a 0	
 	jump	label_a 408	nil_a 0	nil_a 0	
 	funcend	userfunc_a 389	nil_a 0	nil_a 0	
 	call	userfunc_a 389	nil_a 0	nil_a 0	

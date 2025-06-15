@@ -113,7 +113,7 @@
 	tablesetelem	local_a 0	string_a 4	local_a 0	
 	tablesetelem	local_a 0	string_a 5	userfunc_a 4	
 	tablesetelem	local_a 0	string_a 6	userfunc_a 14	
-	assign	retval_a 0	nil_a 0	nil_a 0	
+	assign	retval_a 0	local_a 0	nil_a 0	
 	jump	label_a 53	nil_a 0	nil_a 0	
 	funcend	userfunc_a 1	nil_a 0	nil_a 0	
 	jump	label_a 108	nil_a 0	nil_a 0	
@@ -167,7 +167,7 @@
 	tablesetelem	local_a 0	string_a 9	local_a 0	
 	tablesetelem	local_a 0	string_a 10	userfunc_a 58	
 	tablesetelem	local_a 0	string_a 6	userfunc_a 68	
-	assign	retval_a 0	nil_a 0	nil_a 0	
+	assign	retval_a 0	local_a 0	nil_a 0	
 	jump	label_a 107	nil_a 0	nil_a 0	
 	funcend	userfunc_a 55	nil_a 0	nil_a 0	
 	jump	label_a 123	nil_a 0	nil_a 0	
@@ -182,7 +182,7 @@
 	newtable	local_a 0	nil_a 0	nil_a 0	
 	tablesetelem	local_a 0	string_a 12	formal_a 0	
 	tablesetelem	local_a 0	string_a 6	userfunc_a 111	
-	assign	retval_a 0	nil_a 0	nil_a 0	
+	assign	retval_a 0	local_a 0	nil_a 0	
 	jump	label_a 122	nil_a 0	nil_a 0	
 	funcend	userfunc_a 109	nil_a 0	nil_a 0	
 	param	string_a 13	nil_a 0	nil_a 0	
@@ -267,7 +267,7 @@
 	tablesetelem	local_a 0	string_a 27	userfunc_a 175	
 	tablesetelem	local_a 0	string_a 28	userfunc_a 184	
 	tablesetelem	local_a 0	string_a 29	userfunc_a 193	
-	assign	retval_a 0	nil_a 0	nil_a 0	
+	assign	retval_a 0	local_a 0	nil_a 0	
 	jump	label_a 207	nil_a 0	nil_a 0	
 	funcend	userfunc_a 173	nil_a 0	nil_a 0	
 	call	userfunc_a 173	nil_a 0	nil_a 0	

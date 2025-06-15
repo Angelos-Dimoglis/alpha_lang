@@ -96,7 +96,7 @@
 	tablesetelem	local_a 0	string_a 2	formal_a 0	
 	tablesetelem	local_a 0	string_a 3	formal_a 1	
 	tablesetelem	local_a 0	string_a 4	userfunc_a 3	
-	assign	retval_a 0	nil_a 0	nil_a 0	
+	assign	retval_a 0	local_a 0	nil_a 0	
 	jump	label_a 19	nil_a 0	nil_a 0	
 	funcend	userfunc_a 1	nil_a 0	nil_a 0	
 	param	number_a 0	nil_a 0	nil_a 0	
@@ -148,7 +148,7 @@
 	tablesetelem	local_a 0	string_a 11	formal_a 0	
 	tablesetelem	local_a 0	string_a 12	formal_a 1	
 	tablesetelem	local_a 0	string_a 4	userfunc_a 47	
-	assign	retval_a 0	nil_a 0	nil_a 0	
+	assign	retval_a 0	local_a 0	nil_a 0	
 	jump	label_a 71	nil_a 0	nil_a 0	
 	funcend	userfunc_a 45	nil_a 0	nil_a 0	
 	param	number_a 4	nil_a 0	nil_a 0	

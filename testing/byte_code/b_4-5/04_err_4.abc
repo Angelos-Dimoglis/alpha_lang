@@ -40,7 +40,7 @@
 	param	userfunc_a 1	nil_a 0	nil_a 0	
 	call	local_a 1	nil_a 0	nil_a 0	
 	assign	local_a 0	retval_a 0	nil_a 0	
-	assign	retval_a 0	nil_a 0	nil_a 0	
+	assign	retval_a 0	local_a 0	nil_a 0	
 	jump	label_a 16	nil_a 0	nil_a 0	
 	funcend	userfunc_a 1	nil_a 0	nil_a 0	
 	jump	label_a 36	nil_a 0	nil_a 0	
@@ -59,7 +59,7 @@
 	param	userfunc_a 18	nil_a 0	nil_a 0	
 	call	local_a 1	nil_a 0	nil_a 0	
 	assign	local_a 0	retval_a 0	nil_a 0	
-	assign	retval_a 0	nil_a 0	nil_a 0	
+	assign	retval_a 0	local_a 0	nil_a 0	
 	jump	label_a 35	nil_a 0	nil_a 0	
 	funcend	userfunc_a 18	nil_a 0	nil_a 0	
 	param	userfunc_a 1	nil_a 0	nil_a 0	

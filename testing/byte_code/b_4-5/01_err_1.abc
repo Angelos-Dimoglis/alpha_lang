@@ -6,7 +6,9 @@
 	"tablefunc2"
 	tablefunc
 	tablefunc2
-0 constant_numbers
+2 constant_numbers
+	3.000000
+	4.000000
 8 user_functions
 	executor 1 6
 	_f0 3 0
@@ -43,16 +45,16 @@
 	funcstart	userfunc_a 9	nil_a 0	nil_a 0	
 	call	formal_a 0	nil_a 0	nil_a 0	
 	assign	local_a 0	retval_a 0	nil_a 0	
-	assign	retval_a 0	nil_a 0	nil_a 0	
+	assign	retval_a 0	local_a 0	nil_a 0	
 	jump	label_a 14	nil_a 0	nil_a 0	
 	funcend	userfunc_a 9	nil_a 0	nil_a 0	
-	assign	retval_a 0	nil_a 0	nil_a 0	
+	assign	retval_a 0	userfunc_a 9	nil_a 0	
 	jump	label_a 17	nil_a 0	nil_a 0	
 	funcend	userfunc_a 7	nil_a 0	nil_a 0	
-	assign	retval_a 0	nil_a 0	nil_a 0	
+	assign	retval_a 0	userfunc_a 7	nil_a 0	
 	jump	label_a 20	nil_a 0	nil_a 0	
 	funcend	userfunc_a 5	nil_a 0	nil_a 0	
-	assign	retval_a 0	nil_a 0	nil_a 0	
+	assign	retval_a 0	userfunc_a 5	nil_a 0	
 	jump	label_a 23	nil_a 0	nil_a 0	
 	funcend	userfunc_a 3	nil_a 0	nil_a 0	
 	assign	local_a 0	userfunc_a 3	nil_a 0	
@@ -78,15 +80,15 @@
 	funcstart	userfunc_a 44	nil_a 0	nil_a 0	
 	jump	label_a 50	nil_a 0	nil_a 0	
 	funcstart	userfunc_a 46	nil_a 0	nil_a 0	
-	assign	retval_a 0	nil_a 0	nil_a 0	
+	assign	retval_a 0	number_a 0	nil_a 0	
 	jump	label_a 49	nil_a 0	nil_a 0	
 	funcend	userfunc_a 46	nil_a 0	nil_a 0	
-	assign	retval_a 0	nil_a 0	nil_a 0	
+	assign	retval_a 0	userfunc_a 46	nil_a 0	
 	jump	label_a 52	nil_a 0	nil_a 0	
 	funcend	userfunc_a 44	nil_a 0	nil_a 0	
 	jump	label_a 58	nil_a 0	nil_a 0	
 	funcstart	userfunc_a 54	nil_a 0	nil_a 0	
-	assign	retval_a 0	nil_a 0	nil_a 0	
+	assign	retval_a 0	number_a 1	nil_a 0	
 	jump	label_a 57	nil_a 0	nil_a 0	
 	funcend	userfunc_a 54	nil_a 0	nil_a 0	
 	newtable	global_a 1	nil_a 0	nil_a 0	
