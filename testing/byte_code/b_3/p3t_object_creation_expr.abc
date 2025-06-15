@@ -31,7 +31,7 @@
 	sqrt
 	cos
 	sin
-54 num_of_globals
+4 num_of_globals
 56 instructions
 	newtable	global_a 0	nil_a 0	nil_a 0	
 	tablesetelem	global_a 0	number_a 0	nil_a 0	

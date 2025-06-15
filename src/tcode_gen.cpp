@@ -2,6 +2,7 @@
 #include <iostream>
 #include <fstream>
 #include <unordered_map>
+#include <unordered_set>
 #include <variant>
 #include <vector>
 
@@ -12,8 +13,6 @@
 extern quad *quads;
 extern unsigned total;
 extern unsigned int curr_quad;
-
-unsigned int num_of_globals = 0;
 
 using namespace std;
 
@@ -59,9 +58,11 @@ void generate_NOP (quad *);
 vector <instruction> tcode_instructions;
 vector <incomplete_jump> incomplete_jumps;
 
+unordered_set<string> all_global_vars;
+
 vector<double> all_num_consts;
-vector <string> all_str_consts;
-vector <string> all_lib_funcs = {
+vector<string> all_str_consts;
+vector<string> all_lib_funcs = {
     "print",
     "input",
     "objectmemberkeys",
@@ -129,7 +130,7 @@ void make_operand (expr *e, vmarg *arg) {
             arg->val = var->offset;
 
             switch (var->space) {
-                case program_var: arg->type = global_a; num_of_globals++; break;
+                case program_var: arg->type = global_a; all_global_vars.insert(e->sym->name); break;
                 case function_local: arg->type = local_a; break;
                 case formal_arg: arg->type = formal_a; break;
                 default: assert(0);
@@ -508,7 +509,7 @@ void create_binary_file(string name) {
             file << "\t" + lib << endl;
         }
 
-        file << num_of_globals << " num_of_globals" << endl;
+        file << all_global_vars.size() << " num_of_globals" << endl;
 
         file << tcode_instructions.size() << " instructions" << endl;
         for (instruction i : tcode_instructions) {

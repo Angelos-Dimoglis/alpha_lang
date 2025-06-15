@@ -77,7 +77,7 @@
 	sqrt
 	cos
 	sin
-114 num_of_globals
+10 num_of_globals
 266 instructions
 	jump	label_a 20	nil_a 0	nil_a 0	
 	funcstart	userfunc_a 1	nil_a 0	nil_a 0	

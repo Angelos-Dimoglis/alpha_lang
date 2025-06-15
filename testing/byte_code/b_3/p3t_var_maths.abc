@@ -15,7 +15,7 @@
 	sqrt
 	cos
 	sin
-15 num_of_globals
+11 num_of_globals
 5 instructions
 	add	global_a 2	global_a 0	global_a 1	
 	mul	global_a 2	global_a 3	global_a 4	

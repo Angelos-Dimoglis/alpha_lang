@@ -21,7 +21,7 @@
 	sqrt
 	cos
 	sin
-71 num_of_globals
+9 num_of_globals
 74 instructions
 	assign	global_a 0	string_a 0	nil_a 0	
 	assign	global_a 1	global_a 0	nil_a 0	

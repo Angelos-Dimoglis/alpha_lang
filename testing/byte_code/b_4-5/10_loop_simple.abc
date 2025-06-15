@@ -45,7 +45,7 @@ Product of the GP series till "
 	sqrt
 	cos
 	sin
-156 num_of_globals
+14 num_of_globals
 200 instructions
 	assign	global_a 0	string_a 0	nil_a 0	
 	assign	global_a 1	global_a 0	nil_a 0	

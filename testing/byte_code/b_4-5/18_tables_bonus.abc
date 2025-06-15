@@ -43,7 +43,7 @@
 	sqrt
 	cos
 	sin
-74 num_of_globals
+6 num_of_globals
 98 instructions
 	jump	label_a 3	nil_a 0	nil_a 0	
 	funcstart	userfunc_a 1	nil_a 0	nil_a 0	
