@@ -126,6 +126,11 @@ void print_quad (struct quad *q, int index, FILE *output) {
     if (q->label)
         fprintf(output, "%d", q->label);
     fprintf(output, "|");
+
+    if (q->line)
+        fprintf(output, "%d", q->line);
+    fprintf(output, "|");
+
 }
 
 void write_quads (FILE *output, const char* filename, bool output_file_set) {

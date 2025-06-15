@@ -405,8 +405,8 @@ void generate_RETURN(quad *q) {
     t.srcLine = q->line;
     q->taddress = next_instr_label();
     t.opcode = assign_v;
-    make_operand(q->arg1, &t.arg1);
     make_retval_operand(&t.result);
+    make_operand(q->result, &t.arg1);
     emit_instr(t);
 
 }
@@ -512,7 +512,7 @@ void create_binary_file(string name) {
         file << all_global_vars.size() << " num_of_globals" << endl;
 
         file << tcode_instructions.size() << " instructions" << endl;
-        for (instruction i : tcode_instructions) {
+        for (instruction &i : tcode_instructions) {
             file << "\t" + opcode_to_string_arr[i.opcode] << "\t";
 
             file << arg_to_string_arr[i.result.type] + " " + to_string(i.result.val) + "\t";

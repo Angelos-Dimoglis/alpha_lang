@@ -1,104 +1,90 @@
-quad#  opcode        result    arg1          arg2        label  
-1:     jump                                              50     
-2:     funcstart     executor                                   
-3:     jump                                              26     
-4:     funcstart     _f0                                        
-5:     jump                                              23     
-6:     funcstart     _f1                                        
-7:     jump                                              20     
-8:     funcstart     _f2                                        
-9:     jump                                              17     
-10:    funcstart     _f3                                        
-11:    param         NIL                                        
-12:    call          a                                          
-13:    getretval     _t0                                        
-14:    return        _t0                                        
-15:    jump                                              16     
-16:    funcend       _f3                                        
-17:    return        _f3                                        
-18:    jump                                              19     
-19:    funcend       _f2                                        
-20:    return        _f2                                        
-21:    jump                                              22     
-22:    funcend       _f1                                        
-23:    return        _f1                                        
-24:    jump                                              25     
-25:    funcend       _f0                                        
-26:    assign        f         _f0                              
-27:    assign        _t0       f                                
-28:    param         a                                          
-29:    param         NIL                                        
-30:    call          f                                          
-31:    getretval     _t0                                        
-32:    param         a                                          
-33:    param         NIL                                        
-34:    call          _t0                                        
-35:    getretval     _t1                                        
-36:    param         a                                          
-37:    param         NIL                                        
-38:    call          _t1                                        
-39:    getretval     _t2                                        
-40:    param         a                                          
-41:    param         NIL                                        
-42:    call          _t2                                        
-43:    getretval     _t3                                        
-44:    param         _t3                                        
-45:    param         "                                          
-"                                                               
-46:    param         NIL                                        
-47:    call          print                                      
-48:    getretval     _t4                                        
-49:    funcend       executor                                   
-50:    jump                                              60     
-51:    funcstart     _f4                                        
-52:    jump                                              57     
-53:    funcstart     _f5                                        
-54:    return        3                                          
-55:    jump                                              56     
-56:    funcend       _f5                                        
-57:    return        _f5                                        
-58:    jump                                              59     
-59:    funcend       _f4                                        
-60:    jump                                              65     
-61:    funcstart     _f6                                        
-62:    return        4                                          
-63:    jump                                              64     
-64:    funcend       _f6                                        
-65:    tablecreate   _t0                                        
-66:    tablesetelem  _t0       "tablefunc"   _f4                
-67:    tablesetelem  _t0       "tablefunc2"  _f6                
-68:    assign        t         _t0                              
-69:    assign        _t1       t                                
-70:    param         print                                      
-71:    param         NIL                                        
-72:    call          executor                                   
-73:    getretval     _t0                                        
-74:    tablegetelem  _t0       t             tablefunc          
-75:    param         _t0                                        
-76:    param         NIL                                        
-77:    call          executor                                   
-78:    getretval     _t1                                        
-79:    tablegetelem  _t0       t             tablefunc2         
-80:    param         _t0                                        
-81:    param         NIL                                        
-82:    call          executor                                   
-83:    getretval     _t1                                        
-84:    tablegetelem  _t0       t             tablefunc          
-85:    param         NIL                                        
-86:    call          _t0                                        
-87:    getretval     _t1                                        
-88:    param         _t1                                        
-89:    param         NIL                                        
-90:    call          executor                                   
-91:    getretval     _t2                                        
-92:    tablegetelem  _t0       t             tablefunc          
-93:    param         NIL                                        
-94:    call          _t0                                        
-95:    getretval     _t1                                        
-96:    param         NIL                                        
-97:    call          _t1                                        
-98:    getretval     _t2                                        
-99:    param         _t2                                        
-100:   param         NIL                                        
-101:   call          executor                                   
-102:   getretval     _t3                                        
+quad#  opcode        result    arg1          arg2        label      
+1:     jump                                              44     14  
+2:     funcstart     executor                                   14  
+3:     jump                                              25     15  
+4:     funcstart     _f0                                        15  
+5:     jump                                              22     16  
+6:     funcstart     _f1                                        16  
+7:     jump                                              19     17  
+8:     funcstart     _f2                                        17  
+9:     jump                                              16     18  
+10:    funcstart     _f3                                        18  
+11:    call          a                                          19  
+12:    getretval     _t0                                        19  
+13:    return        _t0                                        19  
+14:    jump                                              15     19  
+15:    funcend       _f3                                        20  
+16:    return        _f3                                        20  
+17:    jump                                              18     20  
+18:    funcend       _f2                                        21  
+19:    return        _f2                                        21  
+20:    jump                                              21     21  
+21:    funcend       _f1                                        22  
+22:    return        _f1                                        22  
+23:    jump                                              24     22  
+24:    funcend       _f0                                        23  
+25:    assign        f         _f0                              23  
+26:    assign        _t0       f                                23  
+27:    param         a                                          24  
+28:    call          f                                          24  
+29:    getretval     _t0                                        24  
+30:    param         a                                          24  
+31:    call          _t0                                        24  
+32:    getretval     _t1                                        24  
+33:    param         a                                          24  
+34:    call          _t1                                        24  
+35:    getretval     _t2                                        24  
+36:    param         a                                          24  
+37:    call          _t2                                        24  
+38:    getretval     _t3                                        24  
+39:    param         _t3                                        24  
+40:    param         "                                              
+"                                            24                     
+41:    call          print                                      24  
+42:    getretval     _t4                                        24  
+43:    funcend       executor                                   25  
+44:    jump                                              54     27  
+45:    funcstart     _f4                                        27  
+46:    jump                                              51     27  
+47:    funcstart     _f5                                        27  
+48:    return        3                                          27  
+49:    jump                                              50     27  
+50:    funcend       _f5                                        27  
+51:    return        _f5                                        27  
+52:    jump                                              53     27  
+53:    funcend       _f4                                        27  
+54:    jump                                              59     27  
+55:    funcstart     _f6                                        27  
+56:    return        4                                          27  
+57:    jump                                              58     27  
+58:    funcend       _f6                                        27  
+59:    tablecreate   _t0                                        27  
+60:    tablesetelem  _t0       "tablefunc"   _f4                27  
+61:    tablesetelem  _t0       "tablefunc2"  _f6                27  
+62:    assign        t         _t0                              27  
+63:    assign        _t1       t                                27  
+64:    param         print                                      29  
+65:    call          executor                                   29  
+66:    getretval     _t0                                        29  
+67:    tablegetelem  _t0       t             tablefunc          30  
+68:    param         _t0                                        30  
+69:    call          executor                                   30  
+70:    getretval     _t1                                        30  
+71:    tablegetelem  _t0       t             tablefunc2         31  
+72:    param         _t0                                        31  
+73:    call          executor                                   31  
+74:    getretval     _t1                                        31  
+75:    tablegetelem  _t0       t             tablefunc          32  
+76:    call          _t0                                        32  
+77:    getretval     _t1                                        32  
+78:    param         _t1                                        32  
+79:    call          executor                                   32  
+80:    getretval     _t2                                        32  
+81:    tablegetelem  _t0       t             tablefunc          33  
+82:    call          _t0                                        33  
+83:    getretval     _t1                                        33  
+84:    call          _t1                                        33  
+85:    getretval     _t2                                        33  
+86:    param         _t2                                        33  
+87:    call          executor                                   33  
+88:    getretval     _t3                                        33  
