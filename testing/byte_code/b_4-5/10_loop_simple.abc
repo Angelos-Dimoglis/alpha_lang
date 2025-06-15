@@ -1,0 +1,248 @@
+69420 magic_number
+10 constant_strings
+	" "
+	"
+"
+	"GP SERIES (first:2, ratio:3)
+"
+	"  "
+	"
+Sum of the GP series till "
+	" terms is "
+	"
+
+GP SERIES(first:2, ratio:2)
+"
+	"
+Product of the GP series till "
+	"
+
+ Even numbers till 60:
+"
+	"
+
+ Odd numbers till 60:
+"
+7 constant_numbers
+	7.000000
+	1.000000
+	0.000000
+	3.000000
+	2.000000
+	100.000000
+	60.000000
+0 user_functions
+12 library_functions
+	print
+	input
+	objectmemberkeys
+	objecttotalmembers
+	objectcopy
+	totalarguments
+	argument
+	typeof
+	strtonum
+	sqrt
+	cos
+	sin
+200 instructions
+	assign	global_a 0	string_a 0	nil_a 0	
+	assign	global_a 1	global_a 0	nil_a 0	
+	assign	global_a 2	string_a 1	nil_a 0	
+	assign	global_a 1	global_a 2	nil_a 0	
+	assign	global_a 3	number_a 0	nil_a 0	
+	assign	global_a 1	global_a 3	nil_a 0	
+	assign	global_a 4	number_a 1	nil_a 0	
+	assign	global_a 1	global_a 4	nil_a 0	
+	assign	global_a 5	number_a 2	nil_a 0	
+	assign	global_a 1	global_a 5	nil_a 0	
+	assign	global_a 6	number_a 3	nil_a 0	
+	assign	global_a 1	global_a 6	nil_a 0	
+	assign	global_a 7	global_a 4	nil_a 0	
+	assign	global_a 1	global_a 7	nil_a 0	
+	param	string_a 2	nil_a 0	nil_a 0	
+	param	nil_a 2	nil_a 0	nil_a 0	
+	call	libfunc_a 0	nil_a 0	nil_a 0	
+	assign	global_a 1	retval_a 0	nil_a 0	
+	assign	global_a 8	number_a 2	nil_a 0	
+	assign	global_a 1	global_a 8	nil_a 0	
+	if_less	label_a 22	global_a 8	global_a 3	
+	jump	label_a 24	nil_a 0	nil_a 0	
+	assign	global_a 9	bool_a 1	nil_a 0	
+	jump	label_a 25	nil_a 0	nil_a 0	
+	assign	global_a 9	bool_a 0	nil_a 0	
+	if_eq	label_a 30	global_a 9	bool_a 1	
+	jump	label_a 45	nil_a 0	nil_a 0	
+	assign	global_a 10	global_a 8	nil_a 0	
+	add	global_a 8	global_a 8	number_a 1	
+	jump	label_a 19	nil_a 0	nil_a 0	
+	param	global_a 7	nil_a 0	nil_a 0	
+	param	nil_a 7	nil_a 0	nil_a 0	
+	call	libfunc_a 0	nil_a 0	nil_a 0	
+	assign	global_a 11	retval_a 0	nil_a 0	
+	param	string_a 3	nil_a 0	nil_a 0	
+	param	nil_a 3	nil_a 0	nil_a 0	
+	call	libfunc_a 0	nil_a 0	nil_a 0	
+	assign	global_a 12	retval_a 0	nil_a 0	
+	add	global_a 12	global_a 5	global_a 7	
+	assign	global_a 5	global_a 12	nil_a 0	
+	assign	global_a 13	global_a 5	nil_a 0	
+	mul	global_a 12	global_a 7	global_a 6	
+	assign	global_a 7	global_a 12	nil_a 0	
+	assign	global_a 13	global_a 7	nil_a 0	
+	jump	label_a 26	nil_a 0	nil_a 0	
+	param	string_a 4	nil_a 0	nil_a 0	
+	param	nil_a 4	nil_a 0	nil_a 0	
+	call	libfunc_a 0	nil_a 0	nil_a 0	
+	assign	global_a 1	retval_a 0	nil_a 0	
+	param	global_a 3	nil_a 0	nil_a 0	
+	param	nil_a 3	nil_a 0	nil_a 0	
+	call	libfunc_a 0	nil_a 0	nil_a 0	
+	assign	global_a 1	retval_a 0	nil_a 0	
+	param	string_a 5	nil_a 0	nil_a 0	
+	param	nil_a 5	nil_a 0	nil_a 0	
+	call	libfunc_a 0	nil_a 0	nil_a 0	
+	assign	global_a 1	retval_a 0	nil_a 0	
+	param	global_a 5	nil_a 0	nil_a 0	
+	param	nil_a 5	nil_a 0	nil_a 0	
+	call	libfunc_a 0	nil_a 0	nil_a 0	
+	assign	global_a 1	retval_a 0	nil_a 0	
+	assign	global_a 8	number_a 2	nil_a 0	
+	assign	global_a 1	global_a 8	nil_a 0	
+	assign	global_a 14	number_a 1	nil_a 0	
+	assign	global_a 1	global_a 14	nil_a 0	
+	assign	global_a 6	number_a 4	nil_a 0	
+	assign	global_a 1	global_a 6	nil_a 0	
+	assign	global_a 7	global_a 4	nil_a 0	
+	assign	global_a 1	global_a 7	nil_a 0	
+	param	string_a 6	nil_a 0	nil_a 0	
+	param	nil_a 6	nil_a 0	nil_a 0	
+	call	libfunc_a 0	nil_a 0	nil_a 0	
+	assign	global_a 1	retval_a 0	nil_a 0	
+	assign	global_a 1	global_a 8	nil_a 0	
+	add	global_a 8	global_a 8	number_a 1	
+	if_less	label_a 77	global_a 1	global_a 3	
+	jump	label_a 79	nil_a 0	nil_a 0	
+	assign	global_a 9	bool_a 1	nil_a 0	
+	jump	label_a 80	nil_a 0	nil_a 0	
+	assign	global_a 9	bool_a 0	nil_a 0	
+	if_eq	label_a 82	global_a 9	bool_a 1	
+	jump	label_a 97	nil_a 0	nil_a 0	
+	param	global_a 7	nil_a 0	nil_a 0	
+	param	nil_a 7	nil_a 0	nil_a 0	
+	call	libfunc_a 0	nil_a 0	nil_a 0	
+	assign	global_a 15	retval_a 0	nil_a 0	
+	param	string_a 3	nil_a 0	nil_a 0	
+	param	nil_a 3	nil_a 0	nil_a 0	
+	call	libfunc_a 0	nil_a 0	nil_a 0	
+	assign	global_a 16	retval_a 0	nil_a 0	
+	mul	global_a 16	global_a 14	global_a 7	
+	assign	global_a 14	global_a 16	nil_a 0	
+	assign	global_a 17	global_a 14	nil_a 0	
+	mul	global_a 16	global_a 7	global_a 6	
+	assign	global_a 7	global_a 16	nil_a 0	
+	assign	global_a 17	global_a 7	nil_a 0	
+	jump	label_a 72	nil_a 0	nil_a 0	
+	param	string_a 7	nil_a 0	nil_a 0	
+	param	nil_a 7	nil_a 0	nil_a 0	
+	call	libfunc_a 0	nil_a 0	nil_a 0	
+	assign	global_a 1	retval_a 0	nil_a 0	
+	param	global_a 3	nil_a 0	nil_a 0	
+	param	nil_a 3	nil_a 0	nil_a 0	
+	call	libfunc_a 0	nil_a 0	nil_a 0	
+	assign	global_a 1	retval_a 0	nil_a 0	
+	param	string_a 5	nil_a 0	nil_a 0	
+	param	nil_a 5	nil_a 0	nil_a 0	
+	call	libfunc_a 0	nil_a 0	nil_a 0	
+	assign	global_a 1	retval_a 0	nil_a 0	
+	param	global_a 14	nil_a 0	nil_a 0	
+	param	nil_a 14	nil_a 0	nil_a 0	
+	call	libfunc_a 0	nil_a 0	nil_a 0	
+	assign	global_a 1	retval_a 0	nil_a 0	
+	param	string_a 8	nil_a 0	nil_a 0	
+	param	nil_a 8	nil_a 0	nil_a 0	
+	call	libfunc_a 0	nil_a 0	nil_a 0	
+	assign	global_a 1	retval_a 0	nil_a 0	
+	assign	global_a 8	number_a 2	nil_a 0	
+	assign	global_a 1	global_a 8	nil_a 0	
+	if_less	label_a 121	global_a 8	number_a 5	
+	jump	label_a 123	nil_a 0	nil_a 0	
+	assign	global_a 9	bool_a 1	nil_a 0	
+	jump	label_a 124	nil_a 0	nil_a 0	
+	assign	global_a 9	bool_a 0	nil_a 0	
+	if_eq	label_a 129	global_a 9	bool_a 1	
+	jump	label_a 155	nil_a 0	nil_a 0	
+	assign	global_a 10	global_a 8	nil_a 0	
+	add	global_a 8	global_a 8	number_a 1	
+	jump	label_a 118	nil_a 0	nil_a 0	
+	if_eq	label_a 131	global_a 8	number_a 6	
+	jump	label_a 133	nil_a 0	nil_a 0	
+	assign	global_a 18	bool_a 1	nil_a 0	
+	jump	label_a 134	nil_a 0	nil_a 0	
+	assign	global_a 18	bool_a 0	nil_a 0	
+	if_eq	label_a 136	global_a 18	bool_a 1	
+	jump	label_a 137	nil_a 0	nil_a 0	
+	jump	label_a 155	nil_a 0	nil_a 0	
+	mod	global_a 19	global_a 8	number_a 4	
+	if_eq	label_a 140	global_a 19	number_a 2	
+	jump	label_a 142	nil_a 0	nil_a 0	
+	assign	global_a 20	bool_a 1	nil_a 0	
+	jump	label_a 143	nil_a 0	nil_a 0	
+	assign	global_a 20	bool_a 0	nil_a 0	
+	if_eq	label_a 145	global_a 20	bool_a 1	
+	jump	label_a 154	nil_a 0	nil_a 0	
+	param	global_a 8	nil_a 0	nil_a 0	
+	param	nil_a 8	nil_a 0	nil_a 0	
+	call	libfunc_a 0	nil_a 0	nil_a 0	
+	assign	global_a 21	retval_a 0	nil_a 0	
+	param	string_a 3	nil_a 0	nil_a 0	
+	param	nil_a 3	nil_a 0	nil_a 0	
+	call	libfunc_a 0	nil_a 0	nil_a 0	
+	assign	global_a 22	retval_a 0	nil_a 0	
+	jump	label_a 125	nil_a 0	nil_a 0	
+	jump	label_a 125	nil_a 0	nil_a 0	
+	param	string_a 9	nil_a 0	nil_a 0	
+	param	nil_a 9	nil_a 0	nil_a 0	
+	call	libfunc_a 0	nil_a 0	nil_a 0	
+	assign	global_a 1	retval_a 0	nil_a 0	
+	assign	global_a 23	number_a 2	nil_a 0	
+	assign	global_a 1	global_a 23	nil_a 0	
+	assign	global_a 1	global_a 23	nil_a 0	
+	add	global_a 23	global_a 23	number_a 1	
+	if_less	label_a 165	global_a 1	number_a 6	
+	jump	label_a 167	nil_a 0	nil_a 0	
+	assign	global_a 9	bool_a 1	nil_a 0	
+	jump	label_a 168	nil_a 0	nil_a 0	
+	assign	global_a 9	bool_a 0	nil_a 0	
+	if_eq	label_a 170	global_a 9	bool_a 1	
+	jump	label_a 196	nil_a 0	nil_a 0	
+	if_eq	label_a 172	global_a 23	number_a 6	
+	jump	label_a 174	nil_a 0	nil_a 0	
+	assign	global_a 24	bool_a 1	nil_a 0	
+	jump	label_a 175	nil_a 0	nil_a 0	
+	assign	global_a 24	bool_a 0	nil_a 0	
+	if_eq	label_a 177	global_a 24	bool_a 1	
+	jump	label_a 178	nil_a 0	nil_a 0	
+	jump	label_a 196	nil_a 0	nil_a 0	
+	mod	global_a 25	global_a 23	number_a 4	
+	if_eq	label_a 181	global_a 25	number_a 1	
+	jump	label_a 183	nil_a 0	nil_a 0	
+	assign	global_a 26	bool_a 1	nil_a 0	
+	jump	label_a 184	nil_a 0	nil_a 0	
+	assign	global_a 26	bool_a 0	nil_a 0	
+	if_eq	label_a 186	global_a 26	bool_a 1	
+	jump	label_a 195	nil_a 0	nil_a 0	
+	param	global_a 23	nil_a 0	nil_a 0	
+	param	nil_a 23	nil_a 0	nil_a 0	
+	call	libfunc_a 0	nil_a 0	nil_a 0	
+	assign	global_a 27	retval_a 0	nil_a 0	
+	param	string_a 3	nil_a 0	nil_a 0	
+	param	nil_a 3	nil_a 0	nil_a 0	
+	call	libfunc_a 0	nil_a 0	nil_a 0	
+	assign	global_a 28	retval_a 0	nil_a 0	
+	jump	label_a 160	nil_a 0	nil_a 0	
+	jump	label_a 160	nil_a 0	nil_a 0	
+	param	global_a 2	nil_a 0	nil_a 0	
+	param	nil_a 2	nil_a 0	nil_a 0	
+	call	libfunc_a 0	nil_a 0	nil_a 0	
+	assign	global_a 1	retval_a 0	nil_a 0	

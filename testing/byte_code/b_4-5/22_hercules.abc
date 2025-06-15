@@ -1,0 +1,912 @@
+69420 magic_number
+46 constant_strings
+	"
+\r"
+	"S"
+	"E"
+	" "
+	"X"
+	"viz"
+	data
+	visualize
+	"print"
+	print
+	"lab"
+	"maxJ"
+	"maxI"
+	"data"
+	"visualize"
+	"()"
+	"^"
+	">"
+	"v"
+	"<"
+	y
+	x
+	direction
+	moves
+	"turn"
+	"<herc33gr> im free wheee!!111 :DDD"
+	"<herc33gr> omj im trapped lol"
+	lab
+	marks
+	"----------------------------------------"
+	"move"
+	move
+	"report"
+	report
+	"direction"
+	"x"
+	"y"
+	"marks"
+	"up"
+	"right"
+	"down"
+	"left"
+	up
+	right
+	down
+	left
+13 constant_numbers
+	2.000000
+	3.000000
+	0.000000
+	1.000000
+	4.000000
+	5.000000
+	6.000000
+	7.000000
+	8.000000
+	9.000000
+	10.000000
+	11.000000
+	12.000000
+13 user_functions
+	newLabyrinthData 7 11
+	newLabyrinth 164 1
+	_f0 169 17
+	_f1 259 15
+	_f2 307 4
+	newHercules 411 7
+	_f3 419 7
+	_f4 467 7
+	_f5 519 7
+	_f6 571 7
+	_f7 619 14
+	_f8 687 9
+	_f9 717 4
+12 library_functions
+	print
+	input
+	objectmemberkeys
+	objecttotalmembers
+	objectcopy
+	totalarguments
+	argument
+	typeof
+	strtonum
+	sqrt
+	cos
+	sin
+821 instructions
+	assign	global_a 0	string_a 0	nil_a 0	
+	assign	global_a 1	global_a 0	nil_a 0	
+	assign	global_a 2	number_a 0	nil_a 0	
+	assign	global_a 1	global_a 2	nil_a 0	
+	assign	global_a 3	number_a 1	nil_a 0	
+	assign	global_a 1	global_a 3	nil_a 0	
+	jump	label_a 163	nil_a 0	nil_a 0	
+	funcstart	userfunc_a 7	nil_a 0	nil_a 0	
+	newtable	local_a 0	nil_a 0	nil_a 0	
+	tablesetelem	local_a 0	number_a 2	global_a 2	
+	tablesetelem	local_a 0	number_a 3	number_a 2	
+	tablesetelem	local_a 0	number_a 0	number_a 2	
+	tablesetelem	local_a 0	number_a 1	number_a 3	
+	tablesetelem	local_a 0	number_a 4	number_a 3	
+	tablesetelem	local_a 0	number_a 5	number_a 3	
+	tablesetelem	local_a 0	number_a 6	number_a 3	
+	tablesetelem	local_a 0	number_a 7	number_a 2	
+	tablesetelem	local_a 0	number_a 8	number_a 2	
+	tablesetelem	local_a 0	number_a 9	number_a 2	
+	tablesetelem	local_a 0	number_a 10	number_a 2	
+	tablesetelem	local_a 0	number_a 11	number_a 3	
+	tablesetelem	local_a 0	number_a 12	nil_a 0	
+	newtable	local_a 1	nil_a 0	nil_a 0	
+	tablesetelem	local_a 1	number_a 2	number_a 3	
+	tablesetelem	local_a 1	number_a 3	number_a 3	
+	tablesetelem	local_a 1	number_a 0	number_a 2	
+	tablesetelem	local_a 1	number_a 1	number_a 3	
+	tablesetelem	local_a 1	number_a 4	number_a 2	
+	tablesetelem	local_a 1	number_a 5	number_a 2	
+	tablesetelem	local_a 1	number_a 6	number_a 3	
+	tablesetelem	local_a 1	number_a 7	number_a 2	
+	tablesetelem	local_a 1	number_a 8	number_a 3	
+	tablesetelem	local_a 1	number_a 9	number_a 3	
+	tablesetelem	local_a 1	number_a 10	number_a 2	
+	tablesetelem	local_a 1	number_a 11	number_a 2	
+	tablesetelem	local_a 1	number_a 12	nil_a 0	
+	newtable	local_a 2	nil_a 0	nil_a 0	
+	tablesetelem	local_a 2	number_a 2	number_a 3	
+	tablesetelem	local_a 2	number_a 3	number_a 3	
+	tablesetelem	local_a 2	number_a 0	number_a 2	
+	tablesetelem	local_a 2	number_a 1	number_a 3	
+	tablesetelem	local_a 2	number_a 4	number_a 2	
+	tablesetelem	local_a 2	number_a 5	number_a 2	
+	tablesetelem	local_a 2	number_a 6	number_a 3	
+	tablesetelem	local_a 2	number_a 7	number_a 2	
+	tablesetelem	local_a 2	number_a 8	number_a 3	
+	tablesetelem	local_a 2	number_a 9	number_a 3	
+	tablesetelem	local_a 2	number_a 10	number_a 2	
+	tablesetelem	local_a 2	number_a 11	number_a 3	
+	tablesetelem	local_a 2	number_a 12	nil_a 0	
+	newtable	local_a 3	nil_a 0	nil_a 0	
+	tablesetelem	local_a 3	number_a 2	number_a 3	
+	tablesetelem	local_a 3	number_a 3	number_a 3	
+	tablesetelem	local_a 3	number_a 0	number_a 2	
+	tablesetelem	local_a 3	number_a 1	number_a 3	
+	tablesetelem	local_a 3	number_a 4	number_a 2	
+	tablesetelem	local_a 3	number_a 5	number_a 2	
+	tablesetelem	local_a 3	number_a 6	number_a 3	
+	tablesetelem	local_a 3	number_a 7	number_a 2	
+	tablesetelem	local_a 3	number_a 8	number_a 3	
+	tablesetelem	local_a 3	number_a 9	number_a 2	
+	tablesetelem	local_a 3	number_a 10	number_a 2	
+	tablesetelem	local_a 3	number_a 11	number_a 2	
+	tablesetelem	local_a 3	number_a 12	nil_a 0	
+	newtable	local_a 4	nil_a 0	nil_a 0	
+	tablesetelem	local_a 4	number_a 2	number_a 3	
+	tablesetelem	local_a 4	number_a 3	number_a 3	
+	tablesetelem	local_a 4	number_a 0	number_a 2	
+	tablesetelem	local_a 4	number_a 1	number_a 3	
+	tablesetelem	local_a 4	number_a 4	number_a 2	
+	tablesetelem	local_a 4	number_a 5	number_a 2	
+	tablesetelem	local_a 4	number_a 6	number_a 3	
+	tablesetelem	local_a 4	number_a 7	number_a 2	
+	tablesetelem	local_a 4	number_a 8	number_a 3	
+	tablesetelem	local_a 4	number_a 9	number_a 3	
+	tablesetelem	local_a 4	number_a 10	number_a 3	
+	tablesetelem	local_a 4	number_a 11	number_a 2	
+	tablesetelem	local_a 4	number_a 12	nil_a 0	
+	newtable	local_a 5	nil_a 0	nil_a 0	
+	tablesetelem	local_a 5	number_a 2	number_a 3	
+	tablesetelem	local_a 5	number_a 3	number_a 2	
+	tablesetelem	local_a 5	number_a 0	number_a 2	
+	tablesetelem	local_a 5	number_a 1	number_a 3	
+	tablesetelem	local_a 5	number_a 4	number_a 3	
+	tablesetelem	local_a 5	number_a 5	number_a 2	
+	tablesetelem	local_a 5	number_a 6	number_a 3	
+	tablesetelem	local_a 5	number_a 7	number_a 2	
+	tablesetelem	local_a 5	number_a 8	number_a 2	
+	tablesetelem	local_a 5	number_a 9	number_a 2	
+	tablesetelem	local_a 5	number_a 10	number_a 2	
+	tablesetelem	local_a 5	number_a 11	number_a 2	
+	tablesetelem	local_a 5	number_a 12	nil_a 0	
+	newtable	local_a 6	nil_a 0	nil_a 0	
+	tablesetelem	local_a 6	number_a 2	number_a 2	
+	tablesetelem	local_a 6	number_a 3	number_a 2	
+	tablesetelem	local_a 6	number_a 0	number_a 2	
+	tablesetelem	local_a 6	number_a 1	number_a 2	
+	tablesetelem	local_a 6	number_a 4	number_a 2	
+	tablesetelem	local_a 6	number_a 5	number_a 2	
+	tablesetelem	local_a 6	number_a 6	number_a 3	
+	tablesetelem	local_a 6	number_a 7	number_a 2	
+	tablesetelem	local_a 6	number_a 8	number_a 3	
+	tablesetelem	local_a 6	number_a 9	number_a 3	
+	tablesetelem	local_a 6	number_a 10	number_a 2	
+	tablesetelem	local_a 6	number_a 11	number_a 2	
+	tablesetelem	local_a 6	number_a 12	nil_a 0	
+	newtable	local_a 7	nil_a 0	nil_a 0	
+	tablesetelem	local_a 7	number_a 2	number_a 2	
+	tablesetelem	local_a 7	number_a 3	number_a 2	
+	tablesetelem	local_a 7	number_a 0	number_a 3	
+	tablesetelem	local_a 7	number_a 1	number_a 3	
+	tablesetelem	local_a 7	number_a 4	number_a 3	
+	tablesetelem	local_a 7	number_a 5	number_a 2	
+	tablesetelem	local_a 7	number_a 6	number_a 2	
+	tablesetelem	local_a 7	number_a 7	number_a 2	
+	tablesetelem	local_a 7	number_a 8	number_a 2	
+	tablesetelem	local_a 7	number_a 9	number_a 2	
+	tablesetelem	local_a 7	number_a 10	number_a 2	
+	tablesetelem	local_a 7	number_a 11	number_a 2	
+	tablesetelem	local_a 7	number_a 12	nil_a 0	
+	newtable	local_a 8	nil_a 0	nil_a 0	
+	tablesetelem	local_a 8	number_a 2	number_a 2	
+	tablesetelem	local_a 8	number_a 3	number_a 2	
+	tablesetelem	local_a 8	number_a 0	number_a 3	
+	tablesetelem	local_a 8	number_a 1	number_a 2	
+	tablesetelem	local_a 8	number_a 4	number_a 2	
+	tablesetelem	local_a 8	number_a 5	number_a 2	
+	tablesetelem	local_a 8	number_a 6	number_a 2	
+	tablesetelem	local_a 8	number_a 7	number_a 2	
+	tablesetelem	local_a 8	number_a 8	number_a 3	
+	tablesetelem	local_a 8	number_a 9	number_a 2	
+	tablesetelem	local_a 8	number_a 10	number_a 2	
+	tablesetelem	local_a 8	number_a 11	number_a 2	
+	tablesetelem	local_a 8	number_a 12	nil_a 0	
+	newtable	local_a 9	nil_a 0	nil_a 0	
+	tablesetelem	local_a 9	number_a 2	number_a 2	
+	tablesetelem	local_a 9	number_a 3	number_a 2	
+	tablesetelem	local_a 9	number_a 0	number_a 3	
+	tablesetelem	local_a 9	number_a 1	number_a 2	
+	tablesetelem	local_a 9	number_a 4	number_a 2	
+	tablesetelem	local_a 9	number_a 5	number_a 3	
+	tablesetelem	local_a 9	number_a 6	number_a 3	
+	tablesetelem	local_a 9	number_a 7	number_a 2	
+	tablesetelem	local_a 9	number_a 8	number_a 2	
+	tablesetelem	local_a 9	number_a 9	number_a 3	
+	tablesetelem	local_a 9	number_a 10	number_a 2	
+	tablesetelem	local_a 9	number_a 11	global_a 3	
+	tablesetelem	local_a 9	number_a 12	nil_a 0	
+	newtable	local_a 10	nil_a 0	nil_a 0	
+	tablesetelem	local_a 10	number_a 2	local_a 0	
+	tablesetelem	local_a 10	number_a 3	local_a 1	
+	tablesetelem	local_a 10	number_a 0	local_a 2	
+	tablesetelem	local_a 10	number_a 1	local_a 3	
+	tablesetelem	local_a 10	number_a 4	local_a 4	
+	tablesetelem	local_a 10	number_a 5	local_a 5	
+	tablesetelem	local_a 10	number_a 6	local_a 6	
+	tablesetelem	local_a 10	number_a 7	local_a 7	
+	tablesetelem	local_a 10	number_a 8	local_a 8	
+	tablesetelem	local_a 10	number_a 9	local_a 9	
+	tablesetelem	local_a 10	number_a 10	nil_a 0	
+	assign	retval_a 0	nil_a 0	nil_a 0	
+	jump	label_a 162	nil_a 0	nil_a 0	
+	funcend	userfunc_a 7	nil_a 0	nil_a 0	
+	jump	label_a 402	nil_a 0	nil_a 0	
+	funcstart	userfunc_a 164	nil_a 0	nil_a 0	
+	param	nil_a 1282893056	nil_a 0	nil_a 0	
+	call	userfunc_a 7	nil_a 0	nil_a 0	
+	assign	local_a 0	retval_a 0	nil_a 0	
+	jump	label_a 258	nil_a 0	nil_a 0	
+	funcstart	userfunc_a 169	nil_a 0	nil_a 0	
+	newtable	local_a 1	nil_a 0	nil_a 0	
+	tablesetelem	local_a 1	number_a 2	nil_a 0	
+	assign	local_a 0	local_a 1	nil_a 0	
+	assign	local_a 2	local_a 0	nil_a 0	
+	assign	local_a 3	number_a 2	nil_a 0	
+	assign	local_a 4	local_a 3	nil_a 0	
+	param	formal_a 0	nil_a 0	nil_a 0	
+	param	nil_a 0	nil_a 0	nil_a 0	
+	call	libfunc_a 3	nil_a 0	nil_a 0	
+	assign	local_a 1	retval_a 0	nil_a 0	
+	if_less	label_a 182	local_a 3	local_a 1	
+	jump	label_a 184	nil_a 0	nil_a 0	
+	assign	local_a 2	bool_a 1	nil_a 0	
+	jump	label_a 185	nil_a 0	nil_a 0	
+	assign	local_a 2	bool_a 0	nil_a 0	
+	if_eq	label_a 190	local_a 2	bool_a 1	
+	jump	label_a 255	nil_a 0	nil_a 0	
+	add	local_a 3	local_a 3	number_a 3	
+	assign	local_a 5	local_a 3	nil_a 0	
+	jump	label_a 175	nil_a 0	nil_a 0	
+	newtable	local_a 6	nil_a 0	nil_a 0	
+	tablesetelem	local_a 6	number_a 2	nil_a 0	
+	tablesetelem	local_a 0	local_a 3	local_a 6	
+	tablegetelem	local_a 7	local_a 0	local_a 3	
+	assign	local_a 8	number_a 2	nil_a 0	
+	assign	local_a 9	local_a 8	nil_a 0	
+	tablegetelem	local_a 10	formal_a 0	local_a 3	
+	param	local_a 10	nil_a 0	nil_a 0	
+	param	nil_a 10	nil_a 0	nil_a 0	
+	call	libfunc_a 3	nil_a 0	nil_a 0	
+	assign	local_a 11	retval_a 0	nil_a 0	
+	if_less	label_a 203	local_a 8	local_a 11	
+	jump	label_a 205	nil_a 0	nil_a 0	
+	assign	local_a 12	bool_a 1	nil_a 0	
+	jump	label_a 206	nil_a 0	nil_a 0	
+	assign	local_a 12	bool_a 0	nil_a 0	
+	if_eq	label_a 211	local_a 12	bool_a 1	
+	jump	label_a 254	nil_a 0	nil_a 0	
+	add	local_a 8	local_a 8	number_a 3	
+	assign	local_a 6	local_a 8	nil_a 0	
+	jump	label_a 195	nil_a 0	nil_a 0	
+	tablegetelem	local_a 7	formal_a 0	local_a 3	
+	tablegetelem	local_a 13	local_a 7	local_a 8	
+	if_eq	label_a 215	local_a 13	global_a 2	
+	jump	label_a 217	nil_a 0	nil_a 0	
+	assign	local_a 14	bool_a 1	nil_a 0	
+	jump	label_a 218	nil_a 0	nil_a 0	
+	assign	local_a 14	bool_a 0	nil_a 0	
+	if_eq	label_a 220	local_a 14	bool_a 1	
+	jump	label_a 224	nil_a 0	nil_a 0	
+	tablegetelem	local_a 15	local_a 0	local_a 3	
+	tablesetelem	local_a 15	local_a 8	string_a 1	
+	tablegetelem	local_a 16	local_a 15	local_a 8	
+	jump	label_a 253	nil_a 0	nil_a 0	
+	tablegetelem	local_a 9	formal_a 0	local_a 3	
+	tablegetelem	local_a 10	local_a 9	local_a 8	
+	if_eq	label_a 228	local_a 10	global_a 3	
+	jump	label_a 230	nil_a 0	nil_a 0	
+	assign	local_a 11	bool_a 1	nil_a 0	
+	jump	label_a 231	nil_a 0	nil_a 0	
+	assign	local_a 11	bool_a 0	nil_a 0	
+	if_eq	label_a 233	local_a 11	bool_a 1	
+	jump	label_a 237	nil_a 0	nil_a 0	
+	tablegetelem	local_a 12	local_a 0	local_a 3	
+	tablesetelem	local_a 12	local_a 8	string_a 2	
+	tablegetelem	local_a 6	local_a 12	local_a 8	
+	jump	label_a 253	nil_a 0	nil_a 0	
+	tablegetelem	local_a 9	formal_a 0	local_a 3	
+	tablegetelem	local_a 10	local_a 9	local_a 8	
+	if_eq	label_a 243	local_a 10	bool_a 1	
+	jump	label_a 241	nil_a 0	nil_a 0	
+	assign	local_a 11	bool_a 1	nil_a 0	
+	jump	label_a 244	nil_a 0	nil_a 0	
+	assign	local_a 11	bool_a 0	nil_a 0	
+	if_eq	label_a 246	local_a 11	bool_a 1	
+	jump	label_a 250	nil_a 0	nil_a 0	
+	tablegetelem	local_a 12	local_a 0	local_a 3	
+	tablesetelem	local_a 12	local_a 8	string_a 3	
+	tablegetelem	local_a 6	local_a 12	local_a 8	
+	jump	label_a 253	nil_a 0	nil_a 0	
+	tablegetelem	local_a 9	local_a 0	local_a 3	
+	tablesetelem	local_a 9	local_a 8	string_a 4	
+	tablegetelem	local_a 10	local_a 9	local_a 8	
+	jump	label_a 207	nil_a 0	nil_a 0	
+	jump	label_a 186	nil_a 0	nil_a 0	
+	assign	retval_a 0	nil_a 0	nil_a 0	
+	jump	label_a 257	nil_a 0	nil_a 0	
+	funcend	userfunc_a 169	nil_a 0	nil_a 0	
+	jump	label_a 306	nil_a 0	nil_a 0	
+	funcstart	userfunc_a 259	nil_a 0	nil_a 0	
+	assign	local_a 0	number_a 2	nil_a 0	
+	assign	local_a 1	local_a 0	nil_a 0	
+	param	formal_a 0	nil_a 0	nil_a 0	
+	param	nil_a 0	nil_a 0	nil_a 0	
+	call	libfunc_a 3	nil_a 0	nil_a 0	
+	assign	local_a 2	retval_a 0	nil_a 0	
+	if_less	label_a 268	local_a 0	local_a 2	
+	jump	label_a 270	nil_a 0	nil_a 0	
+	assign	local_a 3	bool_a 1	nil_a 0	
+	jump	label_a 271	nil_a 0	nil_a 0	
+	assign	local_a 3	bool_a 0	nil_a 0	
+	if_eq	label_a 276	local_a 3	bool_a 1	
+	jump	label_a 305	nil_a 0	nil_a 0	
+	add	local_a 0	local_a 0	number_a 3	
+	assign	local_a 4	local_a 0	nil_a 0	
+	jump	label_a 261	nil_a 0	nil_a 0	
+	assign	local_a 5	number_a 2	nil_a 0	
+	assign	local_a 6	local_a 5	nil_a 0	
+	tablegetelem	local_a 7	formal_a 0	local_a 0	
+	param	local_a 7	nil_a 0	nil_a 0	
+	param	nil_a 7	nil_a 0	nil_a 0	
+	call	libfunc_a 3	nil_a 0	nil_a 0	
+	assign	local_a 8	retval_a 0	nil_a 0	
+	if_less	label_a 285	local_a 5	local_a 8	
+	jump	label_a 287	nil_a 0	nil_a 0	
+	assign	local_a 9	bool_a 1	nil_a 0	
+	jump	label_a 288	nil_a 0	nil_a 0	
+	assign	local_a 9	bool_a 0	nil_a 0	
+	if_eq	label_a 293	local_a 9	bool_a 1	
+	jump	label_a 300	nil_a 0	nil_a 0	
+	add	local_a 5	local_a 5	number_a 3	
+	assign	local_a 10	local_a 5	nil_a 0	
+	jump	label_a 277	nil_a 0	nil_a 0	
+	tablegetelem	local_a 11	formal_a 0	local_a 0	
+	tablegetelem	local_a 12	local_a 11	local_a 5	
+	param	local_a 12	nil_a 0	nil_a 0	
+	param	nil_a 12	nil_a 0	nil_a 0	
+	call	libfunc_a 0	nil_a 0	nil_a 0	
+	assign	local_a 13	retval_a 0	nil_a 0	
+	jump	label_a 289	nil_a 0	nil_a 0	
+	param	global_a 0	nil_a 0	nil_a 0	
+	param	nil_a 0	nil_a 0	nil_a 0	
+	call	libfunc_a 0	nil_a 0	nil_a 0	
+	assign	local_a 14	retval_a 0	nil_a 0	
+	jump	label_a 272	nil_a 0	nil_a 0	
+	funcend	userfunc_a 259	nil_a 0	nil_a 0	
+	jump	label_a 394	nil_a 0	nil_a 0	
+	funcstart	userfunc_a 307	nil_a 0	nil_a 0	
+	if_eq	label_a 310	formal_a 1	string_a 5	
+	jump	label_a 312	nil_a 0	nil_a 0	
+	assign	local_a 0	bool_a 1	nil_a 0	
+	jump	label_a 313	nil_a 0	nil_a 0	
+	assign	local_a 0	bool_a 0	nil_a 0	
+	if_eq	label_a 315	local_a 0	bool_a 1	
+	jump	label_a 324	nil_a 0	nil_a 0	
+	tablegetelem	local_a 1	formal_a 0	string_a 6	
+	tablegetelem	local_a 2	formal_a 0	string_a 7	
+	param	local_a 1	nil_a 0	nil_a 0	
+	param	nil_a 1	nil_a 0	nil_a 0	
+	call	local_a 2	nil_a 0	nil_a 0	
+	assign	local_a 3	retval_a 0	nil_a 0	
+	assign	retval_a 0	nil_a 0	nil_a 0	
+	jump	label_a 393	nil_a 0	nil_a 0	
+	jump	label_a 393	nil_a 0	nil_a 0	
+	if_eq	label_a 326	formal_a 1	string_a 8	
+	jump	label_a 328	nil_a 0	nil_a 0	
+	assign	local_a 0	bool_a 1	nil_a 0	
+	jump	label_a 329	nil_a 0	nil_a 0	
+	assign	local_a 0	bool_a 0	nil_a 0	
+	if_eq	label_a 331	local_a 0	bool_a 1	
+	jump	label_a 343	nil_a 0	nil_a 0	
+	param	string_a 5	nil_a 0	nil_a 0	
+	param	nil_a 5	nil_a 0	nil_a 0	
+	call	formal_a 0	nil_a 0	nil_a 0	
+	assign	local_a 1	retval_a 0	nil_a 0	
+	tablegetelem	local_a 2	formal_a 0	string_a 9	
+	param	local_a 1	nil_a 0	nil_a 0	
+	param	nil_a 1	nil_a 0	nil_a 0	
+	call	local_a 2	nil_a 0	nil_a 0	
+	assign	local_a 3	retval_a 0	nil_a 0	
+	assign	retval_a 0	nil_a 0	nil_a 0	
+	jump	label_a 393	nil_a 0	nil_a 0	
+	jump	label_a 393	nil_a 0	nil_a 0	
+	if_eq	label_a 345	formal_a 1	string_a 10	
+	jump	label_a 347	nil_a 0	nil_a 0	
+	assign	local_a 0	bool_a 1	nil_a 0	
+	jump	label_a 348	nil_a 0	nil_a 0	
+	assign	local_a 0	bool_a 0	nil_a 0	
+	if_eq	label_a 350	local_a 0	bool_a 1	
+	jump	label_a 354	nil_a 0	nil_a 0	
+	tablegetelem	local_a 1	formal_a 0	string_a 6	
+	assign	retval_a 0	nil_a 0	nil_a 0	
+	jump	label_a 393	nil_a 0	nil_a 0	
+	jump	label_a 393	nil_a 0	nil_a 0	
+	if_eq	label_a 356	formal_a 1	string_a 11	
+	jump	label_a 358	nil_a 0	nil_a 0	
+	assign	local_a 0	bool_a 1	nil_a 0	
+	jump	label_a 359	nil_a 0	nil_a 0	
+	assign	local_a 0	bool_a 0	nil_a 0	
+	if_eq	label_a 361	local_a 0	bool_a 1	
+	jump	label_a 372	nil_a 0	nil_a 0	
+	param	string_a 10	nil_a 0	nil_a 0	
+	param	nil_a 10	nil_a 0	nil_a 0	
+	call	formal_a 0	nil_a 0	nil_a 0	
+	assign	local_a 1	retval_a 0	nil_a 0	
+	param	local_a 1	nil_a 0	nil_a 0	
+	param	nil_a 1	nil_a 0	nil_a 0	
+	call	libfunc_a 3	nil_a 0	nil_a 0	
+	assign	local_a 2	retval_a 0	nil_a 0	
+	assign	retval_a 0	nil_a 0	nil_a 0	
+	jump	label_a 393	nil_a 0	nil_a 0	
+	jump	label_a 393	nil_a 0	nil_a 0	
+	if_eq	label_a 374	formal_a 1	string_a 12	
+	jump	label_a 376	nil_a 0	nil_a 0	
+	assign	local_a 0	bool_a 1	nil_a 0	
+	jump	label_a 377	nil_a 0	nil_a 0	
+	assign	local_a 0	bool_a 0	nil_a 0	
+	if_eq	label_a 379	local_a 0	bool_a 1	
+	jump	label_a 391	nil_a 0	nil_a 0	
+	param	string_a 10	nil_a 0	nil_a 0	
+	param	nil_a 10	nil_a 0	nil_a 0	
+	call	formal_a 0	nil_a 0	nil_a 0	
+	assign	local_a 1	retval_a 0	nil_a 0	
+	tablegetelem	local_a 2	local_a 1	number_a 2	
+	param	local_a 2	nil_a 0	nil_a 0	
+	param	nil_a 2	nil_a 0	nil_a 0	
+	call	libfunc_a 3	nil_a 0	nil_a 0	
+	assign	local_a 3	retval_a 0	nil_a 0	
+	assign	retval_a 0	nil_a 0	nil_a 0	
+	jump	label_a 393	nil_a 0	nil_a 0	
+	jump	label_a 393	nil_a 0	nil_a 0	
+	assign	retval_a 0	nil_a 0	nil_a 0	
+	jump	label_a 393	nil_a 0	nil_a 0	
+	funcend	userfunc_a 307	nil_a 0	nil_a 0	
+	newtable	local_a 0	nil_a 0	nil_a 0	
+	tablesetelem	local_a 0	string_a 13	local_a 0	
+	tablesetelem	local_a 0	string_a 14	userfunc_a 169	
+	tablesetelem	local_a 0	string_a 8	userfunc_a 259	
+	tablesetelem	local_a 0	string_a 15	userfunc_a 307	
+	assign	retval_a 0	nil_a 0	nil_a 0	
+	jump	label_a 401	nil_a 0	nil_a 0	
+	funcend	userfunc_a 164	nil_a 0	nil_a 0	
+	assign	global_a 4	number_a 2	nil_a 0	
+	assign	global_a 1	global_a 4	nil_a 0	
+	assign	global_a 5	number_a 3	nil_a 0	
+	assign	global_a 1	global_a 5	nil_a 0	
+	assign	global_a 6	number_a 0	nil_a 0	
+	assign	global_a 1	global_a 6	nil_a 0	
+	assign	global_a 7	number_a 1	nil_a 0	
+	assign	global_a 1	global_a 7	nil_a 0	
+	jump	label_a 794	nil_a 0	nil_a 0	
+	funcstart	userfunc_a 411	nil_a 0	nil_a 0	
+	newtable	local_a 1	nil_a 0	nil_a 0	
+	tablesetelem	local_a 1	number_a 2	string_a 16	
+	tablesetelem	local_a 1	number_a 3	string_a 17	
+	tablesetelem	local_a 1	number_a 0	string_a 18	
+	tablesetelem	local_a 1	number_a 1	string_a 19	
+	tablesetelem	local_a 1	number_a 4	nil_a 0	
+	jump	label_a 466	nil_a 0	nil_a 0	
+	funcstart	userfunc_a 419	nil_a 0	nil_a 0	
+	param	string_a 10	nil_a 0	nil_a 0	
+	param	nil_a 10	nil_a 0	nil_a 0	
+	call	formal_a 1	nil_a 0	nil_a 0	
+	assign	local_a 0	retval_a 0	nil_a 0	
+	assign	formal_a 1	local_a 0	nil_a 0	
+	assign	local_a 1	formal_a 1	nil_a 0	
+	tablegetelem	local_a 2	formal_a 0	string_a 20	
+	sub	local_a 0	local_a 2	number_a 3	
+	if_less	label_a 430	local_a 0	number_a 2	
+	jump	label_a 432	nil_a 0	nil_a 0	
+	assign	local_a 1	bool_a 1	nil_a 0	
+	jump	label_a 433	nil_a 0	nil_a 0	
+	assign	local_a 1	bool_a 0	nil_a 0	
+	if_eq	label_a 435	local_a 1	bool_a 1	
+	jump	label_a 437	nil_a 0	nil_a 0	
+	assign	retval_a 0	nil_a 0	nil_a 0	
+	jump	label_a 465	nil_a 0	nil_a 0	
+	tablegetelem	local_a 2	formal_a 0	string_a 20	
+	sub	local_a 0	local_a 2	number_a 3	
+	tablegetelem	local_a 1	formal_a 0	string_a 21	
+	tablegetelem	local_a 4	formal_a 1	local_a 0	
+	tablegetelem	local_a 5	local_a 4	local_a 1	
+	assign	local_a 3	local_a 5	nil_a 0	
+	assign	local_a 6	local_a 3	nil_a 0	
+	if_eq	label_a 446	local_a 3	bool_a 1	
+	jump	label_a 455	nil_a 0	nil_a 0	
+	if_eq	label_a 448	local_a 3	global_a 3	
+	jump	label_a 450	nil_a 0	nil_a 0	
+	assign	local_a 2	bool_a 1	nil_a 0	
+	jump	label_a 451	nil_a 0	nil_a 0	
+	assign	local_a 2	bool_a 0	nil_a 0	
+	if_eq	label_a 455	local_a 2	bool_a 1	
+	jump	label_a 453	nil_a 0	nil_a 0	
+	assign	local_a 0	bool_a 1	nil_a 0	
+	jump	label_a 456	nil_a 0	nil_a 0	
+	assign	local_a 0	bool_a 0	nil_a 0	
+	if_eq	label_a 458	local_a 0	bool_a 1	
+	jump	label_a 460	nil_a 0	nil_a 0	
+	assign	retval_a 0	nil_a 0	nil_a 0	
+	jump	label_a 465	nil_a 0	nil_a 0	
+	tablegetelem	local_a 2	formal_a 0	string_a 20	
+	sub	local_a 2	local_a 2	number_a 3	
+	tablesetelem	formal_a 0	string_a 20	local_a 2	
+	assign	retval_a 0	nil_a 0	nil_a 0	
+	jump	label_a 465	nil_a 0	nil_a 0	
+	funcend	userfunc_a 419	nil_a 0	nil_a 0	
+	jump	label_a 518	nil_a 0	nil_a 0	
+	funcstart	userfunc_a 467	nil_a 0	nil_a 0	
+	tablegetelem	local_a 0	formal_a 0	string_a 21	
+	add	local_a 1	local_a 0	number_a 3	
+	param	string_a 12	nil_a 0	nil_a 0	
+	param	nil_a 12	nil_a 0	nil_a 0	
+	call	formal_a 1	nil_a 0	nil_a 0	
+	assign	local_a 2	retval_a 0	nil_a 0	
+	if_greater_eq	label_a 476	local_a 1	local_a 2	
+	jump	label_a 478	nil_a 0	nil_a 0	
+	assign	local_a 3	bool_a 1	nil_a 0	
+	jump	label_a 479	nil_a 0	nil_a 0	
+	assign	local_a 3	bool_a 0	nil_a 0	
+	if_eq	label_a 481	local_a 3	bool_a 1	
+	jump	label_a 483	nil_a 0	nil_a 0	
+	assign	retval_a 0	nil_a 0	nil_a 0	
+	jump	label_a 517	nil_a 0	nil_a 0	
+	param	string_a 10	nil_a 0	nil_a 0	
+	param	nil_a 10	nil_a 0	nil_a 0	
+	call	formal_a 1	nil_a 0	nil_a 0	
+	assign	local_a 0	retval_a 0	nil_a 0	
+	assign	formal_a 1	local_a 0	nil_a 0	
+	assign	local_a 1	formal_a 1	nil_a 0	
+	tablegetelem	local_a 0	formal_a 0	string_a 20	
+	tablegetelem	local_a 1	formal_a 0	string_a 21	
+	add	local_a 2	local_a 1	number_a 3	
+	tablegetelem	local_a 3	formal_a 1	local_a 0	
+	tablegetelem	local_a 5	local_a 3	local_a 2	
+	assign	local_a 4	local_a 5	nil_a 0	
+	assign	local_a 6	local_a 4	nil_a 0	
+	if_eq	label_a 498	local_a 4	bool_a 1	
+	jump	label_a 507	nil_a 0	nil_a 0	
+	if_eq	label_a 500	local_a 4	global_a 3	
+	jump	label_a 502	nil_a 0	nil_a 0	
+	assign	local_a 0	bool_a 1	nil_a 0	
+	jump	label_a 503	nil_a 0	nil_a 0	
+	assign	local_a 0	bool_a 0	nil_a 0	
+	if_eq	label_a 507	local_a 0	bool_a 1	
+	jump	label_a 505	nil_a 0	nil_a 0	
+	assign	local_a 1	bool_a 1	nil_a 0	
+	jump	label_a 508	nil_a 0	nil_a 0	
+	assign	local_a 1	bool_a 0	nil_a 0	
+	if_eq	label_a 510	local_a 1	bool_a 1	
+	jump	label_a 512	nil_a 0	nil_a 0	
+	assign	retval_a 0	nil_a 0	nil_a 0	
+	jump	label_a 517	nil_a 0	nil_a 0	
+	tablegetelem	local_a 0	formal_a 0	string_a 21	
+	add	local_a 0	local_a 0	number_a 3	
+	tablesetelem	local_a 0	string_a 21	formal_a 0	
+	assign	retval_a 0	nil_a 0	nil_a 0	
+	jump	label_a 517	nil_a 0	nil_a 0	
+	funcend	userfunc_a 467	nil_a 0	nil_a 0	
+	jump	label_a 570	nil_a 0	nil_a 0	
+	funcstart	userfunc_a 519	nil_a 0	nil_a 0	
+	tablegetelem	local_a 0	formal_a 0	string_a 20	
+	add	local_a 1	local_a 0	number_a 3	
+	param	string_a 11	nil_a 0	nil_a 0	
+	param	nil_a 11	nil_a 0	nil_a 0	
+	call	formal_a 1	nil_a 0	nil_a 0	
+	assign	local_a 2	retval_a 0	nil_a 0	
+	if_greater_eq	label_a 528	local_a 1	local_a 2	
+	jump	label_a 530	nil_a 0	nil_a 0	
+	assign	local_a 3	bool_a 1	nil_a 0	
+	jump	label_a 531	nil_a 0	nil_a 0	
+	assign	local_a 3	bool_a 0	nil_a 0	
+	if_eq	label_a 533	local_a 3	bool_a 1	
+	jump	label_a 535	nil_a 0	nil_a 0	
+	assign	retval_a 0	nil_a 0	nil_a 0	
+	jump	label_a 569	nil_a 0	nil_a 0	
+	param	string_a 10	nil_a 0	nil_a 0	
+	param	nil_a 10	nil_a 0	nil_a 0	
+	call	formal_a 1	nil_a 0	nil_a 0	
+	assign	local_a 0	retval_a 0	nil_a 0	
+	assign	formal_a 1	local_a 0	nil_a 0	
+	assign	local_a 1	formal_a 1	nil_a 0	
+	tablegetelem	local_a 0	formal_a 0	string_a 20	
+	add	local_a 1	local_a 0	number_a 3	
+	tablegetelem	local_a 2	formal_a 0	string_a 21	
+	tablegetelem	local_a 3	formal_a 1	local_a 1	
+	tablegetelem	local_a 5	local_a 3	local_a 2	
+	assign	local_a 4	local_a 5	nil_a 0	
+	assign	local_a 6	local_a 4	nil_a 0	
+	if_eq	label_a 550	local_a 4	bool_a 1	
+	jump	label_a 559	nil_a 0	nil_a 0	
+	if_eq	label_a 552	local_a 4	global_a 3	
+	jump	label_a 554	nil_a 0	nil_a 0	
+	assign	local_a 0	bool_a 1	nil_a 0	
+	jump	label_a 555	nil_a 0	nil_a 0	
+	assign	local_a 0	bool_a 0	nil_a 0	
+	if_eq	label_a 559	local_a 0	bool_a 1	
+	jump	label_a 557	nil_a 0	nil_a 0	
+	assign	local_a 1	bool_a 1	nil_a 0	
+	jump	label_a 560	nil_a 0	nil_a 0	
+	assign	local_a 1	bool_a 0	nil_a 0	
+	if_eq	label_a 562	local_a 1	bool_a 1	
+	jump	label_a 564	nil_a 0	nil_a 0	
+	assign	retval_a 0	nil_a 0	nil_a 0	
+	jump	label_a 569	nil_a 0	nil_a 0	
+	tablegetelem	local_a 0	formal_a 0	string_a 20	
+	add	local_a 0	local_a 0	number_a 3	
+	tablesetelem	local_a 0	string_a 20	formal_a 0	
+	assign	retval_a 0	nil_a 0	nil_a 0	
+	jump	label_a 569	nil_a 0	nil_a 0	
+	funcend	userfunc_a 519	nil_a 0	nil_a 0	
+	jump	label_a 618	nil_a 0	nil_a 0	
+	funcstart	userfunc_a 571	nil_a 0	nil_a 0	
+	param	string_a 10	nil_a 0	nil_a 0	
+	param	nil_a 10	nil_a 0	nil_a 0	
+	call	formal_a 1	nil_a 0	nil_a 0	
+	assign	local_a 0	retval_a 0	nil_a 0	
+	assign	formal_a 1	local_a 0	nil_a 0	
+	assign	local_a 1	formal_a 1	nil_a 0	
+	tablegetelem	local_a 0	formal_a 0	string_a 21	
+	sub	local_a 1	local_a 0	number_a 3	
+	if_less	label_a 582	local_a 1	number_a 2	
+	jump	label_a 584	nil_a 0	nil_a 0	
+	assign	local_a 2	bool_a 1	nil_a 0	
+	jump	label_a 585	nil_a 0	nil_a 0	
+	assign	local_a 2	bool_a 0	nil_a 0	
+	if_eq	label_a 587	local_a 2	bool_a 1	
+	jump	label_a 589	nil_a 0	nil_a 0	
+	assign	retval_a 0	nil_a 0	nil_a 0	
+	jump	label_a 617	nil_a 0	nil_a 0	
+	tablegetelem	local_a 0	formal_a 0	string_a 20	
+	tablegetelem	local_a 1	formal_a 0	string_a 21	
+	sub	local_a 2	local_a 1	number_a 3	
+	tablegetelem	local_a 4	formal_a 1	local_a 0	
+	tablegetelem	local_a 5	local_a 4	local_a 2	
+	assign	local_a 3	local_a 5	nil_a 0	
+	assign	local_a 6	local_a 3	nil_a 0	
+	if_eq	label_a 598	local_a 3	bool_a 1	
+	jump	label_a 607	nil_a 0	nil_a 0	
+	if_eq	label_a 600	local_a 3	global_a 3	
+	jump	label_a 602	nil_a 0	nil_a 0	
+	assign	local_a 0	bool_a 1	nil_a 0	
+	jump	label_a 603	nil_a 0	nil_a 0	
+	assign	local_a 0	bool_a 0	nil_a 0	
+	if_eq	label_a 607	local_a 0	bool_a 1	
+	jump	label_a 605	nil_a 0	nil_a 0	
+	assign	local_a 1	bool_a 1	nil_a 0	
+	jump	label_a 608	nil_a 0	nil_a 0	
+	assign	local_a 1	bool_a 0	nil_a 0	
+	if_eq	label_a 610	local_a 1	bool_a 1	
+	jump	label_a 612	nil_a 0	nil_a 0	
+	assign	retval_a 0	nil_a 0	nil_a 0	
+	jump	label_a 617	nil_a 0	nil_a 0	
+	tablegetelem	local_a 0	formal_a 0	string_a 21	
+	sub	local_a 0	local_a 0	number_a 3	
+	tablesetelem	formal_a 0	string_a 21	local_a 0	
+	assign	retval_a 0	nil_a 0	nil_a 0	
+	jump	label_a 617	nil_a 0	nil_a 0	
+	funcend	userfunc_a 571	nil_a 0	nil_a 0	
+	jump	label_a 686	nil_a 0	nil_a 0	
+	funcstart	userfunc_a 619	nil_a 0	nil_a 0	
+	assign	local_a 0	number_a 2	nil_a 0	
+	assign	local_a 1	local_a 0	nil_a 0	
+	if_less	label_a 624	local_a 0	number_a 4	
+	jump	label_a 626	nil_a 0	nil_a 0	
+	assign	local_a 2	bool_a 1	nil_a 0	
+	jump	label_a 627	nil_a 0	nil_a 0	
+	assign	local_a 2	bool_a 0	nil_a 0	
+	if_eq	label_a 632	local_a 2	bool_a 1	
+	jump	label_a 678	nil_a 0	nil_a 0	
+	add	local_a 0	local_a 0	number_a 3	
+	assign	local_a 3	local_a 0	nil_a 0	
+	jump	label_a 621	nil_a 0	nil_a 0	
+	tablegetelem	local_a 4	formal_a 0	string_a 22	
+	tablegetelem	local_a 5	formal_a 0	string_a 23	
+	tablegetelem	local_a 6	local_a 5	local_a 4	
+	param	formal_a 0	nil_a 0	nil_a 0	
+	param	formal_a 1	nil_a 0	nil_a 0	
+	param	nil_a 1	nil_a 0	nil_a 0	
+	call	local_a 6	nil_a 0	nil_a 0	
+	assign	local_a 7	retval_a 0	nil_a 0	
+	if_eq	label_a 644	local_a 7	bool_a 1	
+	jump	label_a 642	nil_a 0	nil_a 0	
+	assign	local_a 8	bool_a 1	nil_a 0	
+	jump	label_a 645	nil_a 0	nil_a 0	
+	assign	local_a 8	bool_a 0	nil_a 0	
+	if_eq	label_a 647	local_a 8	bool_a 1	
+	jump	label_a 652	nil_a 0	nil_a 0	
+	param	string_a 24	nil_a 0	nil_a 0	
+	param	nil_a 24	nil_a 0	nil_a 0	
+	call	formal_a 0	nil_a 0	nil_a 0	
+	assign	local_a 9	retval_a 0	nil_a 0	
+	jump	label_a 677	nil_a 0	nil_a 0	
+	param	string_a 10	nil_a 0	nil_a 0	
+	param	nil_a 10	nil_a 0	nil_a 0	
+	call	formal_a 1	nil_a 0	nil_a 0	
+	assign	local_a 10	retval_a 0	nil_a 0	
+	tablegetelem	local_a 11	formal_a 0	string_a 20	
+	tablegetelem	local_a 12	formal_a 0	string_a 21	
+	tablegetelem	local_a 4	local_a 10	local_a 11	
+	tablegetelem	local_a 5	local_a 4	local_a 12	
+	if_eq	label_a 662	local_a 5	global_a 3	
+	jump	label_a 664	nil_a 0	nil_a 0	
+	assign	local_a 6	bool_a 1	nil_a 0	
+	jump	label_a 665	nil_a 0	nil_a 0	
+	assign	local_a 6	bool_a 0	nil_a 0	
+	if_eq	label_a 667	local_a 6	bool_a 1	
+	jump	label_a 675	nil_a 0	nil_a 0	
+	param	string_a 25	nil_a 0	nil_a 0	
+	param	global_a 0	nil_a 0	nil_a 0	
+	param	nil_a 0	nil_a 0	nil_a 0	
+	call	libfunc_a 0	nil_a 0	nil_a 0	
+	assign	local_a 13	retval_a 0	nil_a 0	
+	assign	retval_a 0	nil_a 0	nil_a 0	
+	jump	label_a 685	nil_a 0	nil_a 0	
+	jump	label_a 677	nil_a 0	nil_a 0	
+	assign	retval_a 0	nil_a 0	nil_a 0	
+	jump	label_a 685	nil_a 0	nil_a 0	
+	jump	label_a 628	nil_a 0	nil_a 0	
+	param	string_a 26	nil_a 0	nil_a 0	
+	param	global_a 0	nil_a 0	nil_a 0	
+	param	nil_a 0	nil_a 0	nil_a 0	
+	call	libfunc_a 0	nil_a 0	nil_a 0	
+	assign	local_a 1	retval_a 0	nil_a 0	
+	assign	retval_a 0	nil_a 0	nil_a 0	
+	jump	label_a 685	nil_a 0	nil_a 0	
+	funcend	userfunc_a 619	nil_a 0	nil_a 0	
+	jump	label_a 716	nil_a 0	nil_a 0	
+	funcstart	userfunc_a 687	nil_a 0	nil_a 0	
+	tablegetelem	local_a 1	formal_a 0	string_a 27	
+	assign	local_a 0	local_a 1	nil_a 0	
+	assign	local_a 2	local_a 0	nil_a 0	
+	param	string_a 5	nil_a 0	nil_a 0	
+	param	nil_a 5	nil_a 0	nil_a 0	
+	call	local_a 0	nil_a 0	nil_a 0	
+	assign	local_a 1	retval_a 0	nil_a 0	
+	assign	local_a 3	local_a 1	nil_a 0	
+	assign	local_a 2	local_a 3	nil_a 0	
+	tablegetelem	local_a 1	formal_a 0	string_a 20	
+	tablegetelem	local_a 2	formal_a 0	string_a 21	
+	tablegetelem	local_a 4	local_a 3	local_a 1	
+	tablegetelem	local_a 5	formal_a 0	string_a 22	
+	tablegetelem	local_a 6	formal_a 0	string_a 28	
+	tablegetelem	local_a 7	local_a 6	local_a 5	
+	tablesetelem	local_a 4	local_a 2	local_a 7	
+	tablegetelem	local_a 8	local_a 4	local_a 2	
+	param	string_a 29	nil_a 0	nil_a 0	
+	param	global_a 0	nil_a 0	nil_a 0	
+	param	nil_a 0	nil_a 0	nil_a 0	
+	call	libfunc_a 0	nil_a 0	nil_a 0	
+	assign	local_a 1	retval_a 0	nil_a 0	
+	tablegetelem	local_a 1	local_a 0	string_a 9	
+	param	local_a 3	nil_a 0	nil_a 0	
+	param	nil_a 3	nil_a 0	nil_a 0	
+	call	local_a 1	nil_a 0	nil_a 0	
+	assign	local_a 2	retval_a 0	nil_a 0	
+	funcend	userfunc_a 687	nil_a 0	nil_a 0	
+	jump	label_a 764	nil_a 0	nil_a 0	
+	funcstart	userfunc_a 717	nil_a 0	nil_a 0	
+	if_eq	label_a 720	formal_a 1	string_a 30	
+	jump	label_a 722	nil_a 0	nil_a 0	
+	assign	local_a 0	bool_a 1	nil_a 0	
+	jump	label_a 723	nil_a 0	nil_a 0	
+	assign	local_a 0	bool_a 0	nil_a 0	
+	if_eq	label_a 725	local_a 0	bool_a 1	
+	jump	label_a 735	nil_a 0	nil_a 0	
+	tablegetelem	local_a 1	formal_a 0	string_a 27	
+	tablegetelem	local_a 2	formal_a 0	string_a 31	
+	param	formal_a 0	nil_a 0	nil_a 0	
+	param	local_a 1	nil_a 0	nil_a 0	
+	param	nil_a 1	nil_a 0	nil_a 0	
+	call	local_a 2	nil_a 0	nil_a 0	
+	assign	local_a 3	retval_a 0	nil_a 0	
+	assign	retval_a 0	nil_a 0	nil_a 0	
+	jump	label_a 763	nil_a 0	nil_a 0	
+	jump	label_a 763	nil_a 0	nil_a 0	
+	if_eq	label_a 737	formal_a 1	string_a 24	
+	jump	label_a 739	nil_a 0	nil_a 0	
+	assign	local_a 0	bool_a 1	nil_a 0	
+	jump	label_a 740	nil_a 0	nil_a 0	
+	assign	local_a 0	bool_a 0	nil_a 0	
+	if_eq	label_a 742	local_a 0	bool_a 1	
+	jump	label_a 749	nil_a 0	nil_a 0	
+	tablegetelem	local_a 1	formal_a 0	string_a 22	
+	add	local_a 1	local_a 1	number_a 3	
+	tablesetelem	local_a 1	string_a 22	formal_a 0	
+	mod	local_a 2	local_a 1	number_a 4	
+	tablesetelem	formal_a 0	string_a 22	local_a 2	
+	tablegetelem	local_a 3	formal_a 0	string_a 22	
+	jump	label_a 763	nil_a 0	nil_a 0	
+	if_eq	label_a 751	formal_a 1	string_a 32	
+	jump	label_a 753	nil_a 0	nil_a 0	
+	assign	local_a 0	bool_a 1	nil_a 0	
+	jump	label_a 754	nil_a 0	nil_a 0	
+	assign	local_a 0	bool_a 0	nil_a 0	
+	if_eq	label_a 756	local_a 0	bool_a 1	
+	jump	label_a 763	nil_a 0	nil_a 0	
+	tablegetelem	local_a 1	formal_a 0	string_a 33	
+	param	formal_a 0	nil_a 0	nil_a 0	
+	param	nil_a 0	nil_a 0	nil_a 0	
+	call	local_a 1	nil_a 0	nil_a 0	
+	assign	local_a 2	retval_a 0	nil_a 0	
+	assign	retval_a 0	nil_a 0	nil_a 0	
+	jump	label_a 763	nil_a 0	nil_a 0	
+	funcend	userfunc_a 717	nil_a 0	nil_a 0	
+	newtable	local_a 1	nil_a 0	nil_a 0	
+	tablesetelem	local_a 1	string_a 34	global_a 5	
+	tablesetelem	local_a 1	string_a 35	number_a 2	
+	tablesetelem	local_a 1	string_a 36	number_a 2	
+	tablesetelem	local_a 1	string_a 10	formal_a 0	
+	tablesetelem	local_a 1	string_a 37	local_a 1	
+	tablesetelem	local_a 1	string_a 38	userfunc_a 419	
+	tablesetelem	local_a 1	string_a 39	userfunc_a 467	
+	tablesetelem	local_a 1	string_a 40	userfunc_a 519	
+	tablesetelem	local_a 1	string_a 41	userfunc_a 571	
+	tablesetelem	local_a 1	string_a 30	userfunc_a 619	
+	tablesetelem	local_a 1	string_a 32	userfunc_a 687	
+	tablesetelem	local_a 1	string_a 15	userfunc_a 717	
+	assign	local_a 0	local_a 1	nil_a 0	
+	assign	local_a 2	local_a 0	nil_a 0	
+	tablegetelem	local_a 1	local_a 0	string_a 42	
+	tablegetelem	local_a 2	local_a 0	string_a 43	
+	tablegetelem	local_a 3	local_a 0	string_a 44	
+	tablegetelem	local_a 4	local_a 0	string_a 45	
+	newtable	local_a 5	nil_a 0	nil_a 0	
+	tablesetelem	local_a 5	number_a 2	local_a 1	
+	tablesetelem	local_a 5	number_a 3	local_a 2	
+	tablesetelem	local_a 5	number_a 0	local_a 3	
+	tablesetelem	local_a 5	number_a 1	local_a 4	
+	tablesetelem	local_a 5	number_a 4	nil_a 0	
+	tablesetelem	local_a 0	string_a 23	local_a 5	
+	tablegetelem	local_a 6	local_a 0	string_a 23	
+	assign	retval_a 0	nil_a 0	nil_a 0	
+	jump	label_a 793	nil_a 0	nil_a 0	
+	funcend	userfunc_a 411	nil_a 0	nil_a 0	
+	param	nil_a 411	nil_a 0	nil_a 0	
+	call	userfunc_a 164	nil_a 0	nil_a 0	
+	assign	global_a 1	retval_a 0	nil_a 0	
+	assign	global_a 8	global_a 1	nil_a 0	
+	assign	global_a 9	global_a 8	nil_a 0	
+	param	global_a 8	nil_a 0	nil_a 0	
+	param	nil_a 8	nil_a 0	nil_a 0	
+	call	userfunc_a 411	nil_a 0	nil_a 0	
+	assign	global_a 1	retval_a 0	nil_a 0	
+	assign	global_a 10	global_a 1	nil_a 0	
+	assign	global_a 9	global_a 10	nil_a 0	
+	param	string_a 30	nil_a 0	nil_a 0	
+	param	nil_a 30	nil_a 0	nil_a 0	
+	call	global_a 10	nil_a 0	nil_a 0	
+	assign	global_a 1	retval_a 0	nil_a 0	
+	if_eq	label_a 813	global_a 1	bool_a 1	
+	jump	label_a 811	nil_a 0	nil_a 0	
+	assign	global_a 9	bool_a 1	nil_a 0	
+	jump	label_a 814	nil_a 0	nil_a 0	
+	assign	global_a 9	bool_a 0	nil_a 0	
+	if_eq	label_a 816	global_a 9	bool_a 1	
+	jump	label_a 821	nil_a 0	nil_a 0	
+	param	string_a 32	nil_a 0	nil_a 0	
+	param	nil_a 32	nil_a 0	nil_a 0	
+	call	global_a 10	nil_a 0	nil_a 0	
+	assign	global_a 11	retval_a 0	nil_a 0	
+	jump	label_a 804	nil_a 0	nil_a 0	

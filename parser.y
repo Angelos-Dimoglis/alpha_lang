@@ -164,16 +164,19 @@
 
 program: stmt_series;
 
-stmt_series: stmt_series stmt  {
+stmt_series: stmt stmt_series  {
 
-        if ($stmt != nullptr && !$stmt->returnlist.empty())
-            $1->returnlist.splice($1->returnlist.end(), $stmt->returnlist);
+        if ($1 != nullptr && $2 != nullptr) {
+            $1->returnlist.splice($1->returnlist.end(), $2->returnlist);
+        }
 
-        if ($stmt != nullptr && !$stmt->breaklist.empty())
-            $1->breaklist.splice($1->breaklist.end(), $stmt->returnlist);
+        if ($stmt != nullptr && $2 != nullptr) {
+            $1->breaklist.splice($1->breaklist.end(), $2->breaklist);
+        }
 
-        if ($stmt != nullptr && !$stmt->contlist.empty())
-            $1->contlist.splice($1->contlist.end(), $stmt->contlist);
+        if ($stmt != nullptr && $2 != nullptr) {
+            $1->contlist.splice($1->contlist.end(), $2->contlist);
+        }
 
         $$ = $1;
     }
@@ -190,11 +193,13 @@ stmt: expr ';' {
         resettemp();
     }
     | whilestmt {
-        $$ = $whilestmt;
+        $$ = new stmt();
+        $$->returnlist = $whilestmt->returnlist;
         resettemp();
     }
     | forstmt {
-        $$ = $forstmt;
+        $$ = new stmt();
+        $$->returnlist = $forstmt->returnlist;
         resettemp();
     }
     | returnstmt {
@@ -206,7 +211,6 @@ stmt: expr ';' {
     | BREAK ';' {
         $$ = new stmt();
         if (break_continue_valid("break")) {
-            $stmt = new stmt();
             $stmt->breaklist.push_back(curr_quad);
             emit(jump, unsigned(0));
         }
@@ -509,7 +513,7 @@ elist: expr elist_alt {
         $expr->next = $elist_alt;
         $elist = $expr;
     }
-    | {$elist = NULL;}
+    | {$elist = new expr();}
     ;
 
 elist_alt: ',' expr elist_alt {
@@ -517,7 +521,7 @@ elist_alt: ',' expr elist_alt {
         $expr->next = $3;
         $$ = $expr;
     }
-    | {$elist_alt = NULL;}
+    | {$elist_alt = new expr();}
     ;
 
 objectdef: '[' elist ']' {
@@ -619,17 +623,13 @@ ifstmt: ifprefix stmt {
     | ifprefix stmt elseprefix stmt {
         patchlabel($1, $3 + 1);
         patchlabel($3, nextquadlabel());
-        if ($2) {
-            cout << "\n\n\n" << yylineno << "\n\n\n";
-            if (!$2->returnlist.empty() && !$4->returnlist.empty())
-                $2->returnlist.splice($2->returnlist.end(), $4->returnlist);
-            if (!$2->breaklist.empty() && !$4->breaklist.empty())
-                $2->breaklist.splice($2->breaklist.end(), $4->breaklist);
-            if (!$2->contlist.empty() && !$4->contlist.empty())
-                $2->contlist.splice($2->contlist.end(), $4->contlist);
-        }else {
-            $2 = new stmt();
-        }
+        
+        assert($2 && $4);
+
+        $2->returnlist.splice($2->returnlist.end(), $4->returnlist);
+        $2->breaklist.splice($2->breaklist.end(), $4->breaklist);
+        $2->contlist.splice($2->contlist.end(), $4->contlist);
+        
         $$ = $2;
     }
     ;
@@ -655,8 +655,10 @@ loopend: { decrease_loopcounter(); }
 whilestmt: whilestart whilecond loopstart stmt {
         emit(jump, unsigned($1));
         patchlabel($2, nextquadlabel());
-        if ($stmt != nullptr)
+        assert($stmt);
+        if ($stmt != nullptr) {
             patchlist($stmt->breaklist, nextquadlabel());
+        }
 
         if ($stmt != nullptr)
             patchlist($stmt->contlist, $1);

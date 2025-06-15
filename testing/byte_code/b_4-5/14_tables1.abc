@@ -11,13 +11,14 @@
 	y
 	"true"
 	"false"
-6 constant_numbers
+7 constant_numbers
 	0.000000
 	1.000000
 	2.000000
 	3.000000
 	5.000000
 	4.000000
+	6.000000
 0 user_functions
 12 library_functions
 	print
@@ -32,23 +33,28 @@
 	sqrt
 	cos
 	sin
-106 instructions
+122 instructions
 	assign	global_a 0	string_a 0	nil_a 0	
 	assign	global_a 1	global_a 0	nil_a 0	
 	newtable	global_a 1	nil_a 0	nil_a 0	
+	tablesetelem	global_a 1	number_a 0	nil_a 0	
 	assign	global_a 2	global_a 1	nil_a 0	
 	assign	global_a 3	global_a 2	nil_a 0	
 	newtable	global_a 1	nil_a 0	nil_a 0	
 	tablesetelem	global_a 1	number_a 0	number_a 1	
 	tablesetelem	global_a 1	number_a 1	number_a 2	
 	tablesetelem	global_a 1	number_a 2	number_a 3	
+	tablesetelem	global_a 1	number_a 3	nil_a 0	
 	assign	global_a 4	global_a 1	nil_a 0	
 	assign	global_a 3	global_a 4	nil_a 0	
 	newtable	global_a 1	nil_a 0	nil_a 0	
+	tablesetelem	global_a 1	number_a 0	nil_a 0	
 	newtable	global_a 3	nil_a 0	nil_a 0	
 	tablesetelem	global_a 3	number_a 0	string_a 1	
 	tablesetelem	global_a 3	number_a 1	string_a 2	
+	tablesetelem	global_a 3	number_a 2	nil_a 0	
 	newtable	global_a 6	nil_a 0	nil_a 0	
+	tablesetelem	global_a 6	number_a 0	nil_a 0	
 	newtable	global_a 7	nil_a 0	nil_a 0	
 	tablesetelem	global_a 7	number_a 0	bool_a 0	
 	tablesetelem	global_a 7	number_a 1	bool_a 1	
@@ -56,12 +62,14 @@
 	tablesetelem	global_a 7	number_a 3	number_a 4	
 	tablesetelem	global_a 7	number_a 5	global_a 3	
 	tablesetelem	global_a 7	number_a 4	global_a 6	
+	tablesetelem	global_a 7	number_a 6	nil_a 0	
 	assign	global_a 5	global_a 7	nil_a 0	
 	assign	global_a 8	global_a 5	nil_a 0	
 	newtable	global_a 1	nil_a 0	nil_a 0	
 	tablesetelem	global_a 1	number_a 0	global_a 2	
 	tablesetelem	global_a 1	number_a 1	global_a 4	
 	tablesetelem	global_a 1	number_a 2	global_a 5	
+	tablesetelem	global_a 1	number_a 3	nil_a 0	
 	assign	global_a 9	global_a 1	nil_a 0	
 	assign	global_a 3	global_a 9	nil_a 0	
 	tablegetelem	global_a 1	global_a 9	number_a 0	
@@ -79,12 +87,14 @@
 	param	global_a 0	nil_a 0	nil_a 0	
 	param	global_a 3	nil_a 0	nil_a 0	
 	param	global_a 0	nil_a 0	nil_a 0	
+	param	nil_a 0	nil_a 0	nil_a 0	
 	call	libfunc_a 0	nil_a 0	nil_a 0	
 	assign	global_a 6	retval_a 0	nil_a 0	
 	tablegetelem	global_a 1	global_a 9	number_a 1	
 	tablegetelem	global_a 3	global_a 1	number_a 0	
 	param	global_a 3	nil_a 0	nil_a 0	
 	param	global_a 0	nil_a 0	nil_a 0	
+	param	nil_a 0	nil_a 0	nil_a 0	
 	call	libfunc_a 0	nil_a 0	nil_a 0	
 	assign	global_a 6	retval_a 0	nil_a 0	
 	tablegetelem	global_a 1	global_a 10	string_a 7	
@@ -93,24 +103,28 @@
 	assign	global_a 6	global_a 11	nil_a 0	
 	param	global_a 11	nil_a 0	nil_a 0	
 	param	global_a 0	nil_a 0	nil_a 0	
+	param	nil_a 0	nil_a 0	nil_a 0	
 	call	libfunc_a 0	nil_a 0	nil_a 0	
 	assign	global_a 1	retval_a 0	nil_a 0	
 	tablegetelem	global_a 1	global_a 9	number_a 0	
-	if_eq	label_a 65	global_a 1	global_a 2	
-	jump	label_a 67	nil_a 0	nil_a 0	
+	if_eq	label_a 75	global_a 1	global_a 2	
+	jump	label_a 77	nil_a 0	nil_a 0	
 	assign	global_a 3	bool_a 1	nil_a 0	
-	jump	label_a 68	nil_a 0	nil_a 0	
+	jump	label_a 78	nil_a 0	nil_a 0	
 	assign	global_a 3	bool_a 0	nil_a 0	
-	if_eq	label_a 70	global_a 3	bool_a 1	
-	jump	label_a 74	nil_a 0	nil_a 0	
+	if_eq	label_a 80	global_a 3	bool_a 1	
+	jump	label_a 85	nil_a 0	nil_a 0	
 	param	string_a 8	nil_a 0	nil_a 0	
+	param	nil_a 8	nil_a 0	nil_a 0	
 	call	libfunc_a 0	nil_a 0	nil_a 0	
 	assign	global_a 6	retval_a 0	nil_a 0	
-	jump	label_a 77	nil_a 0	nil_a 0	
+	jump	label_a 89	nil_a 0	nil_a 0	
 	param	string_a 9	nil_a 0	nil_a 0	
+	param	nil_a 9	nil_a 0	nil_a 0	
 	call	libfunc_a 0	nil_a 0	nil_a 0	
 	assign	global_a 1	retval_a 0	nil_a 0	
 	param	global_a 0	nil_a 0	nil_a 0	
+	param	nil_a 0	nil_a 0	nil_a 0	
 	call	libfunc_a 0	nil_a 0	nil_a 0	
 	assign	global_a 1	retval_a 0	nil_a 0	
 	tablesetelem	global_a 9	number_a 0	number_a 0	
@@ -120,6 +134,7 @@
 	assign	global_a 3	global_a 11	nil_a 0	
 	param	global_a 11	nil_a 0	nil_a 0	
 	param	global_a 0	nil_a 0	nil_a 0	
+	param	nil_a 0	nil_a 0	nil_a 0	
 	call	libfunc_a 0	nil_a 0	nil_a 0	
 	assign	global_a 1	retval_a 0	nil_a 0	
 	tablegetelem	global_a 1	global_a 10	string_a 7	
@@ -133,9 +148,11 @@
 	assign	global_a 6	global_a 11	nil_a 0	
 	param	global_a 11	nil_a 0	nil_a 0	
 	param	global_a 0	nil_a 0	nil_a 0	
+	param	nil_a 0	nil_a 0	nil_a 0	
 	call	libfunc_a 0	nil_a 0	nil_a 0	
 	assign	global_a 1	retval_a 0	nil_a 0	
 	param	global_a 5	nil_a 0	nil_a 0	
 	param	global_a 0	nil_a 0	nil_a 0	
+	param	nil_a 0	nil_a 0	nil_a 0	
 	call	libfunc_a 0	nil_a 0	nil_a 0	
 	assign	global_a 1	retval_a 0	nil_a 0	

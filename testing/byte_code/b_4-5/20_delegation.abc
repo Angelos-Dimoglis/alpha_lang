@@ -57,32 +57,32 @@ Should print "fother loo called.": "
 	1.000000
 27 user_functions
 	println 5 7
-	nothing 34 0
-	objectforeach 43 13
-	objecthaskey 84 3
-	_f0 91 5
-	objecthas 140 3
-	_f1 147 4
-	objectfind 174 3
-	_f2 181 6
-	objectfindif 210 2
-	table_append 225 4
-	table_foreach 235 3
-	_f3 243 3
-	table_find 261 2
-	table_findif 272 2
-	createTable 283 2
-	desire_understands 296 6
-	_f4 311 3
-	desire_send 336 11
-	_f5 354 3
-	createDesire 389 1
-	_f6 393 3
-	_f7 414 1
-	_f8 426 1
-	_f9 438 1
-	_f10 450 1
-	play_with_granchoild 480 2
+	nothing 38 0
+	objectforeach 47 13
+	objecthaskey 91 3
+	_f0 98 5
+	objecthas 150 3
+	_f1 157 4
+	objectfind 185 3
+	_f2 192 6
+	objectfindif 223 2
+	table_append 239 4
+	table_foreach 249 3
+	_f3 257 3
+	table_find 277 2
+	table_findif 289 2
+	createTable 301 2
+	desire_understands 315 6
+	_f4 331 3
+	desire_send 358 11
+	_f5 378 3
+	createDesire 416 1
+	_f6 421 3
+	_f7 444 1
+	_f8 458 1
+	_f9 472 1
+	_f10 486 1
+	play_with_granchoild 521 2
 12 library_functions
 	print
 	input
@@ -96,57 +96,63 @@ Should print "fother loo called.": "
 	sqrt
 	cos
 	sin
-527 instructions
+580 instructions
 	assign	global_a 0	bool_a 0	nil_a 0	
 	assign	global_a 1	global_a 0	nil_a 0	
 	assign	global_a 2	string_a 0	nil_a 0	
 	assign	global_a 1	global_a 2	nil_a 0	
-	jump	label_a 33	nil_a 0	nil_a 0	
+	jump	label_a 37	nil_a 0	nil_a 0	
 	funcstart	userfunc_a 5	nil_a 0	nil_a 0	
+	param	nil_a 1852404224	nil_a 0	nil_a 0	
 	call	libfunc_a 5	nil_a 0	nil_a 0	
 	assign	local_a 1	retval_a 0	nil_a 0	
 	assign	local_a 0	local_a 1	nil_a 0	
 	assign	local_a 2	local_a 0	nil_a 0	
 	assign	local_a 3	number_a 0	nil_a 0	
 	assign	local_a 1	local_a 3	nil_a 0	
-	if_less	label_a 14	local_a 3	local_a 0	
-	jump	label_a 16	nil_a 0	nil_a 0	
-	assign	local_a 2	bool_a 1	nil_a 0	
+	if_less	label_a 15	local_a 3	local_a 0	
 	jump	label_a 17	nil_a 0	nil_a 0	
+	assign	local_a 2	bool_a 1	nil_a 0	
+	jump	label_a 18	nil_a 0	nil_a 0	
 	assign	local_a 2	bool_a 0	nil_a 0	
-	if_eq	label_a 22	local_a 2	bool_a 1	
-	jump	label_a 29	nil_a 0	nil_a 0	
+	if_eq	label_a 23	local_a 2	bool_a 1	
+	jump	label_a 32	nil_a 0	nil_a 0	
 	add	local_a 3	local_a 3	number_a 1	
 	assign	local_a 4	local_a 3	nil_a 0	
-	jump	label_a 11	nil_a 0	nil_a 0	
+	jump	label_a 12	nil_a 0	nil_a 0	
 	param	local_a 3	nil_a 0	nil_a 0	
+	param	nil_a 3	nil_a 0	nil_a 0	
 	call	libfunc_a 6	nil_a 0	nil_a 0	
 	assign	local_a 5	retval_a 0	nil_a 0	
 	param	local_a 5	nil_a 0	nil_a 0	
+	param	nil_a 5	nil_a 0	nil_a 0	
 	call	libfunc_a 0	nil_a 0	nil_a 0	
 	assign	local_a 6	retval_a 0	nil_a 0	
-	jump	label_a 18	nil_a 0	nil_a 0	
+	jump	label_a 19	nil_a 0	nil_a 0	
 	param	global_a 2	nil_a 0	nil_a 0	
+	param	nil_a 2	nil_a 0	nil_a 0	
 	call	libfunc_a 0	nil_a 0	nil_a 0	
 	assign	local_a 1	retval_a 0	nil_a 0	
 	funcend	userfunc_a 5	nil_a 0	nil_a 0	
-	jump	label_a 36	nil_a 0	nil_a 0	
-	funcstart	userfunc_a 34	nil_a 0	nil_a 0	
-	funcend	userfunc_a 34	nil_a 0	nil_a 0	
-	assign	global_a 3	userfunc_a 34	nil_a 0	
+	jump	label_a 40	nil_a 0	nil_a 0	
+	funcstart	userfunc_a 38	nil_a 0	nil_a 0	
+	funcend	userfunc_a 38	nil_a 0	nil_a 0	
+	assign	global_a 3	userfunc_a 38	nil_a 0	
 	assign	global_a 1	global_a 3	nil_a 0	
-	if_eq	label_a 40	global_a 0	bool_a 1	
-	jump	label_a 42	nil_a 0	nil_a 0	
+	if_eq	label_a 44	global_a 0	bool_a 1	
+	jump	label_a 46	nil_a 0	nil_a 0	
 	assign	global_a 3	userfunc_a 5	nil_a 0	
 	assign	global_a 4	global_a 3	nil_a 0	
-	jump	label_a 83	nil_a 0	nil_a 0	
-	funcstart	userfunc_a 43	nil_a 0	nil_a 0	
+	jump	label_a 90	nil_a 0	nil_a 0	
+	funcstart	userfunc_a 47	nil_a 0	nil_a 0	
 	param	formal_a 0	nil_a 0	nil_a 0	
+	param	nil_a 0	nil_a 0	nil_a 0	
 	call	libfunc_a 2	nil_a 0	nil_a 0	
 	assign	local_a 1	retval_a 0	nil_a 0	
 	assign	local_a 0	local_a 1	nil_a 0	
 	assign	local_a 2	local_a 0	nil_a 0	
 	param	local_a 0	nil_a 0	nil_a 0	
+	param	nil_a 0	nil_a 0	nil_a 0	
 	call	libfunc_a 3	nil_a 0	nil_a 0	
 	assign	local_a 1	retval_a 0	nil_a 0	
 	assign	local_a 3	local_a 1	nil_a 0	
@@ -155,18 +161,18 @@ Should print "fother loo called.": "
 	assign	local_a 1	local_a 4	nil_a 0	
 	assign	local_a 5	number_a 0	nil_a 0	
 	assign	local_a 1	local_a 5	nil_a 0	
-	if_eq	label_a 60	local_a 4	bool_a 1	
-	jump	label_a 64	nil_a 0	nil_a 0	
-	if_less	label_a 62	local_a 5	local_a 3	
-	jump	label_a 64	nil_a 0	nil_a 0	
+	if_eq	label_a 66	local_a 4	bool_a 1	
+	jump	label_a 70	nil_a 0	nil_a 0	
+	if_less	label_a 68	local_a 5	local_a 3	
+	jump	label_a 70	nil_a 0	nil_a 0	
 	assign	local_a 2	bool_a 1	nil_a 0	
-	jump	label_a 65	nil_a 0	nil_a 0	
+	jump	label_a 71	nil_a 0	nil_a 0	
 	assign	local_a 2	bool_a 0	nil_a 0	
-	if_eq	label_a 70	local_a 2	bool_a 1	
-	jump	label_a 82	nil_a 0	nil_a 0	
+	if_eq	label_a 76	local_a 2	bool_a 1	
+	jump	label_a 89	nil_a 0	nil_a 0	
 	add	local_a 5	local_a 5	number_a 1	
 	assign	local_a 6	local_a 5	nil_a 0	
-	jump	label_a 57	nil_a 0	nil_a 0	
+	jump	label_a 63	nil_a 0	nil_a 0	
 	tablegetelem	local_a 8	local_a 0	local_a 5	
 	assign	local_a 7	local_a 8	nil_a 0	
 	assign	local_a 9	local_a 7	nil_a 0	
@@ -174,28 +180,29 @@ Should print "fother loo called.": "
 	param	formal_a 2	nil_a 0	nil_a 0	
 	param	local_a 7	nil_a 0	nil_a 0	
 	param	local_a 10	nil_a 0	nil_a 0	
+	param	nil_a 10	nil_a 0	nil_a 0	
 	call	formal_a 1	nil_a 0	nil_a 0	
 	assign	local_a 11	retval_a 0	nil_a 0	
 	assign	local_a 4	local_a 11	nil_a 0	
 	assign	local_a 12	local_a 4	nil_a 0	
-	jump	label_a 66	nil_a 0	nil_a 0	
-	funcend	userfunc_a 43	nil_a 0	nil_a 0	
-	jump	label_a 139	nil_a 0	nil_a 0	
-	funcstart	userfunc_a 84	nil_a 0	nil_a 0	
+	jump	label_a 72	nil_a 0	nil_a 0	
+	funcend	userfunc_a 47	nil_a 0	nil_a 0	
+	jump	label_a 149	nil_a 0	nil_a 0	
+	funcstart	userfunc_a 91	nil_a 0	nil_a 0	
 	newtable	local_a 1	nil_a 0	nil_a 0	
 	tablesetelem	local_a 1	string_a 1	bool_a 0	
 	tablesetelem	local_a 1	string_a 2	formal_a 1	
 	assign	local_a 0	local_a 1	nil_a 0	
 	assign	local_a 2	local_a 0	nil_a 0	
-	jump	label_a 126	nil_a 0	nil_a 0	
-	funcstart	userfunc_a 91	nil_a 0	nil_a 0	
+	jump	label_a 134	nil_a 0	nil_a 0	
+	funcstart	userfunc_a 98	nil_a 0	nil_a 0	
 	tablegetelem	local_a 0	formal_a 0	string_a 3	
 	tablegetelem	local_a 1	formal_a 0	string_a 4	
 	tablegetelem	local_a 2	formal_a 0	string_a 4	
-	if_eq	label_a 97	formal_a 1	local_a 2	
-	jump	label_a 99	nil_a 0	nil_a 0	
+	if_eq	label_a 104	formal_a 1	local_a 2	
+	jump	label_a 106	nil_a 0	nil_a 0	
 	assign	local_a 3	bool_a 1	nil_a 0	
-	jump	label_a 100	nil_a 0	nil_a 0	
+	jump	label_a 107	nil_a 0	nil_a 0	
 	assign	local_a 3	bool_a 0	nil_a 0	
 	param	string_a 5	nil_a 0	nil_a 0	
 	param	local_a 0	nil_a 0	nil_a 0	
@@ -205,80 +212,84 @@ Should print "fother loo called.": "
 	param	local_a 1	nil_a 0	nil_a 0	
 	param	string_a 8	nil_a 0	nil_a 0	
 	param	local_a 3	nil_a 0	nil_a 0	
+	param	nil_a 3	nil_a 0	nil_a 0	
 	call	global_a 3	nil_a 0	nil_a 0	
 	assign	local_a 4	retval_a 0	nil_a 0	
 	tablegetelem	local_a 0	formal_a 0	string_a 4	
-	if_eq	label_a 113	formal_a 1	local_a 0	
-	jump	label_a 115	nil_a 0	nil_a 0	
+	if_eq	label_a 121	formal_a 1	local_a 0	
+	jump	label_a 123	nil_a 0	nil_a 0	
 	assign	local_a 1	bool_a 1	nil_a 0	
-	jump	label_a 116	nil_a 0	nil_a 0	
+	jump	label_a 124	nil_a 0	nil_a 0	
 	assign	local_a 1	bool_a 0	nil_a 0	
 	tablesetelem	formal_a 0	string_a 3	local_a 1	
 	tablegetelem	local_a 2	formal_a 0	string_a 3	
-	if_eq	label_a 122	local_a 2	bool_a 1	
-	jump	label_a 120	nil_a 0	nil_a 0	
+	if_eq	label_a 130	local_a 2	bool_a 1	
+	jump	label_a 128	nil_a 0	nil_a 0	
 	assign	local_a 3	bool_a 1	nil_a 0	
-	jump	label_a 123	nil_a 0	nil_a 0	
+	jump	label_a 131	nil_a 0	nil_a 0	
 	assign	local_a 3	bool_a 0	nil_a 0	
 	assign	retval_a 0	nil_a 0	nil_a 0	
-	jump	label_a 125	nil_a 0	nil_a 0	
-	funcend	userfunc_a 91	nil_a 0	nil_a 0	
+	jump	label_a 133	nil_a 0	nil_a 0	
+	funcend	userfunc_a 98	nil_a 0	nil_a 0	
 	param	formal_a 0	nil_a 0	nil_a 0	
-	param	userfunc_a 91	nil_a 0	nil_a 0	
+	param	userfunc_a 98	nil_a 0	nil_a 0	
 	param	local_a 0	nil_a 0	nil_a 0	
-	call	userfunc_a 43	nil_a 0	nil_a 0	
+	param	nil_a 0	nil_a 0	nil_a 0	
+	call	userfunc_a 47	nil_a 0	nil_a 0	
 	assign	local_a 1	retval_a 0	nil_a 0	
 	param	string_a 9	nil_a 0	nil_a 0	
 	param	local_a 0	nil_a 0	nil_a 0	
+	param	nil_a 0	nil_a 0	nil_a 0	
 	call	global_a 3	nil_a 0	nil_a 0	
 	assign	local_a 1	retval_a 0	nil_a 0	
 	tablegetelem	local_a 1	local_a 0	string_a 3	
 	assign	retval_a 0	nil_a 0	nil_a 0	
-	jump	label_a 138	nil_a 0	nil_a 0	
-	funcend	userfunc_a 84	nil_a 0	nil_a 0	
-	jump	label_a 173	nil_a 0	nil_a 0	
-	funcstart	userfunc_a 140	nil_a 0	nil_a 0	
+	jump	label_a 148	nil_a 0	nil_a 0	
+	funcend	userfunc_a 91	nil_a 0	nil_a 0	
+	jump	label_a 184	nil_a 0	nil_a 0	
+	funcstart	userfunc_a 150	nil_a 0	nil_a 0	
 	newtable	local_a 1	nil_a 0	nil_a 0	
 	tablesetelem	local_a 1	string_a 10	bool_a 0	
 	tablesetelem	local_a 1	string_a 11	formal_a 1	
 	assign	local_a 0	local_a 1	nil_a 0	
 	assign	local_a 2	local_a 0	nil_a 0	
-	jump	label_a 164	nil_a 0	nil_a 0	
-	funcstart	userfunc_a 147	nil_a 0	nil_a 0	
+	jump	label_a 174	nil_a 0	nil_a 0	
+	funcstart	userfunc_a 157	nil_a 0	nil_a 0	
 	tablegetelem	local_a 0	formal_a 0	string_a 12	
-	if_eq	label_a 151	formal_a 2	local_a 0	
-	jump	label_a 153	nil_a 0	nil_a 0	
+	if_eq	label_a 161	formal_a 2	local_a 0	
+	jump	label_a 163	nil_a 0	nil_a 0	
 	assign	local_a 1	bool_a 1	nil_a 0	
-	jump	label_a 154	nil_a 0	nil_a 0	
+	jump	label_a 164	nil_a 0	nil_a 0	
 	assign	local_a 1	bool_a 0	nil_a 0	
 	tablesetelem	formal_a 0	string_a 13	local_a 1	
 	tablegetelem	local_a 2	formal_a 0	string_a 13	
-	if_eq	label_a 160	local_a 2	bool_a 1	
-	jump	label_a 158	nil_a 0	nil_a 0	
+	if_eq	label_a 170	local_a 2	bool_a 1	
+	jump	label_a 168	nil_a 0	nil_a 0	
 	assign	local_a 3	bool_a 1	nil_a 0	
-	jump	label_a 161	nil_a 0	nil_a 0	
+	jump	label_a 171	nil_a 0	nil_a 0	
 	assign	local_a 3	bool_a 0	nil_a 0	
 	assign	retval_a 0	nil_a 0	nil_a 0	
-	jump	label_a 163	nil_a 0	nil_a 0	
-	funcend	userfunc_a 147	nil_a 0	nil_a 0	
+	jump	label_a 173	nil_a 0	nil_a 0	
+	funcend	userfunc_a 157	nil_a 0	nil_a 0	
 	param	formal_a 0	nil_a 0	nil_a 0	
-	param	userfunc_a 147	nil_a 0	nil_a 0	
+	param	userfunc_a 157	nil_a 0	nil_a 0	
 	param	local_a 0	nil_a 0	nil_a 0	
-	call	userfunc_a 43	nil_a 0	nil_a 0	
+	param	nil_a 0	nil_a 0	nil_a 0	
+	call	userfunc_a 47	nil_a 0	nil_a 0	
 	assign	local_a 1	retval_a 0	nil_a 0	
 	tablegetelem	local_a 1	local_a 0	string_a 13	
 	assign	retval_a 0	nil_a 0	nil_a 0	
-	jump	label_a 172	nil_a 0	nil_a 0	
-	funcend	userfunc_a 140	nil_a 0	nil_a 0	
-	jump	label_a 209	nil_a 0	nil_a 0	
-	funcstart	userfunc_a 174	nil_a 0	nil_a 0	
+	jump	label_a 183	nil_a 0	nil_a 0	
+	funcend	userfunc_a 150	nil_a 0	nil_a 0	
+	jump	label_a 222	nil_a 0	nil_a 0	
+	funcstart	userfunc_a 185	nil_a 0	nil_a 0	
 	newtable	local_a 1	nil_a 0	nil_a 0	
 	tablesetelem	local_a 1	string_a 14	formal_a 2	
 	tablesetelem	local_a 1	string_a 15	formal_a 1	
 	assign	local_a 0	local_a 1	nil_a 0	
 	assign	local_a 2	local_a 0	nil_a 0	
-	jump	label_a 200	nil_a 0	nil_a 0	
-	funcstart	userfunc_a 181	nil_a 0	nil_a 0	
+	jump	label_a 212	nil_a 0	nil_a 0	
+	funcstart	userfunc_a 192	nil_a 0	nil_a 0	
 	assign	local_a 0	bool_a 1	nil_a 0	
 	assign	local_a 1	local_a 0	nil_a 0	
 	tablegetelem	local_a 1	formal_a 0	string_a 16	
@@ -286,43 +297,46 @@ Should print "fother loo called.": "
 	param	local_a 1	nil_a 0	nil_a 0	
 	param	formal_a 1	nil_a 0	nil_a 0	
 	param	formal_a 2	nil_a 0	nil_a 0	
+	param	nil_a 2	nil_a 0	nil_a 0	
 	call	local_a 2	nil_a 0	nil_a 0	
 	assign	local_a 3	retval_a 0	nil_a 0	
-	if_eq	label_a 193	local_a 3	bool_a 1	
-	jump	label_a 197	nil_a 0	nil_a 0	
+	if_eq	label_a 205	local_a 3	bool_a 1	
+	jump	label_a 209	nil_a 0	nil_a 0	
 	tablesetelem	formal_a 0	string_a 18	formal_a 2	
 	tablegetelem	local_a 4	formal_a 0	string_a 18	
 	assign	local_a 0	bool_a 0	nil_a 0	
 	assign	local_a 5	local_a 0	nil_a 0	
 	assign	retval_a 0	nil_a 0	nil_a 0	
-	jump	label_a 199	nil_a 0	nil_a 0	
-	funcend	userfunc_a 181	nil_a 0	nil_a 0	
+	jump	label_a 211	nil_a 0	nil_a 0	
+	funcend	userfunc_a 192	nil_a 0	nil_a 0	
 	param	formal_a 0	nil_a 0	nil_a 0	
-	param	userfunc_a 181	nil_a 0	nil_a 0	
+	param	userfunc_a 192	nil_a 0	nil_a 0	
 	param	local_a 0	nil_a 0	nil_a 0	
-	call	userfunc_a 43	nil_a 0	nil_a 0	
+	param	nil_a 0	nil_a 0	nil_a 0	
+	call	userfunc_a 47	nil_a 0	nil_a 0	
 	assign	local_a 1	retval_a 0	nil_a 0	
 	tablegetelem	local_a 1	local_a 0	string_a 18	
 	assign	retval_a 0	nil_a 0	nil_a 0	
-	jump	label_a 208	nil_a 0	nil_a 0	
-	funcend	userfunc_a 174	nil_a 0	nil_a 0	
-	jump	label_a 224	nil_a 0	nil_a 0	
-	funcstart	userfunc_a 210	nil_a 0	nil_a 0	
+	jump	label_a 221	nil_a 0	nil_a 0	
+	funcend	userfunc_a 185	nil_a 0	nil_a 0	
+	jump	label_a 238	nil_a 0	nil_a 0	
+	funcstart	userfunc_a 223	nil_a 0	nil_a 0	
 	param	formal_a 0	nil_a 0	nil_a 0	
 	param	formal_a 1	nil_a 0	nil_a 0	
 	param	formal_a 2	nil_a 0	nil_a 0	
-	call	userfunc_a 174	nil_a 0	nil_a 0	
+	param	nil_a 2	nil_a 0	nil_a 0	
+	call	userfunc_a 185	nil_a 0	nil_a 0	
 	assign	local_a 0	retval_a 0	nil_a 0	
-	if_not_eq	label_a 218	local_a 0	nil_a 0	
-	jump	label_a 220	nil_a 0	nil_a 0	
+	if_not_eq	label_a 232	local_a 0	nil_a 0	
+	jump	label_a 234	nil_a 0	nil_a 0	
 	assign	local_a 1	bool_a 1	nil_a 0	
-	jump	label_a 221	nil_a 0	nil_a 0	
+	jump	label_a 235	nil_a 0	nil_a 0	
 	assign	local_a 1	bool_a 0	nil_a 0	
 	assign	retval_a 0	nil_a 0	nil_a 0	
-	jump	label_a 223	nil_a 0	nil_a 0	
-	funcend	userfunc_a 210	nil_a 0	nil_a 0	
-	jump	label_a 234	nil_a 0	nil_a 0	
-	funcstart	userfunc_a 225	nil_a 0	nil_a 0	
+	jump	label_a 237	nil_a 0	nil_a 0	
+	funcend	userfunc_a 223	nil_a 0	nil_a 0	
+	jump	label_a 248	nil_a 0	nil_a 0	
+	funcstart	userfunc_a 239	nil_a 0	nil_a 0	
 	tablegetelem	local_a 1	formal_a 0	string_a 19	
 	assign	local_a 0	local_a 1	nil_a 0	
 	add	local_a 1	local_a 1	number_a 1	
@@ -330,245 +344,272 @@ Should print "fother loo called.": "
 	tablegetelem	local_a 2	formal_a 0	string_a 20	
 	tablesetelem	local_a 2	local_a 0	formal_a 1	
 	tablegetelem	local_a 3	local_a 2	local_a 0	
-	funcend	userfunc_a 225	nil_a 0	nil_a 0	
-	jump	label_a 260	nil_a 0	nil_a 0	
-	funcstart	userfunc_a 235	nil_a 0	nil_a 0	
+	funcend	userfunc_a 239	nil_a 0	nil_a 0	
+	jump	label_a 276	nil_a 0	nil_a 0	
+	funcstart	userfunc_a 249	nil_a 0	nil_a 0	
 	newtable	local_a 1	nil_a 0	nil_a 0	
 	tablesetelem	local_a 1	string_a 21	formal_a 1	
 	tablesetelem	local_a 1	string_a 14	formal_a 2	
 	assign	local_a 0	local_a 1	nil_a 0	
 	assign	local_a 2	local_a 0	nil_a 0	
 	tablegetelem	local_a 1	formal_a 0	string_a 20	
-	jump	label_a 254	nil_a 0	nil_a 0	
-	funcstart	userfunc_a 243	nil_a 0	nil_a 0	
+	jump	label_a 269	nil_a 0	nil_a 0	
+	funcstart	userfunc_a 257	nil_a 0	nil_a 0	
 	tablegetelem	local_a 0	formal_a 0	string_a 16	
 	tablegetelem	local_a 1	formal_a 0	string_a 22	
 	param	local_a 0	nil_a 0	nil_a 0	
 	param	formal_a 1	nil_a 0	nil_a 0	
 	param	formal_a 2	nil_a 0	nil_a 0	
+	param	nil_a 2	nil_a 0	nil_a 0	
 	call	local_a 1	nil_a 0	nil_a 0	
 	assign	local_a 2	retval_a 0	nil_a 0	
 	assign	retval_a 0	nil_a 0	nil_a 0	
-	jump	label_a 253	nil_a 0	nil_a 0	
-	funcend	userfunc_a 243	nil_a 0	nil_a 0	
+	jump	label_a 268	nil_a 0	nil_a 0	
+	funcend	userfunc_a 257	nil_a 0	nil_a 0	
 	param	local_a 1	nil_a 0	nil_a 0	
-	param	userfunc_a 243	nil_a 0	nil_a 0	
+	param	userfunc_a 257	nil_a 0	nil_a 0	
 	param	local_a 0	nil_a 0	nil_a 0	
-	call	userfunc_a 43	nil_a 0	nil_a 0	
+	param	nil_a 0	nil_a 0	nil_a 0	
+	call	userfunc_a 47	nil_a 0	nil_a 0	
 	assign	local_a 1	retval_a 0	nil_a 0	
-	funcend	userfunc_a 235	nil_a 0	nil_a 0	
-	jump	label_a 271	nil_a 0	nil_a 0	
-	funcstart	userfunc_a 261	nil_a 0	nil_a 0	
+	funcend	userfunc_a 249	nil_a 0	nil_a 0	
+	jump	label_a 288	nil_a 0	nil_a 0	
+	funcstart	userfunc_a 277	nil_a 0	nil_a 0	
 	tablegetelem	local_a 0	formal_a 0	string_a 20	
 	param	local_a 0	nil_a 0	nil_a 0	
 	param	formal_a 1	nil_a 0	nil_a 0	
 	param	formal_a 2	nil_a 0	nil_a 0	
-	call	userfunc_a 174	nil_a 0	nil_a 0	
+	param	nil_a 2	nil_a 0	nil_a 0	
+	call	userfunc_a 185	nil_a 0	nil_a 0	
 	assign	local_a 1	retval_a 0	nil_a 0	
 	assign	retval_a 0	nil_a 0	nil_a 0	
-	jump	label_a 270	nil_a 0	nil_a 0	
-	funcend	userfunc_a 261	nil_a 0	nil_a 0	
-	jump	label_a 282	nil_a 0	nil_a 0	
-	funcstart	userfunc_a 272	nil_a 0	nil_a 0	
+	jump	label_a 287	nil_a 0	nil_a 0	
+	funcend	userfunc_a 277	nil_a 0	nil_a 0	
+	jump	label_a 300	nil_a 0	nil_a 0	
+	funcstart	userfunc_a 289	nil_a 0	nil_a 0	
 	tablegetelem	local_a 0	formal_a 0	string_a 20	
 	param	local_a 0	nil_a 0	nil_a 0	
 	param	formal_a 1	nil_a 0	nil_a 0	
 	param	formal_a 2	nil_a 0	nil_a 0	
-	call	userfunc_a 210	nil_a 0	nil_a 0	
+	param	nil_a 2	nil_a 0	nil_a 0	
+	call	userfunc_a 223	nil_a 0	nil_a 0	
 	assign	local_a 1	retval_a 0	nil_a 0	
 	assign	retval_a 0	nil_a 0	nil_a 0	
-	jump	label_a 281	nil_a 0	nil_a 0	
-	funcend	userfunc_a 272	nil_a 0	nil_a 0	
-	jump	label_a 295	nil_a 0	nil_a 0	
-	funcstart	userfunc_a 283	nil_a 0	nil_a 0	
+	jump	label_a 299	nil_a 0	nil_a 0	
+	funcend	userfunc_a 289	nil_a 0	nil_a 0	
+	jump	label_a 314	nil_a 0	nil_a 0	
+	funcstart	userfunc_a 301	nil_a 0	nil_a 0	
 	newtable	local_a 0	nil_a 0	nil_a 0	
+	tablesetelem	local_a 0	number_a 0	nil_a 0	
 	newtable	local_a 1	nil_a 0	nil_a 0	
-	tablesetelem	local_a 1	string_a 23	userfunc_a 225	
-	tablesetelem	local_a 1	string_a 24	userfunc_a 235	
-	tablesetelem	local_a 1	string_a 25	userfunc_a 261	
-	tablesetelem	local_a 1	string_a 26	userfunc_a 272	
+	tablesetelem	local_a 1	string_a 23	userfunc_a 239	
+	tablesetelem	local_a 1	string_a 24	userfunc_a 249	
+	tablesetelem	local_a 1	string_a 25	userfunc_a 277	
+	tablesetelem	local_a 1	string_a 26	userfunc_a 289	
 	tablesetelem	local_a 1	string_a 19	number_a 0	
 	tablesetelem	local_a 1	string_a 20	local_a 0	
 	assign	retval_a 0	nil_a 0	nil_a 0	
-	jump	label_a 294	nil_a 0	nil_a 0	
-	funcend	userfunc_a 283	nil_a 0	nil_a 0	
-	jump	label_a 335	nil_a 0	nil_a 0	
-	funcstart	userfunc_a 296	nil_a 0	nil_a 0	
+	jump	label_a 313	nil_a 0	nil_a 0	
+	funcend	userfunc_a 301	nil_a 0	nil_a 0	
+	jump	label_a 357	nil_a 0	nil_a 0	
+	funcstart	userfunc_a 315	nil_a 0	nil_a 0	
 	param	formal_a 0	nil_a 0	nil_a 0	
 	param	formal_a 1	nil_a 0	nil_a 0	
-	call	userfunc_a 84	nil_a 0	nil_a 0	
+	param	nil_a 1	nil_a 0	nil_a 0	
+	call	userfunc_a 91	nil_a 0	nil_a 0	
 	assign	local_a 1	retval_a 0	nil_a 0	
 	assign	local_a 0	local_a 1	nil_a 0	
 	assign	local_a 2	local_a 0	nil_a 0	
-	if_eq	label_a 307	local_a 0	bool_a 1	
-	jump	label_a 305	nil_a 0	nil_a 0	
+	if_eq	label_a 327	local_a 0	bool_a 1	
+	jump	label_a 325	nil_a 0	nil_a 0	
 	assign	local_a 1	bool_a 1	nil_a 0	
-	jump	label_a 308	nil_a 0	nil_a 0	
+	jump	label_a 328	nil_a 0	nil_a 0	
 	assign	local_a 1	bool_a 0	nil_a 0	
-	if_eq	label_a 310	local_a 1	bool_a 1	
-	jump	label_a 332	nil_a 0	nil_a 0	
-	jump	label_a 321	nil_a 0	nil_a 0	
-	funcstart	userfunc_a 311	nil_a 0	nil_a 0	
+	if_eq	label_a 330	local_a 1	bool_a 1	
+	jump	label_a 354	nil_a 0	nil_a 0	
+	jump	label_a 342	nil_a 0	nil_a 0	
+	funcstart	userfunc_a 331	nil_a 0	nil_a 0	
 	tablegetelem	local_a 0	formal_a 0	string_a 27	
 	tablegetelem	local_a 1	formal_a 2	string_a 28	
 	param	local_a 0	nil_a 0	nil_a 0	
+	param	nil_a 0	nil_a 0	nil_a 0	
 	param	formal_a 2	nil_a 0	nil_a 0	
 	call	local_a 1	nil_a 0	nil_a 0	
 	assign	local_a 2	retval_a 0	nil_a 0	
 	assign	retval_a 0	nil_a 0	nil_a 0	
-	jump	label_a 320	nil_a 0	nil_a 0	
-	funcend	userfunc_a 311	nil_a 0	nil_a 0	
+	jump	label_a 341	nil_a 0	nil_a 0	
+	funcend	userfunc_a 331	nil_a 0	nil_a 0	
 	newtable	local_a 1	nil_a 0	nil_a 0	
 	tablesetelem	local_a 1	string_a 29	formal_a 1	
 	tablegetelem	local_a 2	formal_a 0	string_a 30	
 	tablegetelem	local_a 3	local_a 2	string_a 31	
-	param	userfunc_a 311	nil_a 0	nil_a 0	
+	param	userfunc_a 331	nil_a 0	nil_a 0	
 	param	local_a 1	nil_a 0	nil_a 0	
+	param	nil_a 1	nil_a 0	nil_a 0	
 	param	local_a 2	nil_a 0	nil_a 0	
 	call	local_a 3	nil_a 0	nil_a 0	
 	assign	local_a 4	retval_a 0	nil_a 0	
 	assign	local_a 0	local_a 4	nil_a 0	
 	assign	local_a 5	local_a 0	nil_a 0	
 	assign	retval_a 0	nil_a 0	nil_a 0	
-	jump	label_a 334	nil_a 0	nil_a 0	
-	funcend	userfunc_a 296	nil_a 0	nil_a 0	
-	jump	label_a 388	nil_a 0	nil_a 0	
-	funcstart	userfunc_a 336	nil_a 0	nil_a 0	
+	jump	label_a 356	nil_a 0	nil_a 0	
+	funcend	userfunc_a 315	nil_a 0	nil_a 0	
+	jump	label_a 415	nil_a 0	nil_a 0	
+	funcstart	userfunc_a 358	nil_a 0	nil_a 0	
 	assign	local_a 0	nil_a 0	nil_a 0	
 	assign	local_a 1	local_a 0	nil_a 0	
 	param	formal_a 0	nil_a 0	nil_a 0	
 	param	formal_a 1	nil_a 0	nil_a 0	
-	call	userfunc_a 84	nil_a 0	nil_a 0	
+	param	nil_a 1	nil_a 0	nil_a 0	
+	call	userfunc_a 91	nil_a 0	nil_a 0	
 	assign	local_a 1	retval_a 0	nil_a 0	
-	if_eq	label_a 345	local_a 1	bool_a 1	
-	jump	label_a 353	nil_a 0	nil_a 0	
+	if_eq	label_a 368	local_a 1	bool_a 1	
+	jump	label_a 377	nil_a 0	nil_a 0	
 	tablegetelem	local_a 2	formal_a 0	formal_a 1	
 	param	formal_a 0	nil_a 0	nil_a 0	
 	param	formal_a 2	nil_a 0	nil_a 0	
+	param	nil_a 2	nil_a 0	nil_a 0	
 	call	local_a 2	nil_a 0	nil_a 0	
 	assign	local_a 3	retval_a 0	nil_a 0	
 	assign	local_a 0	local_a 3	nil_a 0	
 	assign	local_a 4	local_a 0	nil_a 0	
-	jump	label_a 385	nil_a 0	nil_a 0	
-	jump	label_a 364	nil_a 0	nil_a 0	
-	funcstart	userfunc_a 354	nil_a 0	nil_a 0	
+	jump	label_a 412	nil_a 0	nil_a 0	
+	jump	label_a 389	nil_a 0	nil_a 0	
+	funcstart	userfunc_a 378	nil_a 0	nil_a 0	
 	tablegetelem	local_a 0	formal_a 0	string_a 27	
 	tablegetelem	local_a 1	formal_a 2	string_a 28	
 	param	local_a 0	nil_a 0	nil_a 0	
+	param	nil_a 0	nil_a 0	nil_a 0	
 	param	formal_a 2	nil_a 0	nil_a 0	
 	call	local_a 1	nil_a 0	nil_a 0	
 	assign	local_a 2	retval_a 0	nil_a 0	
 	assign	retval_a 0	nil_a 0	nil_a 0	
-	jump	label_a 363	nil_a 0	nil_a 0	
-	funcend	userfunc_a 354	nil_a 0	nil_a 0	
+	jump	label_a 388	nil_a 0	nil_a 0	
+	funcend	userfunc_a 378	nil_a 0	nil_a 0	
 	newtable	local_a 6	nil_a 0	nil_a 0	
 	tablesetelem	local_a 6	string_a 29	formal_a 1	
 	tablegetelem	local_a 7	formal_a 0	string_a 30	
 	tablegetelem	local_a 8	local_a 7	string_a 32	
-	param	userfunc_a 354	nil_a 0	nil_a 0	
+	param	userfunc_a 378	nil_a 0	nil_a 0	
 	param	local_a 6	nil_a 0	nil_a 0	
+	param	nil_a 6	nil_a 0	nil_a 0	
 	param	local_a 7	nil_a 0	nil_a 0	
 	call	local_a 8	nil_a 0	nil_a 0	
 	assign	local_a 9	retval_a 0	nil_a 0	
 	assign	local_a 5	local_a 9	nil_a 0	
 	assign	local_a 10	local_a 5	nil_a 0	
-	if_eq	label_a 377	local_a 5	bool_a 1	
-	jump	label_a 385	nil_a 0	nil_a 0	
+	if_eq	label_a 403	local_a 5	bool_a 1	
+	jump	label_a 412	nil_a 0	nil_a 0	
 	tablegetelem	local_a 6	local_a 5	string_a 33	
 	param	formal_a 1	nil_a 0	nil_a 0	
 	param	formal_a 2	nil_a 0	nil_a 0	
+	param	nil_a 2	nil_a 0	nil_a 0	
 	param	local_a 5	nil_a 0	nil_a 0	
 	call	local_a 6	nil_a 0	nil_a 0	
 	assign	local_a 7	retval_a 0	nil_a 0	
 	assign	local_a 0	local_a 7	nil_a 0	
 	assign	local_a 8	local_a 0	nil_a 0	
 	assign	retval_a 0	nil_a 0	nil_a 0	
-	jump	label_a 387	nil_a 0	nil_a 0	
-	funcend	userfunc_a 336	nil_a 0	nil_a 0	
-	jump	label_a 409	nil_a 0	nil_a 0	
-	funcstart	userfunc_a 389	nil_a 0	nil_a 0	
-	call	userfunc_a 283	nil_a 0	nil_a 0	
+	jump	label_a 414	nil_a 0	nil_a 0	
+	funcend	userfunc_a 358	nil_a 0	nil_a 0	
+	jump	label_a 438	nil_a 0	nil_a 0	
+	funcstart	userfunc_a 416	nil_a 0	nil_a 0	
+	param	nil_a 1634038272	nil_a 0	nil_a 0	
+	call	userfunc_a 301	nil_a 0	nil_a 0	
 	assign	local_a 0	retval_a 0	nil_a 0	
-	jump	label_a 401	nil_a 0	nil_a 0	
-	funcstart	userfunc_a 393	nil_a 0	nil_a 0	
+	jump	label_a 430	nil_a 0	nil_a 0	
+	funcstart	userfunc_a 421	nil_a 0	nil_a 0	
 	tablegetelem	local_a 0	formal_a 0	string_a 30	
 	tablegetelem	local_a 1	local_a 0	string_a 34	
 	param	formal_a 1	nil_a 0	nil_a 0	
+	param	nil_a 1	nil_a 0	nil_a 0	
 	param	local_a 0	nil_a 0	nil_a 0	
 	call	local_a 1	nil_a 0	nil_a 0	
 	assign	local_a 2	retval_a 0	nil_a 0	
-	funcend	userfunc_a 393	nil_a 0	nil_a 0	
+	funcend	userfunc_a 421	nil_a 0	nil_a 0	
 	newtable	local_a 0	nil_a 0	nil_a 0	
 	tablesetelem	local_a 0	string_a 30	local_a 0	
-	tablesetelem	local_a 0	string_a 35	userfunc_a 336	
-	tablesetelem	local_a 0	string_a 36	userfunc_a 393	
-	tablesetelem	local_a 0	string_a 37	userfunc_a 296	
+	tablesetelem	local_a 0	string_a 35	userfunc_a 358	
+	tablesetelem	local_a 0	string_a 36	userfunc_a 421	
+	tablesetelem	local_a 0	string_a 37	userfunc_a 315	
 	assign	retval_a 0	nil_a 0	nil_a 0	
-	jump	label_a 408	nil_a 0	nil_a 0	
-	funcend	userfunc_a 389	nil_a 0	nil_a 0	
-	call	userfunc_a 389	nil_a 0	nil_a 0	
+	jump	label_a 437	nil_a 0	nil_a 0	
+	funcend	userfunc_a 416	nil_a 0	nil_a 0	
+	param	nil_a 416	nil_a 0	nil_a 0	
+	call	userfunc_a 416	nil_a 0	nil_a 0	
 	assign	global_a 1	retval_a 0	nil_a 0	
 	assign	global_a 5	global_a 1	nil_a 0	
 	assign	global_a 6	global_a 5	nil_a 0	
-	jump	label_a 419	nil_a 0	nil_a 0	
-	funcstart	userfunc_a 414	nil_a 0	nil_a 0	
+	jump	label_a 450	nil_a 0	nil_a 0	
+	funcstart	userfunc_a 444	nil_a 0	nil_a 0	
 	param	string_a 38	nil_a 0	nil_a 0	
+	param	nil_a 38	nil_a 0	nil_a 0	
 	call	userfunc_a 5	nil_a 0	nil_a 0	
 	assign	local_a 0	retval_a 0	nil_a 0	
-	funcend	userfunc_a 414	nil_a 0	nil_a 0	
-	tablesetelem	global_a 5	string_a 39	userfunc_a 414	
+	funcend	userfunc_a 444	nil_a 0	nil_a 0	
+	tablesetelem	global_a 5	string_a 39	userfunc_a 444	
 	tablegetelem	global_a 1	global_a 5	string_a 39	
-	call	userfunc_a 389	nil_a 0	nil_a 0	
+	param	nil_a 2328659456	nil_a 0	nil_a 0	
+	call	userfunc_a 416	nil_a 0	nil_a 0	
 	assign	global_a 1	retval_a 0	nil_a 0	
 	assign	global_a 7	global_a 1	nil_a 0	
 	assign	global_a 6	global_a 7	nil_a 0	
-	jump	label_a 431	nil_a 0	nil_a 0	
-	funcstart	userfunc_a 426	nil_a 0	nil_a 0	
+	jump	label_a 464	nil_a 0	nil_a 0	
+	funcstart	userfunc_a 458	nil_a 0	nil_a 0	
 	param	string_a 40	nil_a 0	nil_a 0	
+	param	nil_a 40	nil_a 0	nil_a 0	
 	call	userfunc_a 5	nil_a 0	nil_a 0	
 	assign	local_a 0	retval_a 0	nil_a 0	
-	funcend	userfunc_a 426	nil_a 0	nil_a 0	
-	tablesetelem	global_a 7	string_a 39	userfunc_a 426	
+	funcend	userfunc_a 458	nil_a 0	nil_a 0	
+	tablesetelem	global_a 7	string_a 39	userfunc_a 458	
 	tablegetelem	global_a 1	global_a 7	string_a 39	
-	call	userfunc_a 389	nil_a 0	nil_a 0	
+	param	nil_a 2328659456	nil_a 0	nil_a 0	
+	call	userfunc_a 416	nil_a 0	nil_a 0	
 	assign	global_a 1	retval_a 0	nil_a 0	
 	assign	global_a 8	global_a 1	nil_a 0	
 	assign	global_a 6	global_a 8	nil_a 0	
-	jump	label_a 443	nil_a 0	nil_a 0	
-	funcstart	userfunc_a 438	nil_a 0	nil_a 0	
+	jump	label_a 478	nil_a 0	nil_a 0	
+	funcstart	userfunc_a 472	nil_a 0	nil_a 0	
 	param	string_a 41	nil_a 0	nil_a 0	
+	param	nil_a 41	nil_a 0	nil_a 0	
 	call	userfunc_a 5	nil_a 0	nil_a 0	
 	assign	local_a 0	retval_a 0	nil_a 0	
-	funcend	userfunc_a 438	nil_a 0	nil_a 0	
-	tablesetelem	global_a 8	string_a 42	userfunc_a 438	
+	funcend	userfunc_a 472	nil_a 0	nil_a 0	
+	tablesetelem	global_a 8	string_a 42	userfunc_a 472	
 	tablegetelem	global_a 1	global_a 8	string_a 42	
-	call	userfunc_a 389	nil_a 0	nil_a 0	
+	param	nil_a 2328659456	nil_a 0	nil_a 0	
+	call	userfunc_a 416	nil_a 0	nil_a 0	
 	assign	global_a 1	retval_a 0	nil_a 0	
 	assign	global_a 9	global_a 1	nil_a 0	
 	assign	global_a 6	global_a 9	nil_a 0	
-	jump	label_a 455	nil_a 0	nil_a 0	
-	funcstart	userfunc_a 450	nil_a 0	nil_a 0	
+	jump	label_a 492	nil_a 0	nil_a 0	
+	funcstart	userfunc_a 486	nil_a 0	nil_a 0	
 	param	string_a 43	nil_a 0	nil_a 0	
+	param	nil_a 43	nil_a 0	nil_a 0	
 	call	userfunc_a 5	nil_a 0	nil_a 0	
 	assign	local_a 0	retval_a 0	nil_a 0	
-	funcend	userfunc_a 450	nil_a 0	nil_a 0	
-	tablesetelem	global_a 9	string_a 42	userfunc_a 450	
+	funcend	userfunc_a 486	nil_a 0	nil_a 0	
+	tablesetelem	global_a 9	string_a 42	userfunc_a 486	
 	tablegetelem	global_a 1	global_a 9	string_a 42	
-	call	userfunc_a 389	nil_a 0	nil_a 0	
+	param	nil_a 2328659456	nil_a 0	nil_a 0	
+	call	userfunc_a 416	nil_a 0	nil_a 0	
 	assign	global_a 1	retval_a 0	nil_a 0	
 	assign	global_a 10	global_a 1	nil_a 0	
 	assign	global_a 6	global_a 10	nil_a 0	
 	tablegetelem	global_a 1	global_a 10	string_a 44	
 	param	global_a 5	nil_a 0	nil_a 0	
+	param	nil_a 5	nil_a 0	nil_a 0	
 	param	global_a 10	nil_a 0	nil_a 0	
 	call	global_a 1	nil_a 0	nil_a 0	
 	assign	global_a 6	retval_a 0	nil_a 0	
-	call	userfunc_a 389	nil_a 0	nil_a 0	
+	param	nil_a 6	nil_a 0	nil_a 0	
+	call	userfunc_a 416	nil_a 0	nil_a 0	
 	assign	global_a 1	retval_a 0	nil_a 0	
 	assign	global_a 11	global_a 1	nil_a 0	
 	assign	global_a 6	global_a 11	nil_a 0	
 	tablegetelem	global_a 1	global_a 11	string_a 44	
 	param	global_a 10	nil_a 0	nil_a 0	
+	param	nil_a 10	nil_a 0	nil_a 0	
 	param	global_a 11	nil_a 0	nil_a 0	
 	call	global_a 1	nil_a 0	nil_a 0	
 	assign	global_a 6	retval_a 0	nil_a 0	
@@ -576,29 +617,35 @@ Should print "fother loo called.": "
 	assign	global_a 1	global_a 12	nil_a 0	
 	assign	global_a 13	nil_a 0	nil_a 0	
 	assign	global_a 1	global_a 13	nil_a 0	
-	jump	label_a 488	nil_a 0	nil_a 0	
-	funcstart	userfunc_a 480	nil_a 0	nil_a 0	
+	jump	label_a 530	nil_a 0	nil_a 0	
+	funcstart	userfunc_a 521	nil_a 0	nil_a 0	
 	tablegetelem	local_a 0	global_a 11	string_a 33	
 	param	global_a 12	nil_a 0	nil_a 0	
 	param	global_a 13	nil_a 0	nil_a 0	
+	param	nil_a 13	nil_a 0	nil_a 0	
 	param	global_a 11	nil_a 0	nil_a 0	
 	call	local_a 0	nil_a 0	nil_a 0	
 	assign	local_a 1	retval_a 0	nil_a 0	
-	funcend	userfunc_a 480	nil_a 0	nil_a 0	
+	funcend	userfunc_a 521	nil_a 0	nil_a 0	
 	param	string_a 46	nil_a 0	nil_a 0	
+	param	nil_a 46	nil_a 0	nil_a 0	
 	call	libfunc_a 0	nil_a 0	nil_a 0	
 	assign	global_a 1	retval_a 0	nil_a 0	
-	call	userfunc_a 480	nil_a 0	nil_a 0	
+	param	nil_a 1	nil_a 0	nil_a 0	
+	call	userfunc_a 521	nil_a 0	nil_a 0	
 	assign	global_a 1	retval_a 0	nil_a 0	
 	tablegetelem	global_a 1	global_a 10	string_a 44	
 	param	global_a 7	nil_a 0	nil_a 0	
+	param	nil_a 7	nil_a 0	nil_a 0	
 	param	global_a 10	nil_a 0	nil_a 0	
 	call	global_a 1	nil_a 0	nil_a 0	
 	assign	global_a 6	retval_a 0	nil_a 0	
 	param	string_a 46	nil_a 0	nil_a 0	
+	param	nil_a 46	nil_a 0	nil_a 0	
 	call	libfunc_a 0	nil_a 0	nil_a 0	
 	assign	global_a 1	retval_a 0	nil_a 0	
-	call	userfunc_a 480	nil_a 0	nil_a 0	
+	param	nil_a 1	nil_a 0	nil_a 0	
+	call	userfunc_a 521	nil_a 0	nil_a 0	
 	assign	global_a 1	retval_a 0	nil_a 0	
 	assign	global_a 12	string_a 47	nil_a 0	
 	assign	global_a 1	global_a 12	nil_a 0	
@@ -606,21 +653,27 @@ Should print "fother loo called.": "
 	assign	global_a 1	global_a 13	nil_a 0	
 	tablegetelem	global_a 1	global_a 11	string_a 44	
 	param	global_a 8	nil_a 0	nil_a 0	
+	param	nil_a 8	nil_a 0	nil_a 0	
 	param	global_a 11	nil_a 0	nil_a 0	
 	call	global_a 1	nil_a 0	nil_a 0	
 	assign	global_a 6	retval_a 0	nil_a 0	
 	param	string_a 48	nil_a 0	nil_a 0	
+	param	nil_a 48	nil_a 0	nil_a 0	
 	call	libfunc_a 0	nil_a 0	nil_a 0	
 	assign	global_a 1	retval_a 0	nil_a 0	
-	call	userfunc_a 480	nil_a 0	nil_a 0	
+	param	nil_a 1	nil_a 0	nil_a 0	
+	call	userfunc_a 521	nil_a 0	nil_a 0	
 	assign	global_a 1	retval_a 0	nil_a 0	
 	tablegetelem	global_a 1	global_a 11	string_a 44	
 	param	global_a 9	nil_a 0	nil_a 0	
+	param	nil_a 9	nil_a 0	nil_a 0	
 	param	global_a 11	nil_a 0	nil_a 0	
 	call	global_a 1	nil_a 0	nil_a 0	
 	assign	global_a 6	retval_a 0	nil_a 0	
 	param	string_a 48	nil_a 0	nil_a 0	
+	param	nil_a 48	nil_a 0	nil_a 0	
 	call	libfunc_a 0	nil_a 0	nil_a 0	
 	assign	global_a 1	retval_a 0	nil_a 0	
-	call	userfunc_a 480	nil_a 0	nil_a 0	
+	param	nil_a 1	nil_a 0	nil_a 0	
+	call	userfunc_a 521	nil_a 0	nil_a 0	
 	assign	global_a 1	retval_a 0	nil_a 0	

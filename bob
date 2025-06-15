@@ -1,0 +1,361 @@
+quad#  opcode        result                                               arg1      arg2      label  
+1:     assign        nl                                                   "                          
+"                                                                                                    
+2:     assign        _t0                                                  nl                         
+3:     tablecreate   _t0                                                                             
+4:     tablesetelem  _t0                                                  "a"       1                
+5:     tablesetelem  _t0                                                  "b"       2                
+6:     tablesetelem  _t0                                                  "c"       3                
+7:     tablesetelem  _t0                                                  "d"       NIL              
+8:     tablesetelem  _t0                                                  "e"       5                
+9:     tablesetelem  _t0                                                  "f"       6                
+10:    assign        t                                                    _t0                        
+11:    assign        _t1                                                  t                          
+12:    param         t                                                                               
+13:    param         NIL                                                                             
+14:    call          objectcopy                                                                      
+15:    getretval     _t0                                                                             
+16:    assign        tcopy                                                _t0                        
+17:    assign        _t1                                                  tcopy                      
+18:    param         t                                                                               
+19:    param         nl                                                                              
+20:    param         NIL                                                                             
+21:    call          print                                                                           
+22:    getretval     _t0                                                                             
+23:    param         t                                                                               
+24:    param         NIL                                                                             
+25:    call          objecttotalmembers                                                              
+26:    getretval     _t0                                                                             
+27:    param         _t0                                                                             
+28:    param         nl                                                                              
+29:    param         NIL                                                                             
+30:    call          print                                                                           
+31:    getretval     _t1                                                                             
+32:    param         t                                                                               
+33:    param         NIL                                                                             
+34:    call          objectmemberkeys                                                                
+35:    getretval     _t0                                                                             
+36:    assign        keys                                                 _t0                        
+37:    assign        _t1                                                  keys                       
+38:    param         t                                                                               
+39:    param         NIL                                                                             
+40:    call          objecttotalmembers                                                              
+41:    getretval     _t0                                                                             
+42:    assign        n_elems                                              _t0                        
+43:    assign        _t1                                                  n_elems                    
+44:    assign        i                                                    0                          
+45:    assign        _t0                                                  i                          
+46:    if_less                                                            i         n_elems   48     
+47:    jump                                                                                   50     
+48:    assign        _t1                                                  TRUE                       
+49:    jump                                                                                   51     
+50:    assign        _t1                                                  FALSE                      
+51:    if_eq                                                              _t1       TRUE      56     
+52:    jump                                                                                   65     
+53:    add           i                                                    i         1                
+54:    assign        _t2                                                  i                          
+55:    jump                                                                                   46     
+56:    tablegetelem  _t3                                                  keys      i                
+57:    tablegetelem  _t4                                                  keys      i                
+58:    param         _t4                                                                             
+59:    param         NIL                                                                             
+60:    call          strtonum                                                                        
+61:    getretval     _t5                                                                             
+62:    tablesetelem  t                                                    _t3       _t5              
+63:    tablegetelem  _t6                                                  t         _t3              
+64:    jump                                                                                   53     
+65:    param         t                                                                               
+66:    param         NIL                                                                             
+67:    call          objecttotalmembers                                                              
+68:    getretval     _t0                                                                             
+69:    param         "Must print 0: "                                                                
+70:    param         _t0                                                                             
+71:    param         nl                                                                              
+72:    param         NIL                                                                             
+73:    call          print                                                                           
+74:    getretval     _t1                                                                             
+75:    param         tcopy                                                                           
+76:    param         NIL                                                                             
+77:    call          objecttotalmembers                                                              
+78:    getretval     _t0                                                                             
+79:    param         "Must print 5: "                                                                
+80:    param         _t0                                                                             
+81:    param         nl                                                                              
+82:    param         NIL                                                                             
+83:    call          print                                                                           
+84:    getretval     _t1                                                                             
+85:    tablecreate   _t0                                                                             
+86:    tablesetelem  _t0                                                  "a"       1                
+87:    tablesetelem  _t0                                                  "b"       2                
+88:    tablesetelem  _t0                                                  "c"       3                
+89:    tablesetelem  _t0                                                  "d"       4                
+90:    tablesetelem  _t0                                                  "e"       5                
+91:    tablecreate   _t1                                                                             
+92:    tablesetelem  _t1                                                  "t"       _t0              
+93:    assign        t1                                                   _t1                        
+94:    assign        _t2                                                  t1                         
+95:    param         t1                                                                              
+96:    param         NIL                                                                             
+97:    call          objectcopy                                                                      
+98:    getretval     _t0                                                                             
+99:    assign        t2                                                   _t0                        
+100:   assign        _t1                                                  t2                         
+101:   tablegetelem  _t0                                                  t1        "t"              
+102:   tablesetelem  _t0                                                  "a"       13               
+103:   tablegetelem  _t1                                                  _t0       "a"              
+104:   tablegetelem  _t0                                                  t1        "t"              
+105:   tablegetelem  _t1                                                  _t0       "a"              
+106:   tablegetelem  _t2                                                  t2        "t"              
+107:   tablegetelem  _t3                                                  _t2       "a"              
+108:   if_eq                                                              _t1       _t3       110    
+109:   jump                                                                                   112    
+110:   assign        _t4                                                  TRUE                       
+111:   jump                                                                                   113    
+112:   assign        _t4                                                  FALSE                      
+113:   param         "Must print true (shallow copy): "                                              
+114:   param         _t4                                                                             
+115:   param         nl                                                                              
+116:   param         NIL                                                                             
+117:   call          print                                                                           
+118:   getretval     _t5                                                                             
+119:   tablegetelem  _t0                                                  t1        "t"              
+120:   tablesetelem  _t0                                                  "b"       NIL              
+121:   tablegetelem  _t1                                                  _t0       "b"              
+122:   param         t1                                                                              
+123:   param         NIL                                                                             
+124:   call          objecttotalmembers                                                              
+125:   getretval     _t0                                                                             
+126:   param         t2                                                                              
+127:   param         NIL                                                                             
+128:   call          objecttotalmembers                                                              
+129:   getretval     _t1                                                                             
+130:   if_eq                                                              _t0       _t1       132    
+131:   jump                                                                                   134    
+132:   assign        _t2                                                  TRUE                       
+133:   jump                                                                                   135    
+134:   assign        _t2                                                  FALSE                      
+135:   param         "Must print true (shallow copy): "                                              
+136:   param         _t2                                                                             
+137:   param         nl                                                                              
+138:   param         NIL                                                                             
+139:   call          print                                                                           
+140:   getretval     _t3                                                                             
+141:   param         "Must print 'Hello, World!' (shallow copy): "                                   
+142:   param         nl                                                                              
+143:   param         NIL                                                                             
+144:   call          print                                                                           
+145:   getretval     _t0                                                                             
+146:   tablegetelem  _t0                                                  t1        "t"              
+147:   jump                                                                                   155    
+148:   funcstart     _f0                                                                             
+149:   param         "Hello, World!"                                                                 
+150:   param         nl                                                                              
+151:   param         NIL                                                                             
+152:   call          print                                                                           
+153:   getretval     _t1                                                                             
+154:   funcend       _f0                                                                             
+155:   tablesetelem  _t0                                                  "()"      _f0              
+156:   tablegetelem  _t0                                                  _t0       "()"             
+157:   jump                                                                                   223    
+158:   funcstart     count_table_type                                                                
+159:   param         table                                                                           
+160:   param         NIL                                                                             
+161:   call          typeof                                                                          
+162:   getretval     _t0                                                                             
+163:   if_noteq                                                           _t0       "table"   171    
+164:   jump                                                                                   165    
+165:   param         type                                                                            
+166:   param         NIL                                                                             
+167:   call          typeof                                                                          
+168:   getretval     _t1                                                                             
+169:   if_noteq                                                           _t1       "string"  171    
+170:   jump                                                                                   173    
+171:   assign        _t2                                                  TRUE                       
+172:   jump                                                                                   174    
+173:   assign        _t2                                                  FALSE                      
+174:   if_eq                                                              _t2       TRUE      176    
+175:   jump                                                                                   178    
+176:   return                                                                                        
+177:   jump                                                                                   222    
+178:   param         t                                                                               
+179:   param         NIL                                                                             
+180:   call          objectmemberkeys                                                                
+181:   getretval     _t0                                                                             
+182:   assign        keys                                                 _t0                        
+183:   assign        _t1                                                  keys                       
+184:   param         t                                                                               
+185:   param         NIL                                                                             
+186:   call          objecttotalmembers                                                              
+187:   getretval     _t0                                                                             
+188:   assign        n_elems                                              _t0                        
+189:   assign        _t1                                                  n_elems                    
+190:   assign        n                                                    0                          
+191:   assign        _t0                                                  n                          
+192:   assign        i                                                    0                          
+193:   assign        _t0                                                  i                          
+194:   if_less                                                            i         n_elems   196    
+195:   jump                                                                                   198    
+196:   assign        _t1                                                  TRUE                       
+197:   jump                                                                                   199    
+198:   assign        _t1                                                  FALSE                      
+199:   if_eq                                                              _t1       TRUE      204    
+200:   jump                                                                                   220    
+201:   add           i                                                    i         1                
+202:   assign        _t2                                                  i                          
+203:   jump                                                                                   194    
+204:   tablegetelem  _t3                                                  keys      i                
+205:   tablegetelem  _t4                                                  t         _t3              
+206:   param         _t4                                                                             
+207:   param         NIL                                                                             
+208:   call          typeof                                                                          
+209:   getretval     _t5                                                                             
+210:   if_eq                                                              _t5       type      212    
+211:   jump                                                                                   214    
+212:   assign        _t6                                                  TRUE                       
+213:   jump                                                                                   215    
+214:   assign        _t6                                                  FALSE                      
+215:   if_eq                                                              _t6       TRUE      217    
+216:   jump                                                                                   219    
+217:   add           n                                                    n         1                
+218:   assign        _t7                                                  n                          
+219:   jump                                                                                   201    
+220:   return        n                                                                               
+221:   jump                                                                                   222    
+222:   funcend       count_table_type                                                                
+223:   jump                                                                                   291    
+224:   funcstart     _f1                                                                             
+225:   param         0                                                                               
+226:   param         NIL                                                                             
+227:   call          argument                                                                        
+228:   getretval     _t0                                                                             
+229:   assign        self                                                 _t0                        
+230:   assign        _t1                                                  self                       
+231:   param         NIL                                                                             
+232:   call          totalarguments                                                                  
+233:   getretval     _t0                                                                             
+234:   if_eq                                                              _t0       1         236    
+235:   jump                                                                                   244    
+236:   param         self                                                                            
+237:   param         NIL                                                                             
+238:   call          typeof                                                                          
+239:   getretval     _t1                                                                             
+240:   if_eq                                                              _t1       "table"   242    
+241:   jump                                                                                   244    
+242:   assign        _t2                                                  TRUE                       
+243:   jump                                                                                   245    
+244:   assign        _t2                                                  FALSE                      
+245:   if_eq                                                              _t2       TRUE      247    
+246:   jump                                                                                   290    
+247:   param         self                                                                            
+248:   param         "number"                                                                        
+249:   param         NIL                                                                             
+250:   call          count_table_type                                                                
+251:   getretval     _t3                                                                             
+252:   param         self                                                                            
+253:   param         "bool"                                                                          
+254:   param         NIL                                                                             
+255:   call          count_table_type                                                                
+256:   getretval     _t4                                                                             
+257:   add           _t5                                                  _t3       _t4              
+258:   param         self                                                                            
+259:   param         "string"                                                                        
+260:   param         NIL                                                                             
+261:   call          count_table_type                                                                
+262:   getretval     _t6                                                                             
+263:   add           _t7                                                  _t5       _t6              
+264:   assign        n_vars                                               _t7                        
+265:   assign        _t8                                                  n_vars                     
+266:   param         self                                                                            
+267:   param         "userfunc"                                                                      
+268:   param         NIL                                                                             
+269:   call          count_table_type                                                                
+270:   getretval     _t0                                                                             
+271:   assign        n_funcs                                              _t0                        
+272:   assign        _t1                                                  n_funcs                    
+273:   param         self                                                                            
+274:   param         "table"                                                                         
+275:   param         NIL                                                                             
+276:   call          count_table_type                                                                
+277:   getretval     _t0                                                                             
+278:   assign        n_tables                                             _t0                        
+279:   assign        _t1                                                  n_tables                   
+280:   param         "variables:"                                                                    
+281:   param         n_vars                                                                          
+282:   param         ", functions:"                                                                  
+283:   param         n_funcs                                                                         
+284:   param         ", tables:"                                                                     
+285:   param         n_tables                                                                        
+286:   param         nl                                                                              
+287:   param         NIL                                                                             
+288:   call          print                                                                           
+289:   getretval     _t0                                                                             
+290:   funcend       _f1                                                                             
+291:   jump                                                                                   294    
+292:   funcstart     _f2                                                                             
+293:   funcend       _f2                                                                             
+294:   tablecreate   _t0                                                                             
+295:   tablesetelem  _t0                                                  0         1                
+296:   tablesetelem  _t0                                                  1         2                
+297:   tablesetelem  _t0                                                  2         3                
+298:   tablesetelem  _t0                                                  3         NIL              
+299:   tablecreate   _t1                                                                             
+300:   tablesetelem  _t1                                                  "info"    _f1              
+301:   tablesetelem  _t1                                                  "b"       2                
+302:   tablesetelem  _t1                                                  "c"       3                
+303:   tablesetelem  _t1                                                  "d"       TRUE             
+304:   tablesetelem  _t1                                                  "e"       "lala"           
+305:   tablesetelem  _t1                                                  "f"       _f2              
+306:   tablesetelem  _t1                                                  "g"       _t0              
+307:   assign        t                                                    _t1                        
+308:   assign        _t2                                                  t                          
+309:   param         "Must print: variables: 4, functions: 2, tables: 1"                             
+310:   param         nl                                                                              
+311:   param         NIL                                                                             
+312:   call          print                                                                           
+313:   getretval     _t0                                                                             
+314:   tablegetelem  _t0                                                  t         info             
+315:   param         NIL                                                                             
+316:   param         t                                                                               
+317:   call          _t0                                                                             
+318:   getretval     _t1                                                                             
+319:   param         "Danger! Type 'y' to proceed: "                                                 
+320:   param         NIL                                                                             
+321:   call          print                                                                           
+322:   getretval     _t0                                                                             
+323:   param         NIL                                                                             
+324:   call          input                                                                           
+325:   getretval     _t0                                                                             
+326:   assign        option                                               _t0                        
+327:   assign        _t1                                                  option                     
+328:   if_eq                                                              option    "y"       330    
+329:   jump                                                                                   332    
+330:   assign        _t0                                                  TRUE                       
+331:   jump                                                                                   333    
+332:   assign        _t0                                                  FALSE                      
+333:   if_eq                                                              _t0       TRUE      335    
+334:   jump                                                                                   346    
+335:   tablecreate   _t1                                                                             
+336:   tablesetelem  _t1                                                  0         NIL              
+337:   assign        tc                                                   _t1                        
+338:   assign        _t2                                                  tc                         
+339:   tablesetelem  tc                                                   "tc"      tc               
+340:   tablegetelem  _t0                                                  tc        "tc"             
+341:   param         tc                                                                              
+342:   param         NIL                                                                             
+343:   call          print                                                                           
+344:   getretval     _t0                                                                             
+345:   jump                                                                                   360    
+346:   tablecreate   _t0                                                                             
+347:   tablesetelem  _t0                                                  0         NIL              
+348:   assign        tc                                                   _t0                        
+349:   assign        _t1                                                  tc                         
+350:   param         tc                                                                              
+351:   param         NIL                                                                             
+352:   call          objectcopy                                                                      
+353:   getretval     _t0                                                                             
+354:   tablesetelem  tc                                                   "tc"      _t0              
+355:   tablegetelem  _t1                                                  tc        "tc"             
+356:   param         tc                                                                              
+357:   param         NIL                                                                             
+358:   call          print                                                                           
+359:   getretval     _t0                                                                             

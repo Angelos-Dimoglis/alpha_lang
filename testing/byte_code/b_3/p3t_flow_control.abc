@@ -1,0 +1,99 @@
+69420 magic_number
+0 constant_strings
+24 constant_numbers
+	1.000000
+	2.000000
+	0.000000
+	3.000000
+	4.000000
+	5.000000
+	6.000000
+	7.000000
+	8.000000
+	9.000000
+	10.000000
+	11.000000
+	12.000000
+	13.000000
+	14.000000
+	15.000000
+	16.000000
+	17.000000
+	18.000000
+	19.000000
+	20.000000
+	21.000000
+	22.000000
+	23.000000
+0 user_functions
+12 library_functions
+	print
+	input
+	objectmemberkeys
+	objecttotalmembers
+	objectcopy
+	totalarguments
+	argument
+	typeof
+	strtonum
+	sqrt
+	cos
+	sin
+57 instructions
+	assign	global_a 0	number_a 0	nil_a 0	
+	assign	global_a 1	global_a 0	nil_a 0	
+	if_eq	label_a 4	global_a 1	bool_a 1	
+	jump	label_a 9	nil_a 0	nil_a 0	
+	sub	global_a 2	number_a 1	number_a 2	
+	jump	label_a 9	nil_a 0	nil_a 0	
+	sub	global_a 3	number_a 3	number_a 2	
+	jump	label_a 0	nil_a 0	nil_a 0	
+	jump	label_a 0	nil_a 0	nil_a 0	
+	if_eq	label_a 11	number_a 4	bool_a 1	
+	jump	label_a 18	nil_a 0	nil_a 0	
+	if_eq	label_a 13	number_a 5	bool_a 1	
+	jump	label_a 17	nil_a 0	nil_a 0	
+	if_eq	label_a 15	number_a 6	bool_a 1	
+	jump	label_a 16	nil_a 0	nil_a 0	
+	jump	label_a 12	nil_a 0	nil_a 0	
+	jump	label_a 10	nil_a 0	nil_a 0	
+	jump	label_a 8	nil_a 0	nil_a 0	
+	if_eq	label_a 20	number_a 7	bool_a 1	
+	jump	label_a 26	nil_a 0	nil_a 0	
+	if_eq	label_a 22	number_a 8	bool_a 1	
+	jump	label_a 24	nil_a 0	nil_a 0	
+	sub	global_a 1	number_a 9	number_a 2	
+	jump	label_a 25	nil_a 0	nil_a 0	
+	sub	global_a 1	number_a 10	number_a 2	
+	jump	label_a 17	nil_a 0	nil_a 0	
+	if_eq	label_a 28	number_a 11	bool_a 1	
+	jump	label_a 46	nil_a 0	nil_a 0	
+	sub	global_a 1	number_a 12	number_a 2	
+	if_eq	label_a 33	number_a 13	bool_a 1	
+	jump	label_a 45	nil_a 0	nil_a 0	
+	sub	global_a 4	number_a 14	number_a 2	
+	jump	label_a 28	nil_a 0	nil_a 0	
+	if_eq	label_a 35	number_a 15	bool_a 1	
+	jump	label_a 37	nil_a 0	nil_a 0	
+	sub	global_a 5	number_a 16	number_a 2	
+	jump	label_a 42	nil_a 0	nil_a 0	
+	if_eq	label_a 39	number_a 17	bool_a 1	
+	jump	label_a 41	nil_a 0	nil_a 0	
+	sub	global_a 6	number_a 18	number_a 2	
+	jump	label_a 42	nil_a 0	nil_a 0	
+	sub	global_a 6	number_a 19	number_a 2	
+	jump	label_a 45	nil_a 0	nil_a 0	
+	jump	label_a 30	nil_a 0	nil_a 0	
+	jump	label_a 30	nil_a 0	nil_a 0	
+	jump	label_a 25	nil_a 0	nil_a 0	
+	sub	global_a 1	number_a 20	number_a 2	
+	if_eq	label_a 51	number_a 21	bool_a 1	
+	jump	label_a 57	nil_a 0	nil_a 0	
+	sub	global_a 4	number_a 22	number_a 2	
+	jump	label_a 46	nil_a 0	nil_a 0	
+	if_eq	label_a 53	number_a 23	bool_a 1	
+	jump	label_a 55	nil_a 0	nil_a 0	
+	jump	label_a 55	nil_a 0	nil_a 0	
+	jump	label_a 50	nil_a 0	nil_a 0	
+	jump	label_a 48	nil_a 0	nil_a 0	
+	jump	label_a 48	nil_a 0	nil_a 0	
