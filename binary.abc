@@ -1,4 +1,5 @@
 69420 magic_number
+<<<<<<< HEAD
 5 constant_strings
 	"
 "
@@ -18,6 +19,12 @@
 	_f4 44 0
 	_f5 46 0
 	_f6 54 0
+=======
+1 constant_strings
+	"nikos"
+0 constant_numbers
+0 user_functions
+>>>>>>> 7d13c37 (removed abc files)
 12 library_functions
 	print
 	input
@@ -31,6 +38,7 @@
 	sqrt
 	cos
 	sin
+<<<<<<< HEAD
 5 num_of_globals
 88 instructions
 	jump	label_a 43	nil_a 0	nil_a 0	
@@ -121,3 +129,11 @@
 	param	global_a 3	nil_a 0	nil_a 0	
 	call	userfunc_a 1	nil_a 0	nil_a 0	
 	assign	global_a 4	retval_a 0	nil_a 0	
+=======
+1 num_of_globals
+4 instructions
+	param	string_a 0	nil_a 0	nil_a 0	
+	param	nil_a 0	nil_a 0	nil_a 0	
+	call	libfunc_a 0	nil_a 0	nil_a 0	
+	assign	global_a 0	retval_a 0	nil_a 0	
+>>>>>>> 7d13c37 (removed abc files)
