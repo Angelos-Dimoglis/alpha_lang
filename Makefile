@@ -42,6 +42,9 @@ remake:
 	make clean && clear && make
 
 run_tests:
-	./testing/all_tests_phase3.sh
+	./testing/generate_bytecode.sh 3 && ./testing/generate_bytecode.sh 4-5
+
+remove_bytecode:
+	rm -v testing/byte_code/b_3/* testing/byte_code/b_4-5/*
 
 .PHONY: all clean remake run_tests
