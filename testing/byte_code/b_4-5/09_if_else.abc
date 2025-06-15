@@ -27,7 +27,7 @@
 	cos
 	sin
 12 num_of_globals
-105 instructions
+100 instructions
 	assign	global_a 0	string_a 0	nil_a 0	
 	assign	global_a 1	global_a 0	nil_a 0	
 	assign	global_a 2	string_a 1	nil_a 0	
@@ -56,80 +56,75 @@
 	assign	global_a 9	global_a 6	nil_a 0	
 	param	global_a 6	nil_a 0	nil_a 0	
 	param	global_a 2	nil_a 0	nil_a 0	
-	param	nil_a 2	nil_a 0	nil_a 0	
 	call	libfunc_a 0	nil_a 0	nil_a 0	
 	assign	global_a 1	retval_a 0	nil_a 0	
-	if_eq	label_a 35	global_a 3	global_a 4	
-	jump	label_a 33	nil_a 0	nil_a 0	
+	if_eq	label_a 34	global_a 3	global_a 4	
+	jump	label_a 32	nil_a 0	nil_a 0	
 	assign	global_a 1	bool_a 1	nil_a 0	
-	jump	label_a 36	nil_a 0	nil_a 0	
+	jump	label_a 35	nil_a 0	nil_a 0	
 	assign	global_a 1	bool_a 0	nil_a 0	
 	assign	global_a 10	global_a 1	nil_a 0	
 	assign	global_a 11	global_a 10	nil_a 0	
-	if_eq	label_a 40	global_a 10	bool_a 1	
-	jump	label_a 46	nil_a 0	nil_a 0	
+	if_eq	label_a 39	global_a 10	bool_a 1	
+	jump	label_a 44	nil_a 0	nil_a 0	
 	param	string_a 2	nil_a 0	nil_a 0	
 	param	global_a 2	nil_a 0	nil_a 0	
-	param	nil_a 2	nil_a 0	nil_a 0	
 	call	libfunc_a 0	nil_a 0	nil_a 0	
 	assign	global_a 1	retval_a 0	nil_a 0	
-	jump	label_a 51	nil_a 0	nil_a 0	
+	jump	label_a 48	nil_a 0	nil_a 0	
 	param	string_a 3	nil_a 0	nil_a 0	
 	param	global_a 2	nil_a 0	nil_a 0	
-	param	nil_a 2	nil_a 0	nil_a 0	
 	call	libfunc_a 0	nil_a 0	nil_a 0	
 	assign	global_a 1	retval_a 0	nil_a 0	
-	if_greater_eq	label_a 55	global_a 5	global_a 6	
-	jump	label_a 53	nil_a 0	nil_a 0	
-	if_not_eq	label_a 55	global_a 4	number_a 0	
-	jump	label_a 57	nil_a 0	nil_a 0	
+	if_greater_eq	label_a 52	global_a 5	global_a 6	
+	jump	label_a 50	nil_a 0	nil_a 0	
+	if_not_eq	label_a 52	global_a 4	number_a 0	
+	jump	label_a 54	nil_a 0	nil_a 0	
 	assign	global_a 1	bool_a 1	nil_a 0	
-	jump	label_a 58	nil_a 0	nil_a 0	
+	jump	label_a 55	nil_a 0	nil_a 0	
 	assign	global_a 1	bool_a 0	nil_a 0	
-	if_eq	label_a 60	global_a 1	bool_a 1	
-	jump	label_a 68	nil_a 0	nil_a 0	
+	if_eq	label_a 57	global_a 1	bool_a 1	
+	jump	label_a 64	nil_a 0	nil_a 0	
 	add	global_a 13	global_a 5	global_a 4	
 	assign	global_a 12	global_a 13	nil_a 0	
 	assign	global_a 14	global_a 12	nil_a 0	
 	param	global_a 12	nil_a 0	nil_a 0	
 	param	global_a 2	nil_a 0	nil_a 0	
-	param	nil_a 2	nil_a 0	nil_a 0	
 	call	libfunc_a 0	nil_a 0	nil_a 0	
 	assign	global_a 15	retval_a 0	nil_a 0	
-	if_eq	label_a 70	global_a 10	bool_a 1	
-	jump	label_a 74	nil_a 0	nil_a 0	
-	if_less	label_a 72	global_a 4	number_a 0	
-	jump	label_a 74	nil_a 0	nil_a 0	
+	if_eq	label_a 66	global_a 10	bool_a 1	
+	jump	label_a 70	nil_a 0	nil_a 0	
+	if_less	label_a 68	global_a 4	number_a 0	
+	jump	label_a 70	nil_a 0	nil_a 0	
 	assign	global_a 1	bool_a 1	nil_a 0	
-	jump	label_a 75	nil_a 0	nil_a 0	
+	jump	label_a 71	nil_a 0	nil_a 0	
 	assign	global_a 1	bool_a 0	nil_a 0	
-	if_eq	label_a 77	global_a 1	bool_a 1	
-	jump	label_a 100	nil_a 0	nil_a 0	
-	if_eq	label_a 79	global_a 3	global_a 6	
-	jump	label_a 81	nil_a 0	nil_a 0	
+	if_eq	label_a 73	global_a 1	bool_a 1	
+	jump	label_a 96	nil_a 0	nil_a 0	
+	if_eq	label_a 75	global_a 3	global_a 6	
+	jump	label_a 77	nil_a 0	nil_a 0	
 	assign	global_a 11	bool_a 1	nil_a 0	
-	jump	label_a 82	nil_a 0	nil_a 0	
+	jump	label_a 78	nil_a 0	nil_a 0	
 	assign	global_a 11	bool_a 0	nil_a 0	
-	if_eq	label_a 84	global_a 11	bool_a 1	
-	jump	label_a 87	nil_a 0	nil_a 0	
+	if_eq	label_a 80	global_a 11	bool_a 1	
+	jump	label_a 83	nil_a 0	nil_a 0	
 	assign	global_a 7	number_a 0	nil_a 0	
 	assign	global_a 16	global_a 7	nil_a 0	
-	jump	label_a 100	nil_a 0	nil_a 0	
+	jump	label_a 96	nil_a 0	nil_a 0	
 	assign	global_a 7	number_a 1	nil_a 0	
 	assign	global_a 17	global_a 7	nil_a 0	
-	if_less_eq	label_a 93	global_a 6	global_a 18	
+	if_less_eq	label_a 89	global_a 6	global_a 18	
+	jump	label_a 87	nil_a 0	nil_a 0	
+	if_less	label_a 89	global_a 4	global_a 18	
 	jump	label_a 91	nil_a 0	nil_a 0	
-	if_less	label_a 93	global_a 4	global_a 18	
-	jump	label_a 95	nil_a 0	nil_a 0	
 	assign	global_a 17	bool_a 1	nil_a 0	
-	jump	label_a 96	nil_a 0	nil_a 0	
+	jump	label_a 92	nil_a 0	nil_a 0	
 	assign	global_a 17	bool_a 0	nil_a 0	
-	if_eq	label_a 98	global_a 17	bool_a 1	
-	jump	label_a 100	nil_a 0	nil_a 0	
+	if_eq	label_a 94	global_a 17	bool_a 1	
+	jump	label_a 96	nil_a 0	nil_a 0	
 	assign	global_a 7	number_a 2	nil_a 0	
 	assign	global_a 19	global_a 7	nil_a 0	
 	param	global_a 7	nil_a 0	nil_a 0	
 	param	global_a 2	nil_a 0	nil_a 0	
-	param	nil_a 2	nil_a 0	nil_a 0	
 	call	libfunc_a 0	nil_a 0	nil_a 0	
 	assign	global_a 1	retval_a 0	nil_a 0	

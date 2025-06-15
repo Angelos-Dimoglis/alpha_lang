@@ -10,7 +10,7 @@
 	999.000000
 2 user_functions
 	left 1 2
-	right 20 3
+	right 18 3
 12 library_functions
 	print
 	input
@@ -25,13 +25,12 @@
 	cos
 	sin
 1 num_of_globals
-44 instructions
-	jump	label_a 19	nil_a 0	nil_a 0	
+39 instructions
+	jump	label_a 17	nil_a 0	nil_a 0	
 	funcstart	userfunc_a 1	nil_a 0	nil_a 0	
 	param	string_a 0	nil_a 0	nil_a 0	
 	param	formal_a 0	nil_a 0	nil_a 0	
 	param	string_a 1	nil_a 0	nil_a 0	
-	param	nil_a 1	nil_a 0	nil_a 0	
 	call	libfunc_a 0	nil_a 0	nil_a 0	
 	assign	local_a 0	retval_a 0	nil_a 0	
 	assign	local_a 1	formal_a 0	nil_a 0	
@@ -39,18 +38,16 @@
 	assign	formal_a 0	number_a 0	nil_a 0	
 	assign	local_a 0	formal_a 0	nil_a 0	
 	param	userfunc_a 1	nil_a 0	nil_a 0	
-	param	nil_a 1	nil_a 0	nil_a 0	
 	call	local_a 1	nil_a 0	nil_a 0	
 	assign	local_a 0	retval_a 0	nil_a 0	
 	assign	retval_a 0	nil_a 0	nil_a 0	
-	jump	label_a 18	nil_a 0	nil_a 0	
+	jump	label_a 16	nil_a 0	nil_a 0	
 	funcend	userfunc_a 1	nil_a 0	nil_a 0	
-	jump	label_a 40	nil_a 0	nil_a 0	
-	funcstart	userfunc_a 20	nil_a 0	nil_a 0	
+	jump	label_a 36	nil_a 0	nil_a 0	
+	funcstart	userfunc_a 18	nil_a 0	nil_a 0	
 	param	string_a 0	nil_a 0	nil_a 0	
 	param	formal_a 0	nil_a 0	nil_a 0	
 	param	string_a 2	nil_a 0	nil_a 0	
-	param	nil_a 2	nil_a 0	nil_a 0	
 	call	libfunc_a 0	nil_a 0	nil_a 0	
 	assign	local_a 0	retval_a 0	nil_a 0	
 	assign	local_a 1	formal_a 0	nil_a 0	
@@ -59,14 +56,12 @@
 	assign	local_a 0	formal_a 0	nil_a 0	
 	assign	local_a 2	string_a 3	nil_a 0	
 	assign	local_a 0	local_a 2	nil_a 0	
-	param	userfunc_a 20	nil_a 0	nil_a 0	
-	param	nil_a 20	nil_a 0	nil_a 0	
+	param	userfunc_a 18	nil_a 0	nil_a 0	
 	call	local_a 1	nil_a 0	nil_a 0	
 	assign	local_a 0	retval_a 0	nil_a 0	
 	assign	retval_a 0	nil_a 0	nil_a 0	
-	jump	label_a 39	nil_a 0	nil_a 0	
-	funcend	userfunc_a 20	nil_a 0	nil_a 0	
+	jump	label_a 35	nil_a 0	nil_a 0	
+	funcend	userfunc_a 18	nil_a 0	nil_a 0	
 	param	userfunc_a 1	nil_a 0	nil_a 0	
-	param	nil_a 1	nil_a 0	nil_a 0	
-	call	userfunc_a 20	nil_a 0	nil_a 0	
+	call	userfunc_a 18	nil_a 0	nil_a 0	
 	assign	global_a 0	retval_a 0	nil_a 0	

@@ -6,18 +6,17 @@
 	"lulz"
 	"wot"
 	"wut"
-8 constant_numbers
+7 constant_numbers
 	0.000000
 	1.000000
 	2.000000
 	3.000000
 	5.000000
 	4.000000
-	6.000000
 	18.000000
 2 user_functions
-	_f0 24 1
-	four 44 1
+	_f0 18 1
+	four 36 1
 12 library_functions
 	print
 	input
@@ -32,22 +31,17 @@
 	cos
 	sin
 4 num_of_globals
-56 instructions
+48 instructions
 	newtable	global_a 0	nil_a 0	nil_a 0	
-	tablesetelem	global_a 0	number_a 0	nil_a 0	
 	newtable	global_a 0	nil_a 0	nil_a 0	
 	tablesetelem	global_a 0	number_a 0	number_a 1	
 	tablesetelem	global_a 0	number_a 1	number_a 2	
 	tablesetelem	global_a 0	number_a 2	number_a 3	
-	tablesetelem	global_a 0	number_a 3	nil_a 0	
 	newtable	global_a 0	nil_a 0	nil_a 0	
-	tablesetelem	global_a 0	number_a 0	nil_a 0	
 	newtable	global_a 1	nil_a 0	nil_a 0	
 	tablesetelem	global_a 1	number_a 0	string_a 0	
 	tablesetelem	global_a 1	number_a 1	string_a 1	
-	tablesetelem	global_a 1	number_a 2	nil_a 0	
 	newtable	global_a 2	nil_a 0	nil_a 0	
-	tablesetelem	global_a 2	number_a 0	nil_a 0	
 	newtable	global_a 3	nil_a 0	nil_a 0	
 	tablesetelem	global_a 3	number_a 0	bool_a 0	
 	tablesetelem	global_a 3	number_a 1	bool_a 1	
@@ -55,34 +49,31 @@
 	tablesetelem	global_a 3	number_a 3	number_a 4	
 	tablesetelem	global_a 3	number_a 5	global_a 1	
 	tablesetelem	global_a 3	number_a 4	global_a 2	
-	tablesetelem	global_a 3	number_a 6	nil_a 0	
-	jump	label_a 28	nil_a 0	nil_a 0	
-	funcstart	userfunc_a 24	nil_a 0	nil_a 0	
+	jump	label_a 21	nil_a 0	nil_a 0	
+	funcstart	userfunc_a 18	nil_a 0	nil_a 0	
 	newtable	local_a 0	nil_a 0	nil_a 0	
-	tablesetelem	local_a 0	number_a 0	nil_a 0	
-	funcend	userfunc_a 24	nil_a 0	nil_a 0	
+	funcend	userfunc_a 18	nil_a 0	nil_a 0	
 	newtable	global_a 0	nil_a 0	nil_a 0	
 	tablesetelem	global_a 0	number_a 0	number_a 1	
 	tablesetelem	global_a 0	number_a 1	number_a 2	
 	tablesetelem	global_a 0	number_a 2	number_a 3	
-	tablesetelem	global_a 0	number_a 3	nil_a 0	
 	newtable	global_a 1	nil_a 0	nil_a 0	
 	tablesetelem	global_a 1	number_a 1	number_a 2	
 	tablesetelem	global_a 1	string_a 2	bool_a 0	
 	tablesetelem	global_a 1	number_a 4	libfunc_a 0	
 	newtable	global_a 2	nil_a 0	nil_a 0	
 	tablesetelem	global_a 2	number_a 5	number_a 4	
-	tablesetelem	global_a 2	number_a 2	number_a 7	
-	tablesetelem	global_a 2	string_a 3	userfunc_a 24	
+	tablesetelem	global_a 2	number_a 2	number_a 6	
+	tablesetelem	global_a 2	string_a 3	userfunc_a 18	
 	tablesetelem	global_a 2	string_a 4	global_a 0	
 	tablesetelem	global_a 2	string_a 5	global_a 1	
-	jump	label_a 48	nil_a 0	nil_a 0	
-	funcstart	userfunc_a 44	nil_a 0	nil_a 0	
+	jump	label_a 40	nil_a 0	nil_a 0	
+	funcstart	userfunc_a 36	nil_a 0	nil_a 0	
 	assign	formal_a 0	number_a 5	nil_a 0	
 	assign	local_a 0	formal_a 0	nil_a 0	
-	funcend	userfunc_a 44	nil_a 0	nil_a 0	
+	funcend	userfunc_a 36	nil_a 0	nil_a 0	
 	newtable	global_a 0	nil_a 0	nil_a 0	
-	tablesetelem	global_a 0	number_a 5	userfunc_a 44	
+	tablesetelem	global_a 0	number_a 5	userfunc_a 36	
 	newtable	global_a 1	nil_a 0	nil_a 0	
 	tablesetelem	global_a 1	number_a 5	global_a 0	
 	newtable	global_a 2	nil_a 0	nil_a 0	

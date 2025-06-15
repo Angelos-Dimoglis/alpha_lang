@@ -23,13 +23,12 @@
 	"Functor"
 	"LALA
 "
-3 constant_numbers
+2 constant_numbers
 	0.000000
 	3.000000
-	1.000000
 2 user_functions
 	f 1 0
-	_f0 76 2
+	_f0 67 2
 12 library_functions
 	print
 	input
@@ -44,13 +43,12 @@
 	cos
 	sin
 6 num_of_globals
-98 instructions
+86 instructions
 	jump	label_a 3	nil_a 0	nil_a 0	
 	funcstart	userfunc_a 1	nil_a 0	nil_a 0	
 	funcend	userfunc_a 1	nil_a 0	nil_a 0	
 	newtable	global_a 1	nil_a 0	nil_a 0	
 	tablesetelem	global_a 1	number_a 0	number_a 1	
-	tablesetelem	global_a 1	number_a 2	nil_a 0	
 	assign	global_a 0	global_a 1	nil_a 0	
 	assign	global_a 2	global_a 0	nil_a 0	
 	newtable	global_a 1	nil_a 0	nil_a 0	
@@ -66,14 +64,12 @@
 	param	string_a 7	nil_a 0	nil_a 0	
 	param	global_a 1	nil_a 0	nil_a 0	
 	param	string_a 8	nil_a 0	nil_a 0	
-	param	nil_a 8	nil_a 0	nil_a 0	
 	call	libfunc_a 0	nil_a 0	nil_a 0	
 	assign	global_a 2	retval_a 0	nil_a 0	
 	tablegetelem	global_a 1	global_a 3	global_a 0	
 	param	string_a 9	nil_a 0	nil_a 0	
 	param	global_a 1	nil_a 0	nil_a 0	
 	param	string_a 8	nil_a 0	nil_a 0	
-	param	nil_a 8	nil_a 0	nil_a 0	
 	call	libfunc_a 0	nil_a 0	nil_a 0	
 	assign	global_a 2	retval_a 0	nil_a 0	
 	assign	global_a 4	global_a 0	nil_a 0	
@@ -82,26 +78,22 @@
 	param	string_a 9	nil_a 0	nil_a 0	
 	param	global_a 1	nil_a 0	nil_a 0	
 	param	string_a 8	nil_a 0	nil_a 0	
-	param	nil_a 8	nil_a 0	nil_a 0	
 	call	libfunc_a 0	nil_a 0	nil_a 0	
 	assign	global_a 2	retval_a 0	nil_a 0	
 	newtable	global_a 1	nil_a 0	nil_a 0	
 	tablesetelem	global_a 1	number_a 0	number_a 1	
-	tablesetelem	global_a 1	number_a 2	nil_a 0	
 	assign	global_a 4	global_a 1	nil_a 0	
 	assign	global_a 2	global_a 4	nil_a 0	
 	tablegetelem	global_a 1	global_a 3	global_a 4	
 	param	string_a 10	nil_a 0	nil_a 0	
 	param	global_a 1	nil_a 0	nil_a 0	
 	param	string_a 8	nil_a 0	nil_a 0	
-	param	nil_a 8	nil_a 0	nil_a 0	
 	call	libfunc_a 0	nil_a 0	nil_a 0	
 	assign	global_a 2	retval_a 0	nil_a 0	
 	tablegetelem	global_a 1	global_a 3	bool_a 1	
 	param	string_a 11	nil_a 0	nil_a 0	
 	param	global_a 1	nil_a 0	nil_a 0	
 	param	string_a 8	nil_a 0	nil_a 0	
-	param	nil_a 8	nil_a 0	nil_a 0	
 	call	libfunc_a 0	nil_a 0	nil_a 0	
 	assign	global_a 2	retval_a 0	nil_a 0	
 	assign	global_a 5	userfunc_a 1	nil_a 0	
@@ -110,36 +102,31 @@
 	param	string_a 12	nil_a 0	nil_a 0	
 	param	global_a 1	nil_a 0	nil_a 0	
 	param	string_a 8	nil_a 0	nil_a 0	
-	param	nil_a 8	nil_a 0	nil_a 0	
 	call	libfunc_a 0	nil_a 0	nil_a 0	
 	assign	global_a 2	retval_a 0	nil_a 0	
 	tablegetelem	global_a 1	global_a 3	global_a 5	
 	param	string_a 12	nil_a 0	nil_a 0	
 	param	global_a 1	nil_a 0	nil_a 0	
 	param	string_a 8	nil_a 0	nil_a 0	
-	param	nil_a 8	nil_a 0	nil_a 0	
 	call	libfunc_a 0	nil_a 0	nil_a 0	
 	assign	global_a 2	retval_a 0	nil_a 0	
-	jump	label_a 89	nil_a 0	nil_a 0	
-	funcstart	userfunc_a 76	nil_a 0	nil_a 0	
+	jump	label_a 78	nil_a 0	nil_a 0	
+	funcstart	userfunc_a 67	nil_a 0	nil_a 0	
 	tablegetelem	local_a 0	formal_a 0	string_a 13	
 	param	string_a 14	nil_a 0	nil_a 0	
 	param	local_a 0	nil_a 0	nil_a 0	
 	param	string_a 15	nil_a 0	nil_a 0	
-	param	nil_a 15	nil_a 0	nil_a 0	
 	call	libfunc_a 0	nil_a 0	nil_a 0	
 	assign	local_a 1	retval_a 0	nil_a 0	
 	param	formal_a 1	nil_a 0	nil_a 0	
-	param	nil_a 1	nil_a 0	nil_a 0	
 	call	libfunc_a 0	nil_a 0	nil_a 0	
 	assign	local_a 0	retval_a 0	nil_a 0	
-	funcend	userfunc_a 76	nil_a 0	nil_a 0	
+	funcend	userfunc_a 67	nil_a 0	nil_a 0	
 	newtable	global_a 1	nil_a 0	nil_a 0	
-	tablesetelem	global_a 1	string_a 16	userfunc_a 76	
+	tablesetelem	global_a 1	string_a 16	userfunc_a 67	
 	tablesetelem	global_a 1	string_a 17	string_a 18	
 	assign	global_a 5	global_a 1	nil_a 0	
 	assign	global_a 2	global_a 5	nil_a 0	
 	param	string_a 19	nil_a 0	nil_a 0	
-	param	nil_a 19	nil_a 0	nil_a 0	
 	call	global_a 5	nil_a 0	nil_a 0	
 	assign	global_a 1	retval_a 0	nil_a 0	

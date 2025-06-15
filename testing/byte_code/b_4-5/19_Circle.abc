@@ -39,7 +39,7 @@
 	cos
 	sin
 6 num_of_globals
-69 instructions
+63 instructions
 	assign	global_a 0	string_a 0	nil_a 0	
 	assign	global_a 1	global_a 0	nil_a 0	
 	assign	global_a 3	number_a 0	nil_a 0	
@@ -80,32 +80,26 @@
 	tablesetelem	global_a 2	string_a 8	local_a 0	
 	tablegetelem	local_a 1	global_a 2	string_a 8	
 	funcend	userfunc_a 30	nil_a 0	nil_a 0	
-	param	nil_a 30	nil_a 0	nil_a 0	
 	call	userfunc_a 30	nil_a 0	nil_a 0	
 	assign	global_a 1	retval_a 0	nil_a 0	
 	param	string_a 9	nil_a 0	nil_a 0	
 	param	global_a 3	nil_a 0	nil_a 0	
 	param	string_a 0	nil_a 0	nil_a 0	
-	param	nil_a 0	nil_a 0	nil_a 0	
 	call	libfunc_a 0	nil_a 0	nil_a 0	
 	assign	global_a 1	retval_a 0	nil_a 0	
 	param	global_a 2	nil_a 0	nil_a 0	
-	param	nil_a 2	nil_a 0	nil_a 0	
 	call	userfunc_a 12	nil_a 0	nil_a 0	
 	assign	global_a 1	retval_a 0	nil_a 0	
 	param	string_a 10	nil_a 0	nil_a 0	
 	param	global_a 1	nil_a 0	nil_a 0	
 	param	global_a 0	nil_a 0	nil_a 0	
-	param	nil_a 0	nil_a 0	nil_a 0	
 	call	libfunc_a 0	nil_a 0	nil_a 0	
 	assign	global_a 4	retval_a 0	nil_a 0	
 	param	global_a 2	nil_a 0	nil_a 0	
-	param	nil_a 2	nil_a 0	nil_a 0	
 	call	userfunc_a 21	nil_a 0	nil_a 0	
 	assign	global_a 1	retval_a 0	nil_a 0	
 	param	string_a 11	nil_a 0	nil_a 0	
 	param	global_a 1	nil_a 0	nil_a 0	
 	param	string_a 12	nil_a 0	nil_a 0	
-	param	nil_a 12	nil_a 0	nil_a 0	
 	call	libfunc_a 0	nil_a 0	nil_a 0	
 	assign	global_a 4	retval_a 0	nil_a 0	

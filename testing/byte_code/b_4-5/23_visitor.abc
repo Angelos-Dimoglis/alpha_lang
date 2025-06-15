@@ -36,17 +36,17 @@
 	1.000000
 12 user_functions
 	Book 1 1
-	_f0 5 4
-	_f1 16 12
-	Section 60 1
-	_f2 64 4
-	_f3 75 12
-	Paragraph 119 1
-	_f4 121 2
-	PrintVisitor 195 1
-	_f5 197 2
-	_f6 207 2
-	_f7 217 2
+	_f0 4 4
+	_f1 14 12
+	Section 55 1
+	_f2 58 4
+	_f3 68 12
+	Paragraph 109 1
+	_f4 111 2
+	PrintVisitor 173 1
+	_f5 175 2
+	_f6 184 2
+	_f7 193 2
 12 library_functions
 	print
 	input
@@ -61,46 +61,42 @@
 	cos
 	sin
 6 num_of_globals
-242 instructions
-	jump	label_a 59	nil_a 0	nil_a 0	
+215 instructions
+	jump	label_a 54	nil_a 0	nil_a 0	
 	funcstart	userfunc_a 1	nil_a 0	nil_a 0	
 	newtable	local_a 0	nil_a 0	nil_a 0	
-	tablesetelem	local_a 0	number_a 0	nil_a 0	
-	jump	label_a 15	nil_a 0	nil_a 0	
-	funcstart	userfunc_a 5	nil_a 0	nil_a 0	
+	jump	label_a 13	nil_a 0	nil_a 0	
+	funcstart	userfunc_a 4	nil_a 0	nil_a 0	
 	tablegetelem	local_a 0	formal_a 0	string_a 0	
 	param	local_a 0	nil_a 0	nil_a 0	
-	param	nil_a 0	nil_a 0	nil_a 0	
 	call	libfunc_a 3	nil_a 0	nil_a 0	
 	assign	local_a 1	retval_a 0	nil_a 0	
 	tablegetelem	local_a 2	formal_a 0	string_a 0	
 	tablesetelem	local_a 2	local_a 1	formal_a 1	
 	tablegetelem	local_a 3	local_a 2	local_a 1	
-	funcend	userfunc_a 5	nil_a 0	nil_a 0	
-	jump	label_a 51	nil_a 0	nil_a 0	
-	funcstart	userfunc_a 16	nil_a 0	nil_a 0	
+	funcend	userfunc_a 4	nil_a 0	nil_a 0	
+	jump	label_a 46	nil_a 0	nil_a 0	
+	funcstart	userfunc_a 14	nil_a 0	nil_a 0	
 	tablegetelem	local_a 0	formal_a 1	string_a 1	
 	param	formal_a 0	nil_a 0	nil_a 0	
-	param	nil_a 0	nil_a 0	nil_a 0	
 	call	local_a 0	nil_a 0	nil_a 0	
 	assign	local_a 1	retval_a 0	nil_a 0	
 	assign	local_a 2	number_a 0	nil_a 0	
 	assign	local_a 0	local_a 2	nil_a 0	
 	tablegetelem	local_a 1	formal_a 0	string_a 0	
 	param	local_a 1	nil_a 0	nil_a 0	
-	param	nil_a 1	nil_a 0	nil_a 0	
 	call	libfunc_a 3	nil_a 0	nil_a 0	
 	assign	local_a 3	retval_a 0	nil_a 0	
-	if_less	label_a 31	local_a 2	local_a 3	
-	jump	label_a 33	nil_a 0	nil_a 0	
+	if_less	label_a 27	local_a 2	local_a 3	
+	jump	label_a 29	nil_a 0	nil_a 0	
 	assign	local_a 4	bool_a 1	nil_a 0	
-	jump	label_a 34	nil_a 0	nil_a 0	
+	jump	label_a 30	nil_a 0	nil_a 0	
 	assign	local_a 4	bool_a 0	nil_a 0	
-	if_eq	label_a 39	local_a 4	bool_a 1	
-	jump	label_a 50	nil_a 0	nil_a 0	
+	if_eq	label_a 35	local_a 4	bool_a 1	
+	jump	label_a 45	nil_a 0	nil_a 0	
 	add	local_a 2	local_a 2	number_a 1	
 	assign	local_a 5	local_a 2	nil_a 0	
-	jump	label_a 23	nil_a 0	nil_a 0	
+	jump	label_a 20	nil_a 0	nil_a 0	
 	tablegetelem	local_a 6	formal_a 0	string_a 0	
 	tablegetelem	local_a 7	local_a 6	local_a 2	
 	tablegetelem	local_a 8	formal_a 0	string_a 0	
@@ -108,58 +104,53 @@
 	tablegetelem	local_a 10	local_a 7	string_a 2	
 	param	local_a 9	nil_a 0	nil_a 0	
 	param	formal_a 1	nil_a 0	nil_a 0	
-	param	nil_a 1	nil_a 0	nil_a 0	
 	call	local_a 10	nil_a 0	nil_a 0	
 	assign	local_a 11	retval_a 0	nil_a 0	
-	jump	label_a 35	nil_a 0	nil_a 0	
-	funcend	userfunc_a 16	nil_a 0	nil_a 0	
+	jump	label_a 31	nil_a 0	nil_a 0	
+	funcend	userfunc_a 14	nil_a 0	nil_a 0	
 	newtable	local_a 0	nil_a 0	nil_a 0	
 	tablesetelem	local_a 0	string_a 3	formal_a 0	
 	tablesetelem	local_a 0	string_a 4	local_a 0	
-	tablesetelem	local_a 0	string_a 5	userfunc_a 5	
-	tablesetelem	local_a 0	string_a 6	userfunc_a 16	
+	tablesetelem	local_a 0	string_a 5	userfunc_a 4	
+	tablesetelem	local_a 0	string_a 6	userfunc_a 14	
 	assign	retval_a 0	nil_a 0	nil_a 0	
-	jump	label_a 58	nil_a 0	nil_a 0	
+	jump	label_a 53	nil_a 0	nil_a 0	
 	funcend	userfunc_a 1	nil_a 0	nil_a 0	
-	jump	label_a 118	nil_a 0	nil_a 0	
-	funcstart	userfunc_a 60	nil_a 0	nil_a 0	
+	jump	label_a 108	nil_a 0	nil_a 0	
+	funcstart	userfunc_a 55	nil_a 0	nil_a 0	
 	newtable	local_a 0	nil_a 0	nil_a 0	
-	tablesetelem	local_a 0	number_a 0	nil_a 0	
-	jump	label_a 74	nil_a 0	nil_a 0	
-	funcstart	userfunc_a 64	nil_a 0	nil_a 0	
+	jump	label_a 67	nil_a 0	nil_a 0	
+	funcstart	userfunc_a 58	nil_a 0	nil_a 0	
 	tablegetelem	local_a 0	formal_a 0	string_a 7	
 	param	local_a 0	nil_a 0	nil_a 0	
-	param	nil_a 0	nil_a 0	nil_a 0	
 	call	libfunc_a 3	nil_a 0	nil_a 0	
 	assign	local_a 1	retval_a 0	nil_a 0	
 	tablegetelem	local_a 2	formal_a 0	string_a 7	
 	tablesetelem	local_a 2	local_a 1	formal_a 1	
 	tablegetelem	local_a 3	local_a 2	local_a 1	
-	funcend	userfunc_a 64	nil_a 0	nil_a 0	
-	jump	label_a 110	nil_a 0	nil_a 0	
-	funcstart	userfunc_a 75	nil_a 0	nil_a 0	
+	funcend	userfunc_a 58	nil_a 0	nil_a 0	
+	jump	label_a 100	nil_a 0	nil_a 0	
+	funcstart	userfunc_a 68	nil_a 0	nil_a 0	
 	tablegetelem	local_a 0	formal_a 1	string_a 8	
 	param	formal_a 0	nil_a 0	nil_a 0	
-	param	nil_a 0	nil_a 0	nil_a 0	
 	call	local_a 0	nil_a 0	nil_a 0	
 	assign	local_a 1	retval_a 0	nil_a 0	
 	assign	local_a 2	number_a 0	nil_a 0	
 	assign	local_a 0	local_a 2	nil_a 0	
 	tablegetelem	local_a 1	formal_a 0	string_a 7	
 	param	local_a 1	nil_a 0	nil_a 0	
-	param	nil_a 1	nil_a 0	nil_a 0	
 	call	libfunc_a 3	nil_a 0	nil_a 0	
 	assign	local_a 3	retval_a 0	nil_a 0	
-	if_less	label_a 90	local_a 2	local_a 3	
-	jump	label_a 92	nil_a 0	nil_a 0	
+	if_less	label_a 81	local_a 2	local_a 3	
+	jump	label_a 83	nil_a 0	nil_a 0	
 	assign	local_a 4	bool_a 1	nil_a 0	
-	jump	label_a 93	nil_a 0	nil_a 0	
+	jump	label_a 84	nil_a 0	nil_a 0	
 	assign	local_a 4	bool_a 0	nil_a 0	
-	if_eq	label_a 98	local_a 4	bool_a 1	
-	jump	label_a 109	nil_a 0	nil_a 0	
+	if_eq	label_a 89	local_a 4	bool_a 1	
+	jump	label_a 99	nil_a 0	nil_a 0	
 	add	local_a 2	local_a 2	number_a 1	
 	assign	local_a 5	local_a 2	nil_a 0	
-	jump	label_a 82	nil_a 0	nil_a 0	
+	jump	label_a 74	nil_a 0	nil_a 0	
 	tablegetelem	local_a 6	formal_a 0	string_a 7	
 	tablegetelem	local_a 7	local_a 6	local_a 2	
 	tablegetelem	local_a 8	formal_a 0	string_a 7	
@@ -167,140 +158,122 @@
 	tablegetelem	local_a 10	local_a 7	string_a 2	
 	param	local_a 9	nil_a 0	nil_a 0	
 	param	formal_a 1	nil_a 0	nil_a 0	
-	param	nil_a 1	nil_a 0	nil_a 0	
 	call	local_a 10	nil_a 0	nil_a 0	
 	assign	local_a 11	retval_a 0	nil_a 0	
-	jump	label_a 94	nil_a 0	nil_a 0	
-	funcend	userfunc_a 75	nil_a 0	nil_a 0	
+	jump	label_a 85	nil_a 0	nil_a 0	
+	funcend	userfunc_a 68	nil_a 0	nil_a 0	
 	newtable	local_a 0	nil_a 0	nil_a 0	
 	tablesetelem	local_a 0	string_a 3	formal_a 0	
 	tablesetelem	local_a 0	string_a 9	local_a 0	
-	tablesetelem	local_a 0	string_a 10	userfunc_a 64	
-	tablesetelem	local_a 0	string_a 6	userfunc_a 75	
+	tablesetelem	local_a 0	string_a 10	userfunc_a 58	
+	tablesetelem	local_a 0	string_a 6	userfunc_a 68	
 	assign	retval_a 0	nil_a 0	nil_a 0	
+	jump	label_a 107	nil_a 0	nil_a 0	
+	funcend	userfunc_a 55	nil_a 0	nil_a 0	
+	jump	label_a 123	nil_a 0	nil_a 0	
+	funcstart	userfunc_a 109	nil_a 0	nil_a 0	
 	jump	label_a 117	nil_a 0	nil_a 0	
-	funcend	userfunc_a 60	nil_a 0	nil_a 0	
-	jump	label_a 134	nil_a 0	nil_a 0	
-	funcstart	userfunc_a 119	nil_a 0	nil_a 0	
-	jump	label_a 128	nil_a 0	nil_a 0	
-	funcstart	userfunc_a 121	nil_a 0	nil_a 0	
+	funcstart	userfunc_a 111	nil_a 0	nil_a 0	
 	tablegetelem	local_a 0	formal_a 1	string_a 11	
 	param	formal_a 0	nil_a 0	nil_a 0	
-	param	nil_a 0	nil_a 0	nil_a 0	
 	call	local_a 0	nil_a 0	nil_a 0	
 	assign	local_a 1	retval_a 0	nil_a 0	
-	funcend	userfunc_a 121	nil_a 0	nil_a 0	
+	funcend	userfunc_a 111	nil_a 0	nil_a 0	
 	newtable	local_a 0	nil_a 0	nil_a 0	
 	tablesetelem	local_a 0	string_a 12	formal_a 0	
-	tablesetelem	local_a 0	string_a 6	userfunc_a 121	
+	tablesetelem	local_a 0	string_a 6	userfunc_a 111	
 	assign	retval_a 0	nil_a 0	nil_a 0	
-	jump	label_a 133	nil_a 0	nil_a 0	
-	funcend	userfunc_a 119	nil_a 0	nil_a 0	
+	jump	label_a 122	nil_a 0	nil_a 0	
+	funcend	userfunc_a 109	nil_a 0	nil_a 0	
 	param	string_a 13	nil_a 0	nil_a 0	
-	param	nil_a 13	nil_a 0	nil_a 0	
 	call	userfunc_a 1	nil_a 0	nil_a 0	
 	assign	global_a 1	retval_a 0	nil_a 0	
 	assign	global_a 0	global_a 1	nil_a 0	
 	assign	global_a 2	global_a 0	nil_a 0	
 	param	string_a 14	nil_a 0	nil_a 0	
-	param	nil_a 14	nil_a 0	nil_a 0	
-	call	userfunc_a 60	nil_a 0	nil_a 0	
+	call	userfunc_a 55	nil_a 0	nil_a 0	
 	assign	global_a 1	retval_a 0	nil_a 0	
 	tablegetelem	global_a 2	global_a 0	string_a 15	
 	param	global_a 1	nil_a 0	nil_a 0	
-	param	nil_a 1	nil_a 0	nil_a 0	
 	param	global_a 0	nil_a 0	nil_a 0	
 	call	global_a 2	nil_a 0	nil_a 0	
 	assign	global_a 3	retval_a 0	nil_a 0	
 	param	string_a 16	nil_a 0	nil_a 0	
-	param	nil_a 16	nil_a 0	nil_a 0	
-	call	userfunc_a 60	nil_a 0	nil_a 0	
+	call	userfunc_a 55	nil_a 0	nil_a 0	
 	assign	global_a 1	retval_a 0	nil_a 0	
 	tablegetelem	global_a 2	global_a 0	string_a 15	
 	param	global_a 1	nil_a 0	nil_a 0	
-	param	nil_a 1	nil_a 0	nil_a 0	
 	param	global_a 0	nil_a 0	nil_a 0	
 	call	global_a 2	nil_a 0	nil_a 0	
 	assign	global_a 3	retval_a 0	nil_a 0	
 	param	string_a 17	nil_a 0	nil_a 0	
-	param	nil_a 17	nil_a 0	nil_a 0	
-	call	userfunc_a 60	nil_a 0	nil_a 0	
+	call	userfunc_a 55	nil_a 0	nil_a 0	
 	assign	global_a 1	retval_a 0	nil_a 0	
 	tablegetelem	global_a 2	global_a 0	string_a 15	
 	param	global_a 1	nil_a 0	nil_a 0	
-	param	nil_a 1	nil_a 0	nil_a 0	
 	param	global_a 0	nil_a 0	nil_a 0	
 	call	global_a 2	nil_a 0	nil_a 0	
 	assign	global_a 3	retval_a 0	nil_a 0	
 	tablegetelem	global_a 1	global_a 0	string_a 0	
 	param	string_a 18	nil_a 0	nil_a 0	
-	param	nil_a 18	nil_a 0	nil_a 0	
-	call	userfunc_a 119	nil_a 0	nil_a 0	
+	call	userfunc_a 109	nil_a 0	nil_a 0	
 	assign	global_a 2	retval_a 0	nil_a 0	
 	tablegetelem	global_a 3	global_a 1	number_a 0	
 	tablegetelem	global_a 4	global_a 3	string_a 19	
 	param	global_a 2	nil_a 0	nil_a 0	
-	param	nil_a 2	nil_a 0	nil_a 0	
 	param	global_a 3	nil_a 0	nil_a 0	
 	call	global_a 4	nil_a 0	nil_a 0	
 	assign	global_a 5	retval_a 0	nil_a 0	
 	tablegetelem	global_a 1	global_a 0	string_a 0	
 	param	string_a 20	nil_a 0	nil_a 0	
-	param	nil_a 20	nil_a 0	nil_a 0	
-	call	userfunc_a 119	nil_a 0	nil_a 0	
+	call	userfunc_a 109	nil_a 0	nil_a 0	
 	assign	global_a 2	retval_a 0	nil_a 0	
 	tablegetelem	global_a 3	global_a 1	number_a 0	
 	tablegetelem	global_a 4	global_a 3	string_a 19	
 	param	global_a 2	nil_a 0	nil_a 0	
-	param	nil_a 2	nil_a 0	nil_a 0	
 	param	global_a 3	nil_a 0	nil_a 0	
 	call	global_a 4	nil_a 0	nil_a 0	
 	assign	global_a 5	retval_a 0	nil_a 0	
-	jump	label_a 233	nil_a 0	nil_a 0	
-	funcstart	userfunc_a 195	nil_a 0	nil_a 0	
-	jump	label_a 206	nil_a 0	nil_a 0	
-	funcstart	userfunc_a 197	nil_a 0	nil_a 0	
+	jump	label_a 208	nil_a 0	nil_a 0	
+	funcstart	userfunc_a 173	nil_a 0	nil_a 0	
+	jump	label_a 183	nil_a 0	nil_a 0	
+	funcstart	userfunc_a 175	nil_a 0	nil_a 0	
 	tablegetelem	local_a 0	formal_a 0	string_a 21	
 	param	string_a 22	nil_a 0	nil_a 0	
 	param	local_a 0	nil_a 0	nil_a 0	
 	param	string_a 23	nil_a 0	nil_a 0	
-	param	nil_a 23	nil_a 0	nil_a 0	
 	call	libfunc_a 0	nil_a 0	nil_a 0	
 	assign	local_a 1	retval_a 0	nil_a 0	
-	funcend	userfunc_a 197	nil_a 0	nil_a 0	
-	jump	label_a 216	nil_a 0	nil_a 0	
-	funcstart	userfunc_a 207	nil_a 0	nil_a 0	
+	funcend	userfunc_a 175	nil_a 0	nil_a 0	
+	jump	label_a 192	nil_a 0	nil_a 0	
+	funcstart	userfunc_a 184	nil_a 0	nil_a 0	
 	tablegetelem	local_a 0	formal_a 0	string_a 21	
 	param	string_a 24	nil_a 0	nil_a 0	
 	param	local_a 0	nil_a 0	nil_a 0	
 	param	string_a 23	nil_a 0	nil_a 0	
-	param	nil_a 23	nil_a 0	nil_a 0	
 	call	libfunc_a 0	nil_a 0	nil_a 0	
 	assign	local_a 1	retval_a 0	nil_a 0	
-	funcend	userfunc_a 207	nil_a 0	nil_a 0	
-	jump	label_a 226	nil_a 0	nil_a 0	
-	funcstart	userfunc_a 217	nil_a 0	nil_a 0	
+	funcend	userfunc_a 184	nil_a 0	nil_a 0	
+	jump	label_a 201	nil_a 0	nil_a 0	
+	funcstart	userfunc_a 193	nil_a 0	nil_a 0	
 	tablegetelem	local_a 0	formal_a 0	string_a 25	
 	param	string_a 26	nil_a 0	nil_a 0	
 	param	local_a 0	nil_a 0	nil_a 0	
 	param	string_a 23	nil_a 0	nil_a 0	
-	param	nil_a 23	nil_a 0	nil_a 0	
 	call	libfunc_a 0	nil_a 0	nil_a 0	
 	assign	local_a 1	retval_a 0	nil_a 0	
-	funcend	userfunc_a 217	nil_a 0	nil_a 0	
+	funcend	userfunc_a 193	nil_a 0	nil_a 0	
 	newtable	local_a 0	nil_a 0	nil_a 0	
-	tablesetelem	local_a 0	string_a 27	userfunc_a 197	
-	tablesetelem	local_a 0	string_a 28	userfunc_a 207	
-	tablesetelem	local_a 0	string_a 29	userfunc_a 217	
+	tablesetelem	local_a 0	string_a 27	userfunc_a 175	
+	tablesetelem	local_a 0	string_a 28	userfunc_a 184	
+	tablesetelem	local_a 0	string_a 29	userfunc_a 193	
 	assign	retval_a 0	nil_a 0	nil_a 0	
-	jump	label_a 232	nil_a 0	nil_a 0	
-	funcend	userfunc_a 195	nil_a 0	nil_a 0	
-	param	nil_a 195	nil_a 0	nil_a 0	
-	call	userfunc_a 195	nil_a 0	nil_a 0	
+	jump	label_a 207	nil_a 0	nil_a 0	
+	funcend	userfunc_a 173	nil_a 0	nil_a 0	
+	call	userfunc_a 173	nil_a 0	nil_a 0	
 	assign	global_a 1	retval_a 0	nil_a 0	
 	tablegetelem	global_a 2	global_a 0	string_a 2	
 	param	global_a 0	nil_a 0	nil_a 0	
 	param	global_a 1	nil_a 0	nil_a 0	
-	param	nil_a 1	nil_a 0	nil_a 0	
 	call	global_a 2	nil_a 0	nil_a 0	
 	assign	global_a 3	retval_a 0	nil_a 0	

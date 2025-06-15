@@ -474,7 +474,8 @@ call: call '(' elist ')' {
     | lvalue callsuffix {
         $lvalue = emit_iftableitem($lvalue);    // in case it was a table item too
         if ($callsuffix.method){
-            get_last($callsuffix.elist)->next = $lvalue;    // insert first (reversed, so from last)
+            if ($callsuffix.elist)
+                get_last($callsuffix.elist)->next = $lvalue;    // insert first (reversed, so from last)
             $lvalue = emit_iftableitem(member_item($lvalue, $callsuffix.name));
         }
         $call = make_call($lvalue, $callsuffix.elist);
@@ -513,7 +514,7 @@ elist: expr elist_alt {
         $expr->next = $elist_alt;
         $elist = $expr;
     }
-    | {$elist = new expr();}
+    | {$elist = NULL;}
     ;
 
 elist_alt: ',' expr elist_alt {
@@ -521,7 +522,7 @@ elist_alt: ',' expr elist_alt {
         $expr->next = $3;
         $$ = $expr;
     }
-    | {$elist_alt = new expr();}
+    | {$elist_alt = NULL;}
     ;
 
 objectdef: '[' elist ']' {
